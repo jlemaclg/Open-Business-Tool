@@ -85,6 +85,13 @@ button.mini.ghost{background:transparent; color:var(--morado); border:1px solid 
 
 .ticker{background:var(--morado); color:#fff; border-radius:6px; padding:12px 18px; font-family:Georgia,serif; font-size:13.5px; margin-top:6px;}
 .note{background:rgba(255,0,84,.07); border-left:3px solid var(--accent); padding:10px 14px; font-size:11.5px; margin:10px 0; border-radius:0 4px 4px 0;}
+details.metodo{margin:10px 0;}
+details.metodo summary{cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:7px; font-size:10.5px; font-weight:bold; letter-spacing:1.3px; text-transform:uppercase; color:var(--accent); opacity:.85;}
+details.metodo summary:hover{opacity:1;}
+details.metodo summary::-webkit-details-marker{display:none;}
+details.metodo summary::before{content:'+'; font-family:Georgia,serif; font-size:14px; line-height:1;}
+details.metodo[open] summary::before{content:'\2212';}
+details.metodo .note{margin-top:8px;}
 .chart-box{background:#fff; border-radius:6px; padding:14px;}
 svg text{font-family:Arial; }
 footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5px; padding:12px 40px; display:flex; justify-content:space-between;}
@@ -126,7 +133,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod active" id="t0">
   <div class="eyebrow">Assessment Open Finance · Parámetros generales</div>
   <h2 class="mod-title">Definimos el <span class="accent">contexto del cliente</span> y los parámetros que gobiernan todo el cálculo</h2>
-  <div class="mod-sub">Estos parámetros afectan el catálogo, la célula, el business case y el comparador. Todo es recalibrable en cualquier momento.</div>
+  <div class="mod-sub">Empieza aquí: identifica al cliente y fija el horizonte, la tasa y las tarifas. Todos los módulos heredan estos parámetros — cámbialos cuando quieras y el assessment completo se recalcula.</div>
   <div class="grid2">
     <div class="card">
       <h3>Identificación</h3>
@@ -153,8 +160,8 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
       </table>
     </div>
   </div>
-  <div class="note"><b>Regla del horizonte (KB-05 §5):</b> comprimir la implementación no reduce el costo de célula — lo concentra (más FTE en paralelo). La recomendación general a clientes es <b>12 meses</b>: reduce la carga de servicios externos de acompañamiento (PMO, consultoría experta) sin disparar el paralelismo. Al cambiar los meses, la herramienta reescala la ventana de célula y el arranque del BAU y los ingresos.</div>
-  <div class="note"><b>Factor IA:</b> el desarrollo asistido por IA reduce el esfuerzo de <b>fábrica y de los perfiles técnicos de la célula</b> (columna "IA" en el módulo 7) en el % indicado. Lo que NO acelera: proceso y burocracia — aprobaciones, comités, definiciones funcionales, certificación, gestión con el regulador. Ojo: la IA también abarata a los proveedores SaaS, así que no es un argumento diferencial pro-in-house por sí solo.</div>
+  <details class="metodo"><summary>Apunte experto · Horizonte de implementación y costo de célula</summary><div class="note"><b>Regla del horizonte (KB-05 §5):</b> comprimir la implementación no reduce el costo de célula — lo concentra (más FTE en paralelo). La recomendación general a clientes es <b>12 meses</b>: reduce la carga de servicios externos de acompañamiento (PMO, consultoría experta) sin disparar el paralelismo. Al cambiar los meses, la herramienta reescala la ventana de célula y el arranque del BAU y los ingresos.</div></details>
+  <details class="metodo"><summary>Apunte experto · Impacto del desarrollo asistido por IA</summary><div class="note"><b>Factor IA:</b> el desarrollo asistido por IA reduce el esfuerzo de <b>fábrica y de los perfiles técnicos de la célula</b> (columna "IA" en el módulo 7) en el % indicado. Lo que NO acelera: proceso y burocracia — aprobaciones, comités, definiciones funcionales, certificación, gestión con el regulador. Ojo: la IA también abarata a los proveedores SaaS, así que no es un argumento diferencial pro-in-house por sí solo.</div></details>
   <div class="ticker" id="tick0">—</div>
 </section>
 
@@ -162,7 +169,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="tL">
   <div class="eyebrow">Discovery · Sesiones de levantamiento As-Is</div>
   <h2 class="mod-title">El <span class="accent">levantamiento estructurado</span> captura evidencia por frente y alimenta el diagnóstico</h2>
-  <div class="mod-sub">Banco de preguntas reutilizable (calibrado en deep-dives reales de banca retail LATAM). Por cada pregunta: respuesta del cliente, cumplimiento, plan de acción y compromisos/pendientes. El cumplimiento sugiere la madurez del As-Is por frente — el consultor decide si la aplica.</div>
+  <div class="mod-sub">Registra las respuestas del cliente por frente: cumplimiento, plan de acción y pendientes. Con eso la herramienta sugiere la madurez del As-Is — tú decides si aplicarla al diagnóstico.</div>
   <div class="kpis" id="levKpis"></div>
   <div class="card">
     <h3>Sugerencia de madurez por frente <span class="hint">— desde el cumplimiento de las respuestas; aplicar actualiza el heatmap As-Is</span></h3>
@@ -181,7 +188,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="tS">
   <div class="eyebrow">Arquitectura referencial · Stack tecnológico y GAPs por capa</div>
   <h2 class="mod-title">El <span class="accent">mapa del stack</span> muestra visualmente en qué capa está cada GAP y qué se reutiliza</h2>
-  <div class="mod-sub">Capas de la arquitectura referencial Minsait Open Finance. Cada componente se clasifica: Reutilizable (verde) · Evolucionar (ámbar) · Construir (rosa) · No aplica. Precargado con el stack de la entidad de referencia; editable por cliente.</div>
+  <div class="mod-sub">Clasifica cada componente del stack: Reutilizable (verde) · Evolucionar (ámbar) · Construir (rosa) · No aplica. El mapa muestra dónde están los GAPs y alimenta las iniciativas y el comparador. Viene precargado con una entidad de referencia — edítalo por cliente.</div>
   <div class="kpis" id="stackKpis"></div>
   <div class="card"><h3>Mapa visual por capa</h3><div id="stackMapa"></div></div>
   <div class="card" style="overflow-x:auto">
@@ -196,7 +203,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t1">
   <div class="eyebrow">Diagnóstico · Situación actual</div>
   <h2 class="mod-title">El <span class="accent">As-Is consolidado</span> justifica qué iniciativas se activan y pondera la decisión SaaS vs In-house</h2>
-  <div class="mod-sub">Madurez SFA por subdimensión (escala del diagnóstico) y esfuerzo de cierre. Precargado con el diagnóstico del cliente; editable por assessment.</div>
+  <div class="mod-sub">Ajusta la madurez de cada subdimensión y su esfuerzo de cierre. Este diagnóstico justifica qué iniciativas se activan en el módulo 5 y pondera la decisión del módulo 11.</div>
   <div class="kpis" id="asisKpis"></div>
   <div class="card">
     <h3>Heatmap de madurez por frente <span class="hint">— clic en la celda de madurez para cambiarla</span></h3>
@@ -210,7 +217,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t2">
   <div class="eyebrow">Catálogo · Iniciativas KB-01 (0.1–0.5 · 1–41)</div>
   <h2 class="mod-title">El <span class="accent">catálogo de iniciativas</span> clasifica qué construye la fábrica y qué absorbe la célula</h2>
-  <div class="mod-sub">Formato de ejecución (KB-05 §2): las iniciativas con presupuesto van a fábrica de software; las marcadas "célula" se absorben como dedicación del equipo. Incluir/excluir según alcance del cliente.</div>
+  <div class="mod-sub">Incluye o excluye iniciativas según el alcance acordado: las que llevan presupuesto van a la fábrica de software; las marcadas "célula" se absorben como dedicación del equipo.</div>
   <div class="kpis" id="iniKpis"></div>
   <div class="card" style="overflow-x:auto">
     <div id="iniTabla"></div>
@@ -224,7 +231,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t3">
   <div class="eyebrow">Planificación · Secuencia y paralelismo</div>
   <h2 class="mod-title">El <span class="accent">heatmap de paralelismo</span> es el driver del tamaño de la célula, no el número de iniciativas</h2>
-  <div class="mod-sub">Gantt generado desde el mes de inicio y la duración de cada iniciativa incluida. El heatmap cuenta iniciativas activas por mes, separando célula y fábrica.</div>
+  <div class="mod-sub">El Gantt se genera solo con el mes de inicio y la duración de cada iniciativa incluida. Mira el heatmap: el paralelismo por mes es lo que dimensiona la célula en el módulo 7.</div>
   <div class="card gantt-wrap"><h3>Roadmap de implementación</h3><div id="gantt"></div></div>
   <div class="card"><h3>Heatmap de paralelismo por mes</h3><div id="heatmap"></div>
     <div class="note" id="hmNota"></div></div>
@@ -235,7 +242,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t4">
   <div class="eyebrow">Capacidad · Célula Open Finance (KB-05 §3–4)</div>
   <h2 class="mod-title">La <span class="accent">célula no es opcional</span>: es donde viven las iniciativas funcionales y el gobierno del programa</h2>
-  <div class="mod-sub">Dedicaciones fraccionales (pasos de 0,25 FTE · 172 HH/mes). Tarifario editable con presets Chile / Perú-LATAM. Si la célula es interna del cliente, el costo se reporta como dedicación y no entra al CAPEX.</div>
+  <div class="mod-sub">Dimensiona el equipo con dedicaciones fraccionales (pasos de 0,25 FTE) y tarifario editable por región. Si la célula es interna del cliente, se reporta como dedicación y no suma al CAPEX.</div>
   <div class="kpis" id="celKpis"></div>
   <div class="card" style="overflow-x:auto">
     <h3>Perfiles, tarifas y dedicaciones</h3>
@@ -250,14 +257,14 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t5">
   <div class="eyebrow">Operación recurrente · Costos habilitantes (KB-05 §7–9)</div>
   <h2 class="mod-title">El BAU y los <span class="accent">costos frecuentemente omitidos</span> — donde mueren las estimaciones optimistas</h2>
-  <div class="mod-sub">BAU de plataforma desde el go-live (escala en escalones, no lineal). Checklist de omitidos: licenciamiento incremental, certificación y seguridad, capacitación, legal externo, contingencia.</div>
+  <div class="mod-sub">Define cuánto cuesta operar la plataforma desde el go-live y repasa el checklist de costos que suelen omitirse: licencias, certificación y seguridad, capacitación, legal externo, contingencia.</div>
   <div class="grid2">
     <div class="card"><h3>BAU de plataforma <span class="hint">(USD/año desde go-live)</span></h3><div id="bauTabla"></div>
       <button class="mini" style="margin-top:8px" onclick="addBau()">+ Línea BAU</button></div>
     <div class="card"><h3>Costos habilitantes y omitidos frecuentes</h3><div id="extraTabla"></div>
       <button class="mini" style="margin-top:8px" onclick="addExtra()">+ Línea adicional</button></div>
   </div>
-  <div class="note"><b>Regla de no linealidad (KB-05 §7.2):</b> el consumo de APIs puede crecer ×78 en 8 años mientras la infraestructura crece ×4,2. Lo que escala con el negocio es el <b>soporte B2B</b> (por partner integrado). Comunicar siempre al cliente.</div>
+  <details class="metodo"><summary>Apunte experto · Escalado del BAU con el crecimiento del negocio</summary><div class="note"><b>Regla de no linealidad (KB-05 §7.2):</b> el consumo de APIs puede crecer ×78 en 8 años mientras la infraestructura crece ×4,2. Lo que escala con el negocio es el <b>soporte B2B</b> (por partner integrado). Comunicar siempre al cliente.</div></details>
   <div class="ticker" id="tick5">—</div>
 </section>
 
@@ -265,7 +272,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t6">
   <div class="eyebrow">Ingresos · Cadena KB-02: Volumen × Tarifa × Adopción</div>
   <h2 class="mod-title">Las <span class="accent">líneas de monetización</span> determinan en cuánto tiempo se amortiza la infraestructura</h2>
-  <div class="mod-sub">Tarifas benchmark LATAM precargadas (KB-02 §3 · Minsait Observatory). El ramp modela la adopción: los ingresos del año de entrada crecen linealmente hasta plena adopción. El negocio no está solo en las APIs reguladas: mix típico 30% reguladas · 40% premium/BaaS · 30% partnerships.</div>
+  <div class="mod-sub">Activa las líneas de ingreso y su año de entrada; el ramp modela la adopción hasta plena madurez. El negocio no está solo en las APIs reguladas: también premium/BaaS y partnerships. Estas líneas determinan cuándo se amortiza la inversión.</div>
   <div class="kpis" id="monKpis"></div>
   <div class="card" style="overflow-x:auto"><h3>Líneas de ingreso</h3><div id="monTabla"></div>
     <button class="mini" style="margin-top:8px" onclick="addMon()">+ Línea de ingreso</button>
@@ -277,7 +284,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t7">
   <div class="eyebrow">Viabilidad · Flujo de caja, VAN, TIR, payback</div>
   <h2 class="mod-title">El business case responde la pregunta de fondo: <span class="accent">¿cuándo se amortiza?</span></h2>
-  <div class="mod-sub">Consolida fábrica + célula + BAU + adicionales contra las líneas de ingreso. Umbrales KB-02 §8: TIR excelente ≥15% · payback aceptable 3–5 años · VAN excelente ≥20% de la inversión.</div>
+  <div class="mod-sub">Aquí se junta todo: fábrica + célula + BAU + adicionales contra las líneas de ingreso. Lee TIR, VAN y payback contra los umbrales de referencia y vuelve a los módulos anteriores hasta tener un caso defendible.</div>
   <div class="kpis" id="bcKpis"></div>
   <div class="grid2">
     <div class="card"><h3>Flujo de caja acumulado</h3><div id="chartFlujo"></div></div>
@@ -291,7 +298,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
 <section class="mod" id="t8">
   <div class="eyebrow">Decisión estratégica · Modelo de sourcing de la plataforma</div>
   <h2 class="mod-title"><span class="accent">In-house, Híbrido o SaaS</span>: la madurez del As-Is y el time-to-market ponderan la decisión</h2>
-  <div class="mod-sub">In-house (build) se alimenta de los módulos 5–8, ya con el factor IA aplicado. Híbrido delega la capa compleja (IdP, consentimiento, directorio) a un proveedor y construye el resto. SaaS delega la plataforma completa. En los tres sobreviven: integración con el core, célula de gobierno, certificación y cumplimiento — ante el regulador el responsable siempre es el banco.</div>
+  <div class="mod-sub">Compara los tres caminos con los números de este assessment: In-house construye todo, Híbrido delega la capa compleja (IdP, consentimiento, directorio), SaaS delega la plataforma completa. En los tres sobreviven la integración con el core, el gobierno y el cumplimiento — ante el regulador, el responsable siempre es el banco.</div>
   <div class="grid2">
     <div class="card"><h3>Escenario SaaS / PaaS <span class="hint">— preset: </span><select id="s_preset" style="width:auto;border:1px solid rgba(79,6,42,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="aplicarPresetSaas(this.value)"><option value="">— valores propios —</option><option value="paas">Referencia PaaS regional (IPI/IPC)</option><option value="tiers">Referencia SaaS por tiers + Consent Engine</option></select></h3>
       <table id="saasParams">
@@ -303,7 +310,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
         <tr><td>Integración con core / adaptadores (one-off USD)</td><td><input type="number" id="s_integ" onchange="S.saas.integ=+this.value;dirty();renderAll()"></td></tr>
         <tr><td>Célula residual de gobierno (% de la célula in-house)</td><td><input type="number" id="s_res" onchange="S.saas.resPct=+this.value;dirty();renderAll()"></td></tr>
       </table>
-      <div class="note" id="s_presetNota">Presets anclados en propuestas reales de mercado (Chile, jul-2026, USD netos, convertidos de UF/tiers). Los precios SaaS <b>escalan por volumen de llamadas</b> (tiers) y los add-ons (retención 5 años, SIEM, reportes regulatorios, SLA 99,99%) suelen NO estar incluidos — verificar en la cotización. Renombrar el preset por el proveedor real al evaluar.</div>
+      <details class="metodo"><summary>Apunte experto · Referencias de mercado del preset SaaS/PaaS</summary><div class="note" id="s_presetNota">Presets anclados en propuestas reales de mercado (Chile, jul-2026, USD netos, convertidos de UF/tiers). Los precios SaaS <b>escalan por volumen de llamadas</b> (tiers) y los add-ons (retención 5 años, SIEM, reportes regulatorios, SLA 99,99%) suelen NO estar incluidos — verificar en la cotización. Renombrar el preset por el proveedor real al evaluar.</div></details>
     </div>
     <div class="card"><h3>Escenario Híbrido <span class="hint">— capa compleja al proveedor, resto build propio</span></h3>
       <table>
@@ -313,8 +320,8 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
         <tr><td>% de célula que se mantiene</td><td><input type="number" id="h_cel" min="0" max="100" onchange="S.hib.pctCel=+this.value;dirty();renderAll()"></td></tr>
         <tr><td>% del BAU propio que se mantiene</td><td><input type="number" id="h_bau" min="0" max="100" onchange="S.hib.pctBau=+this.value;dirty();renderAll()"></td></tr>
       </table>
-      <div class="note">Default calibrado en la referencia de <b>producto licenciado desplegado in-house</b>: setup+licencia perpetua one-off (~USD 190 K) + soporte anual (~160 K); el banco construye integración con cores y APIs de datos (≈50% de la fábrica) y opera con célula casi completa. La infraestructura corre por el banco (BAU propio).</div>
-      <div class="note"><b>Riesgos a documentar en SaaS/PaaS (no aparecen en el TCO):</b> vendor lock-in (migrar consentimientos activos es lento y caro) · función regulada operada por un tercero con responsabilidad que sigue en el banco · costo por consumo a escala (tiers) · soberanía de datos · Open Finance como capacidad propia vs alquilada.</div>
+      <details class="metodo"><summary>Apunte experto · Calibración del escenario in-house</summary><div class="note">Default calibrado en la referencia de <b>producto licenciado desplegado in-house</b>: setup+licencia perpetua one-off (~USD 190 K) + soporte anual (~160 K); el banco construye integración con cores y APIs de datos (≈50% de la fábrica) y opera con célula casi completa. La infraestructura corre por el banco (BAU propio).</div></details>
+      <details class="metodo"><summary>Apunte experto · Riesgos a documentar en la modalidad SaaS/PaaS</summary><div class="note"><b>Riesgos a documentar en SaaS/PaaS (no aparecen en el TCO):</b> vendor lock-in (migrar consentimientos activos es lento y caro) · función regulada operada por un tercero con responsabilidad que sigue en el banco · costo por consumo a escala (tiers) · soberanía de datos · Open Finance como capacidad propia vs alquilada.</div></details>
     </div>
   </div>
   <div class="card"><h3>Curvas de costo acumulado — 3 escenarios</h3><div id="chartSaas"></div><div id="saasVeredicto" style="margin-top:10px"></div></div>

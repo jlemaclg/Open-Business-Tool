@@ -6,6 +6,9 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+### Changed
+- Assessment: subtítulos de las 11 pestañas en lenguaje de acción (qué haces aquí y qué alimenta), sin referencias internas en superficie; las 6 recomendaciones de consultoría pasan a bloques plegables "Apunte experto · <tema>" con título formal. API Lab: eliminado emoji decorativo (norma de estilo: SVG inline).
+
 ## [0.1.0] - 2026-07-22
 
 Primera demo pública: portal, 5 módulos y core con mocks.
