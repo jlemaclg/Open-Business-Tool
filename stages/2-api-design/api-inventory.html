@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario de APIs · Open Business Accelerator</title>
+<style>
+  :root{ --morado:#4F062A; --accent:#FF0054; --gris:#E3E2DA; --blanco:#FFF; --morado-dk:#260717; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,sans-serif;background:var(--gris);color:#1a1a1a;min-width:1280px;min-height:100vh;}
+  a{text-decoration:none;}
+  header{background:var(--morado-dk);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:Georgia,serif;font-size:20px;color:#fff;} .logo span{color:var(--accent);}
+  .hdr-right{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;}
+  .page{max-width:1200px;margin:0 auto;padding:34px 40px 60px;}
+  .eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:bold;margin-bottom:8px;}
+  h1{font-family:Georgia,serif;font-size:27px;font-weight:normal;color:var(--morado-dk);margin-bottom:6px;}
+  h1 .accent{color:var(--accent);}
+  .sub{font-family:Georgia,serif;font-size:14px;opacity:.85;margin-bottom:16px;max-width:920px;line-height:1.5;}
+  .info-banner{background:rgba(79,6,42,.06);border-left:3px solid var(--morado);padding:11px 16px;font-size:12px;line-height:1.6;margin-bottom:22px;max-width:1120px;}
+  .info-banner b{color:var(--morado);}
+  .toolbar{display:flex;gap:10px;margin-bottom:16px;align-items:center;}
+  .toolbar select,.toolbar input{padding:8px 10px;border:1px solid #c9c6bb;border-radius:3px;font-size:12.5px;background:#fff;}
+  .toolbar input{flex:1;max-width:340px;}
+  .count{font-size:11px;color:#777;margin-left:auto;}
+  table.inv{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07);border-radius:6px;overflow:hidden;font-size:12.5px;}
+  .inv th{background:var(--morado);color:#fff;text-align:left;padding:10px 14px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:normal;}
+  .inv td{padding:11px 14px;border-bottom:1px solid #efede6;vertical-align:top;}
+  .inv tr:last-child td{border-bottom:none;}
+  .inv tbody tr{cursor:pointer;transition:background .15s;}
+  .inv tbody tr:hover{background:rgba(255,0,84,.045);}
+  .api-name{font-weight:bold;color:var(--morado-dk);} .api-ver{color:#999;font-size:11px;}
+  .pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;letter-spacing:.5px;}
+  .p-abierta{background:rgba(255,0,84,.1);color:var(--accent);border:1px solid rgba(255,0,84,.3);}
+  .p-interna{background:rgba(79,6,42,.08);color:var(--morado);border:1px solid rgba(79,6,42,.25);}
+  .p-partner{background:rgba(26,127,55,.1);color:#1a7f37;border:1px solid rgba(26,127,55,.3);}
+  .gov-ok{color:#1a7f37;font-weight:bold;font-size:11.5px;} .gov-warn{color:#b58900;font-weight:bold;font-size:11.5px;}
+  .backend{font-size:11px;color:#555;} .backend b{color:var(--morado);font-weight:normal;}
+  .reuse{font-size:11px;color:#1a7f37;}
+  /* Detalle */
+  .detail{display:none;background:#fff;margin-top:20px;border-radius:6px;box-shadow:0 4px 18px rgba(38,7,23,.12);overflow:hidden;}
+  .detail.open{display:block;}
+  .detail-head{background:var(--morado-dk);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;}
+  .detail-title{font-family:Georgia,serif;font-size:18px;} .detail-title small{color:rgba(255,255,255,.55);font-family:Arial;font-size:11px;margin-left:10px;}
+  .detail-close{cursor:pointer;color:rgba(255,255,255,.6);font-size:13px;background:none;border:none;}
+  .detail-close:hover{color:#fff;}
+  .detail-body{padding:20px 22px;display:grid;grid-template-columns:1.5fr 1fr;gap:24px;}
+  .dsec-title{font-size:10.5px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  table.map{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:14px;}
+  .map th{text-align:left;color:var(--morado);border-bottom:2px solid var(--morado);padding:5px 8px;font-size:10.5px;letter-spacing:.5px;}
+  .map td{padding:6px 8px;border-bottom:1px solid #efede6;}
+  .map .m{font-family:Consolas,monospace;font-size:11px;color:var(--morado-dk);}
+  .kv{font-size:12px;line-height:1.9;} .kv b{color:var(--morado);}
+  .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .btn{padding:10px 18px;border-radius:3px;font-size:12.5px;cursor:pointer;border:none;letter-spacing:.4px;display:inline-block;}
+  .btn-p{background:var(--morado);color:#fff;} .btn-p:hover{background:var(--accent);}
+  .btn-o{background:#fff;color:var(--morado);border:1px solid var(--morado);} .btn-o:hover{border-color:var(--accent);color:var(--accent);}
+  .note-sim{font-size:10.5px;color:#888;margin-top:16px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Open Business <span>·</span> Accelerator</div>
+  <div class="hdr-right">Inventario de APIs · Entorno de Demo</div>
+</header>
+
+<div class="page">
+  <div class="eyebrow">Etapa 2 · APIs existentes de la entidad</div>
+  <h1>Inventario de APIs con <span class="accent">mapeo a sistemas backend</span></h1>
+  <div class="sub">La mayoría de las APIs no nacen de cero: parte de una existente. Explora el inventario, revisa qué sistemas hay detrás de cada endpoint y extiende una API con ese conocimiento ya generado — para diseños externos o internos.</div>
+  <div class="info-banner">
+    <b>De dónde sale este inventario:</b> se carga en el <b>set up de la entidad</b> (Assessment · línea base del stack) desde el catálogo del API manager y los lineamientos propios de la organización — no de referencias externas. Cada API diseñada o refinada en la plataforma <b>vuelve a este inventario</b>, así el conocimiento queda vivo y versionado.
+  </div>
+
+  <div class="toolbar">
+    <select id="fDominio" onchange="renderInv()"><option value="">Dominio: todos</option><option>Pagos</option><option>Créditos</option><option>Clientes</option><option>Cuentas</option><option>Canales</option></select>
+    <select id="fTipo" onchange="renderInv()"><option value="">Tipo: todas</option><option>Abierta</option><option>Interna</option><option>Partner</option></select>
+    <input id="fTexto" placeholder="Buscar por nombre, endpoint o sistema backend…" oninput="renderInv()">
+    <span class="count" id="invCount"></span>
+  </div>
+
+  <table class="inv">
+    <thead><tr><th>API</th><th>Dominio</th><th>Tipo</th><th>Endpoints</th><th>Sistemas backend</th><th>Gobierno</th><th>Reutilización</th></tr></thead>
+    <tbody id="invBody"></tbody>
+  </table>
+
+  <!-- Detalle -->
+  <div class="detail" id="detail">
+    <div class="detail-head">
+      <div class="detail-title" id="dTitle"></div>
+      <button class="detail-close" onclick="cerrarDetalle()">✕ cerrar</button>
+    </div>
+    <div class="detail-body">
+      <div>
+        <div class="dsec-title">Endpoints y mapeo a backend</div>
+        <table class="map"><thead><tr><th>Endpoint</th><th>Sistema</th><th>Servicio interno</th></tr></thead><tbody id="dMap"></tbody></table>
+        <div class="dsec-title">Reutilización sugerida</div>
+        <div class="kv" id="dReuse"></div>
+      </div>
+      <div>
+        <div class="dsec-title">Ficha de gobierno</div>
+        <div class="kv" id="dGov"></div>
+        <div class="actions">
+          <a class="btn btn-p" id="dExtender">Extender esta API →</a>
+          <a class="btn btn-o" href="enrichment.html">Revisar contra gobierno</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-sim">Datos simulados con fines de demo. En despliegue, el inventario se sincroniza con el API manager de la entidad (Apigee, Azure APIM, Kong, WSO2…) vía pipeline.</div>
+</div>
+
+<script>
+const APIS = [
+ { id:'payments-v2', nombre:'API Pagos', ver:'v2.3', dominio:'Pagos', tipo:'Abierta', gov:'ok',
+   endpoints:8, backends:['Core Bancario','Motor Antifraude'], reuse:'5 endpoints reutilizables',
+   map:[['POST /payments','Core Bancario','svc-pagos-inmediatos'],['GET /payments/{id}','Core Bancario','svc-consulta-mov'],['POST /payments/bulk','Core Bancario','svc-lotes'],['GET /payments/{id}/status','Motor Antifraude','svc-scoring-tx']],
+   gobFicha:{owner:'Tribu Pagos', ciclo:'Producción · SLA 99,95%', iso:'92% campos ISO 20022', consumidores:'12 (3 externos)'} ,
+   reuseTxt:'El bloque <b>debtor/creditor</b> y el modelo de errores son reutilizables tal cual para una API de <b>remesas</b> o <b>pagos programados</b>. El mapeo a svc-pagos-inmediatos admite nuevas operaciones sin tocar el core.'},
+ { id:'accounts-v1', nombre:'API Cuentas', ver:'v1.8', dominio:'Cuentas', tipo:'Abierta', gov:'ok',
+   endpoints:6, backends:['Core Bancario'], reuse:'4 endpoints reutilizables',
+   map:[['GET /accounts','Core Bancario','svc-posicion'],['GET /accounts/{id}/balances','Core Bancario','svc-saldos'],['GET /accounts/{id}/transactions','Core Bancario','svc-consulta-mov']],
+   gobFicha:{owner:'Tribu Cuentas', ciclo:'Producción · SLA 99,9%', iso:'88% campos ISO 20022', consumidores:'9 (4 externos)'},
+   reuseTxt:'La paginación por cursor y el esquema <b>Transaction</b> son la referencia corporativa: cualquier API nueva de consulta debería partir de aquí.'},
+ { id:'credits-v1', nombre:'API Originación Créditos', ver:'v1.2', dominio:'Créditos', tipo:'Interna', gov:'warn',
+   endpoints:11, backends:['Motor de Créditos','Buró (integración)','CRM'], reuse:'3 endpoints reutilizables',
+   map:[['POST /credit-applications','Motor de Créditos','svc-solicitudes'],['GET /credit-applications/{id}','Motor de Créditos','svc-expediente'],['POST /credit-applications/{id}/score','Buró (integración)','gw-buro'],['PATCH /credit-applications/{id}','CRM','svc-seguimiento']],
+   gobFicha:{owner:'Tribu Créditos', ciclo:'Producción · v2 en diseño', iso:'61% campos ISO 20022', consumidores:'5 (internos)'},
+   reuseTxt:'Candidata a <b>exponerse como API abierta</b> para embedded lending: el expediente y el scoring ya están mapeados; falta normalizar el diccionario (ver Enrichment) y elevar seguridad a FAPI.'},
+ { id:'customers-v3', nombre:'API Clientes (KYC)', ver:'v3.0', dominio:'Clientes', tipo:'Interna', gov:'ok',
+   endpoints:7, backends:['CRM','Gestor Documental'], reuse:'6 endpoints reutilizables',
+   map:[['GET /customers/{id}','CRM','svc-cliente-360'],['POST /customers','CRM','svc-alta-cliente'],['POST /customers/{id}/documents','Gestor Documental','svc-docs'],['GET /customers/{id}/consents','CRM','svc-consentimientos']],
+   gobFicha:{owner:'Tribu Clientes', ciclo:'Producción · SLA 99,9%', iso:'84% campos ISO 20022', consumidores:'14 (internos)'},
+   reuseTxt:'El bloque de <b>consentimientos</b> es prerequisito de cualquier caso Open Finance: reutilizarlo evita duplicar la pieza más sensible ante el regulador.'},
+ { id:'onboarding-v1', nombre:'API Onboarding Digital', ver:'v1.4', dominio:'Clientes', tipo:'Partner', gov:'warn',
+   endpoints:5, backends:['CRM','Motor Antifraude','Gestor Documental'], reuse:'2 endpoints reutilizables',
+   map:[['POST /onboarding','CRM','svc-alta-cliente'],['POST /onboarding/{id}/kyc','Motor Antifraude','svc-kyc'],['POST /onboarding/{id}/documents','Gestor Documental','svc-docs']],
+   gobFicha:{owner:'Tribu Canales', ciclo:'Producción · piloto con 2 partners', iso:'57% campos ISO 20022', consumidores:'3 (2 partners)'},
+   reuseTxt:'Base natural del caso de uso <b>embedded finance</b>: un partner nuevo se integra reutilizando el flujo KYC completo sin desarrollo adicional del banco.'},
+ { id:'cards-v2', nombre:'API Tarjetas', ver:'v2.1', dominio:'Pagos', tipo:'Interna', gov:'ok',
+   endpoints:9, backends:['Procesador Tarjetas','Core Bancario'], reuse:'4 endpoints reutilizables',
+   map:[['GET /cards','Procesador Tarjetas','svc-parque'],['POST /cards/{id}/block','Procesador Tarjetas','svc-ciclo-vida'],['GET /cards/{id}/movements','Core Bancario','svc-consulta-mov']],
+   gobFicha:{owner:'Tribu Medios de Pago', ciclo:'Producción · SLA 99,95%', iso:'79% campos ISO 20022', consumidores:'7 (internos)'},
+   reuseTxt:'El endpoint de movimientos comparte servicio backend con API Cuentas — unificar el contrato reduciría mantenimiento duplicado.'},
+ { id:'notifications-v1', nombre:'API Notificaciones', ver:'v1.0', dominio:'Canales', tipo:'Interna', gov:'warn',
+   endpoints:4, backends:['Bus de Eventos'], reuse:'4 endpoints reutilizables',
+   map:[['POST /notifications','Bus de Eventos','topic-notif'],['POST /webhooks','Bus de Eventos','svc-suscripciones']],
+   gobFicha:{owner:'Tribu Canales', ciclo:'Producción', iso:'40% campos ISO 20022', consumidores:'11 (internos)'},
+   reuseTxt:'Los <b>webhooks</b> son la pieza que piden los partners para eventos de pago en tiempo real — reutilizable en cualquier caso B2B.'},
+ { id:'fx-v1', nombre:'API Tipo de Cambio', ver:'v1.1', dominio:'Pagos', tipo:'Partner', gov:'ok',
+   endpoints:3, backends:['Tesorería'], reuse:'3 endpoints reutilizables',
+   map:[['GET /fx/rates','Tesorería','svc-cotizador'],['POST /fx/quotes','Tesorería','svc-cotizador']],
+   gobFicha:{owner:'Tesorería', ciclo:'Producción · SLA 99,9%', iso:'95% campos ISO 20022', consumidores:'6 (3 partners)'},
+   reuseTxt:'Cotizador listo para incrustar en el caso de <b>remesas</b>: la API de pagos puede referenciar /fx/quotes sin nueva integración con Tesorería.'},
+];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+function renderInv(){
+  const d=$('fDominio').value, t=$('fTipo').value, q=$('fTexto').value.toLowerCase();
+  const rows=APIS.filter(a=>(!d||a.dominio===d)&&(!t||a.tipo===t)&&(!q||JSON.stringify(a).toLowerCase().includes(q)));
+  $('invBody').innerHTML=rows.map(a=>`
+    <tr onclick="abrirDetalle('${a.id}')">
+      <td><span class="api-name">${esc(a.nombre)}</span> <span class="api-ver">${a.ver}</span></td>
+      <td>${a.dominio}</td>
+      <td><span class="pill p-${a.tipo.toLowerCase()}">${a.tipo}</span></td>
+      <td>${a.endpoints}</td>
+      <td class="backend">${a.backends.map(b=>`<b>${esc(b)}</b>`).join(' · ')}</td>
+      <td>${a.gov==='ok'?'<span class="gov-ok">Conforme</span>':'<span class="gov-warn">Observaciones</span>'}</td>
+      <td class="reuse">${esc(a.reuse)}</td>
+    </tr>`).join('');
+  $('invCount').textContent=`${rows.length} de ${APIS.length} APIs · última sincronización con el API manager: hoy`;
+}
+
+function abrirDetalle(id){
+  const a=APIS.find(x=>x.id===id); if(!a)return;
+  $('dTitle').innerHTML=`${esc(a.nombre)} <small>${a.ver} · ${a.dominio} · ${a.tipo}</small>`;
+  $('dMap').innerHTML=a.map.map(m=>`<tr><td class="m">${esc(m[0])}</td><td>${esc(m[1])}</td><td class="m">${esc(m[2])}</td></tr>`).join('');
+  $('dReuse').innerHTML=a.reuseTxt;
+  const g=a.gobFicha;
+  $('dGov').innerHTML=`<b>Owner:</b> ${esc(g.owner)}<br><b>Ciclo de vida:</b> ${esc(g.ciclo)}<br><b>Normalización:</b> ${esc(g.iso)}<br><b>Consumidores:</b> ${esc(g.consumidores)}`;
+  $('dExtender').href=`api-designer.html?from=${a.id}`;
+  $('detail').classList.add('open');
+  $('detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function cerrarDetalle(){ $('detail').classList.remove('open'); }
+renderInv();
+</script>
+<script src="../../assets/nav.js" data-current="inventory"></script>
+</body>
+</html>

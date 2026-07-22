@@ -70,14 +70,14 @@
     }
     .journey-track { position: relative; max-width: 1000px; margin: 0 auto; }
     .journey-line {
-      position: absolute; top: 33px; left: 60px; right: 60px; height: 2px;
+      position: absolute; top: 30px; left: 60px; right: 60px; height: 2px;
       background: rgba(255,255,255,.22);
     }
     .journey-nodes { position: relative; display: flex; justify-content: space-between; }
-    .journey-node { width: 182px; text-align: center; transition: transform .2s; position: relative; }
+    .journey-node { width: 156px; text-align: center; transition: transform .2s; position: relative; }
     .journey-node:hover { transform: translateY(-4px); }
     .node-circle {
-      width: 66px; height: 66px; border-radius: 50%;
+      width: 60px; height: 60px; border-radius: 50%;
       background: var(--morado-dk); border: 2px solid rgba(255,255,255,.35);
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 12px; transition: border-color .2s, box-shadow .2s, background .2s;
@@ -185,20 +185,26 @@
             <div class="node-q">¿Qué oportunidad hay en el mercado?</div>
             <div class="node-cta">Entrar →</div>
           </a>
-          <a class="journey-node" href="stages/2-api-design/api-designer.html">
+          <a class="journey-node" href="stages/2-api-design/api-inventory.html">
             <div class="node-circle">03</div>
+            <div class="node-name">Inventario</div>
+            <div class="node-q">¿Qué APIs y sistemas ya tengo?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+          <a class="journey-node" href="stages/2-api-design/api-designer.html">
+            <div class="node-circle">04</div>
             <div class="node-name">Diseño de APIs</div>
-            <div class="node-q">¿Cómo se construye el caso de uso?</div>
+            <div class="node-q">¿Cómo construyo o extiendo el caso?</div>
             <div class="node-cta">Entrar →</div>
           </a>
           <a class="journey-node" href="stages/2-api-design/enrichment.html">
-            <div class="node-circle">04</div>
+            <div class="node-circle">05</div>
             <div class="node-name">Enrichment</div>
-            <div class="node-q">¿Mis APIs hablan el estándar ISO 20022?</div>
+            <div class="node-q">¿Cumplen el estándar y el gobierno?</div>
             <div class="node-cta">Entrar →</div>
           </a>
           <a class="journey-node" href="stages/3-api-lab/index.html">
-            <div class="node-circle">05</div>
+            <div class="node-circle">06</div>
             <div class="node-name">API Lab<span class="node-beta">BETA</span></div>
             <div class="node-q">¿Funciona con partners y comercios reales?</div>
             <div class="node-cta">Entrar →</div>
@@ -235,8 +241,9 @@
         <div class="how-text">
           Cada caso de uso —<strong>APIs de Embedded Finance / BaaS o producto completo con
           su frontal</strong>— se simula contra el set up: qué APIs, equipo e inversión necesita.
-          Los <a href="stages/2-api-design/api-designer.html">agentes de IA</a> diseñan las APIs
-          en estándar ISO 20022.
+          Con el <a href="stages/2-api-design/api-inventory.html">inventario de APIs</a> como punto de
+          partida, los <a href="stages/2-api-design/api-designer.html">agentes de IA</a> extienden lo
+          existente o diseñan en estándar ISO 20022.
         </div>
       </div>
       <div class="how-step anim anim-5">
