@@ -1050,8 +1050,15 @@ function exportJSON(){ const blob=new Blob([JSON.stringify(S,null,1)],{type:'app
   a.download='OF_estimacion_'+(S.cliente.nombre||'cliente').replace(/[^\w]+/g,'_')+'.json'; a.click(); }
 function importJSON(inp){ const fr=new FileReader(); fr.onload=()=>{ try{ S=normalize(Object.assign(defaultState(),JSON.parse(fr.result))); renderAll(); $('savemsg').textContent='✓ importado'; }catch(e){ alert('JSON inválido'); } }; fr.readAsText(inp.files[0]); inp.value=''; }
 
+// Ganchos para el puente de almacenamiento de la plataforma (storage-bridge.js).
+// S, $ y esc son let/const y no viven en window; el puente los alcanza por aquí.
+window.__oba = { getS: () => S, setS: (v) => { S = v; }, esc, $ };
+
 refreshClientes(); renderAll();
 </script>
+<!-- Puente al dominio de la plataforma (core/storage). Si no carga (file://), la
+     herramienta sigue funcionando con su localStorage original. -->
+<script type="module" src="storage-bridge.js"></script>
 <script src="../../../assets/nav.js" data-current="assessment"></script>
 </body>
 </html>
