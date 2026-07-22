@@ -45,7 +45,10 @@
     + '.obx-step.obx-actual .obx-num{color:#FF0054;}'
     + '.obx-arrow{color:rgba(255,255,255,.22);font-size:10px;flex:0 0 auto;}'
     + '.obx-etapa{color:rgba(255,255,255,.4);font-size:10.5px;letter-spacing:1.2px;'
-    + 'text-transform:uppercase;white-space:nowrap;}';
+    + 'text-transform:uppercase;white-space:nowrap;}'
+    + '.obx-pol{color:rgba(255,255,255,.6);font-size:11px;letter-spacing:.6px;white-space:nowrap;}'
+    + '.obx-pol:hover{color:#FF0054;}'
+    + '.obx-pol.obx-pol-actual{color:#FF0054;}';
 
   var style = document.createElement('style');
   style.textContent = css;
@@ -74,7 +77,10 @@
       + (actual ? ' aria-current="page"' : '') + '>'
       + '<span class="obx-num">' + it.num + '</span>' + it.nombre + '</a>';
   }
-  html += '</div><div class="obx-etapa">' + (etapaActual || 'Open Business Accelerator') + '</div>';
+  html += '</div><a class="obx-pol' + (current === 'policies' ? ' obx-pol-actual' : '') + '" href="' + root
+    + 'stages/2-api-design/governance-policies.html" title="Políticas de gobierno de APIs — la base de conocimiento de los agentes">Políticas de gobierno</a>'
+    + '<div class="obx-sep"></div><div class="obx-etapa">'
+    + (current === 'policies' ? 'Set up · Gobierno de APIs' : (etapaActual || 'Open Business Accelerator')) + '</div>';
 
   nav.innerHTML = html;
   document.body.insertBefore(nav, document.body.firstChild);

@@ -35,15 +35,17 @@ del texto cuando se atribuye una fuente (p. ej. "arquitectura referencial Minsai
 ```
 index.html                                      ← portal de inicio (raíz)
 assets/
-  nav.js                                        ← barra de navegación común 01→05
+  nav.js                                        ← barra de navegación común 01→06 + enlace a Políticas
 stages/
   1-discovery/
     assessment/index.html                       ← 01 Assessment de la Entidad
     market-discovery/index.html                 ← 02 Discovery de Casos de Uso
   2-api-design/
-    api-designer.html                           ← 03 Diseño de APIs con Agentes IA
-    enrichment.html                             ← 04 Enriquecimiento del Diccionario
-  3-api-lab/index.html                          ← 05 API Lab Accelerator
+    api-inventory.html                          ← 03 Inventario de APIs
+    api-designer.html                           ← 04 Diseño de APIs con Agentes IA
+    enrichment.html                             ← 05 Enriquecimiento del Diccionario
+    governance-policies.html                    ← Políticas de Gobierno (transversal)
+  3-api-lab/index.html                          ← 06 API Lab Accelerator
 ```
 
 Las rutas entre herramientas son **relativas**: desde `stages/2-api-design/` el portal
@@ -68,12 +70,12 @@ Del discovery al despliegue de
 casos de uso y APIs de negocio
 ```
 
-### Recorrido: 5 herramientas en 3 etapas
+### Recorrido: 6 herramientas en 3 etapas
 
-El hero presenta las 5 herramientas como nodos clicables agrupados por etapa del
+El hero presenta las 6 herramientas como nodos clicables agrupados por etapa del
 embudo (`Etapa 1 · Discovery & Assessment` · `Etapa 2 · Diseño de APIs` ·
 `Etapa 3 · Validación`), con el bucle de retorno visible al final. Cada nodo lleva
-CTA *Entrar* y, si aplica, badge BETA. El número (01→05) debe coincidir siempre con
+CTA *Entrar* y, si aplica, badge BETA. El número (01→06) debe coincidir siempre con
 el `data-current` de `assets/nav.js`.
 
 **Etapa 1 · Discovery & Assessment**
@@ -89,27 +91,36 @@ el `data-current` de `assets/nav.js`.
 - **Ícono:** lupa / target / audiencias
 - **Descripción:** Analiza qué segmentos de tu cartera tienen mayor propensión a adoptar un caso de uso. Hipótesis validadas con audiencias sintéticas y métricas TAM / SAM / SOM.
 - **Destino:** `stages/1-discovery/market-discovery/index.html`
-- **Salida:** su CTA final encadena al 03 pasando `?usecase=<nombre>`
+- **Salida:** su CTA final encadena al 04 (Designer) pasando `?usecase=<nombre>`
 
 **Etapa 2 · Diseño y Gobierno de APIs**
 
-#### 03 — Diseño de APIs con Agentes IA
+#### 03 — Inventario de APIs
+- **Estado:** activo (sin badge beta)
+- **Ícono:** catálogo / grafo de sistemas
+- **Descripción:** Catálogo del estate existente con el mapeo endpoint → sistema backend → servicio interno. Desde cualquier API se lanza "Extender esta API" y el diseño parte del conocimiento ya generado.
+- **Destino:** `stages/2-api-design/api-inventory.html`
+- **Salida:** "Extender esta API" abre el 04 con `?from=<api>`
+
+#### 04 — Diseño de APIs con Agentes IA
 - **Estado:** activo (sin badge beta)
 - **Ícono:** código / nodos conectados
 - **Descripción:** El equipo de negocio describe el caso de uso en lenguaje natural. El agente propone paths, diccionario ISO 20022 y genera el artefacto OpenAPI 3.1 listo para desarrollo.
 - **Destino:** `stages/2-api-design/api-designer.html`
-- **Entrada:** acepta `?usecase=` para precargar el caso de uso
+- **Entrada:** acepta `?caso=` (caso de uso + APIs del delta), `?from=` (API del inventario a extender) y `?usecase=` (contexto de Market Discovery)
 
-#### 04 — Enriquecimiento del Diccionario de Datos
+#### 05 — Enriquecimiento del Diccionario de Datos
 - **Estado:** activo (sin badge beta — este es el trabajo core del equipo)
 - **Ícono:** capas / filtro / nodo vectorial
-- **Descripción:** Procesa un YAML mal especificado a través de un pipeline determinista de 4 capas para enriquecer el diccionario de datos con ISO 20022. También permite buscar el nombre estándar de cualquier campo directamente en la base vectorial.
+- **Descripción:** Procesa un YAML mal especificado a través de un pipeline determinista de 4 capas para enriquecer el diccionario de datos con ISO 20022. También permite buscar el nombre estándar de cualquier campo directamente en la base vectorial, y revisa el YAML contra las políticas de gobierno.
 - **Destino:** `stages/2-api-design/enrichment.html`
 - **Etiqueta adicional:** `4 capas · RAG + Agente IA · 134.136 elementos ISO`
 
+**Transversal · Políticas de Gobierno de APIs** (fuera del recorrido numerado) — enlace lateral en la barra de navegación. La base de conocimiento versionada que gobierna cualquier diseño; el Inventario y la pestaña de Gobierno de Enrichment la citan. Destino: `stages/2-api-design/governance-policies.html` (`data-current="policies"`).
+
 **Etapa 3 · Validación en API Lab**
 
-#### 05 — API Lab Accelerator
+#### 06 — API Lab Accelerator
 - **Estado:** FASE BETA (badge visible)
 - **Ícono:** dashboard / sandbox
 - **Descripción:** Entorno sandbox controlado donde desplegar las APIs generadas, conectar partners y monitorizar consumos antes de pasar a producción.
@@ -143,9 +154,9 @@ su identificador de módulo:
 ```
 
 Ajusta la ruta relativa a la profundidad del fichero y usa uno de estos valores de
-`data-current`: `assessment` · `discovery` · `api-designer` · `enrichment` · `api-lab`.
+`data-current`: `assessment` · `discovery` · `inventory` · `api-designer` · `enrichment` · `api-lab` · `policies`.
 La barra resuelve sus propias rutas desde la URL del script, así que no hay que
-configurar nada más: pinta el recorrido 01→05, resalta el módulo actual y ofrece la
+configurar nada más: pinta el recorrido 01→06, resalta el módulo actual y ofrece la
 vuelta al portal.
 
 El enlace de retorno propio en el header de cada herramienta es opcional y
