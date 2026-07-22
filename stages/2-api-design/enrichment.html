@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enriquecimiento de APIs · Open Business Accelerator</title>
+  <style>
+    :root {
+      --morado:    #4F062A;
+      --accent:    #FF0054;
+      --gris:      #E3E2DA;
+      --blanco:    #FFFFFF;
+      --morado-dk: #260717;
+      --ok:        #1a7f4e;
+      --ok-bg:     #d4f0e2;
+      --warn:      #7d5a00;
+      --warn-bg:   #fff3cd;
+      --err:       #922b21;
+      --err-bg:    #fdedec;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: var(--gris); color: #1a1a1a; min-width: 1280px; }
+
+    /* HEADER */
+    header {
+      background: var(--morado-dk);
+      padding: 14px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-family: Georgia, serif; font-size: 18px; color: var(--blanco); }
+    .logo span { color: var(--accent); }
+    .header-center { font-family: Georgia, serif; font-size: 16px; color: var(--blanco); }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .back-link { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 13px; }
+    .back-link:hover { color: var(--blanco); }
+
+    /* PAGE TITLE */
+    .page-title { background: var(--morado); padding: 28px 48px; color: var(--blanco); }
+    .page-title h1 { font-family: Georgia, serif; font-size: 26px; font-weight: normal; margin-bottom: 5px; }
+    .page-title p { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+    /* TOGGLE PRINCIPAL */
+    .mode-toggle { background: var(--blanco); padding: 18px 48px; border-bottom: 1px solid #ddd; display: flex; gap: 0; }
+    .mode-btn {
+      padding: 11px 28px; background: none; border: 1.5px solid #ccc;
+      font-size: 13px; cursor: pointer; color: #666; transition: all 0.2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mode-btn:first-child { border-radius: 4px 0 0 4px; border-right: none; }
+    .mode-btn:last-child  { border-radius: 0 4px 4px 0; }
+    .mode-btn.active { background: var(--morado); color: var(--blanco); border-color: var(--morado); }
+
+    /* MAIN */
+    .main { padding: 32px 48px; max-width: 1280px; }
+
+    /* INFO BANNER */
+    .info-banner {
+      background: rgba(79,6,42,0.06);
+      border-left: 3px solid var(--morado);
+      border-radius: 0 4px 4px 0;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* UPLOAD AREA */
+    .upload-area {
+      background: var(--blanco);
+      border-radius: 4px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .upload-zone {
+      border: 2px dashed #ccc;
+      border-radius: 4px;
+      padding: 36px;
+      text-align: center;
+      margin-bottom: 16px;
+      color: #888;
+      font-size: 13px;
+      transition: border-color 0.2s;
+    }
+    .upload-zone:hover { border-color: var(--accent); }
+    .upload-zone-icon { font-size: 32px; margin-bottom: 10px; }
+    .upload-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn-upload {
+      background: var(--morado);
+      color: var(--blanco);
+      border: none;
+      padding: 9px 18px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+    .btn-upload:hover { background: var(--accent); }
+    .btn-example {
+      background: rgba(255,0,84,0.08);
+      color: var(--accent);
+      border: 1.5px solid rgba(255,0,84,0.3);
+      padding: 8px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+    .btn-example:hover { background: var(--accent); color: var(--blanco); }
+    .upload-note { font-size: 11px; color: #aaa; }
+
+    /* CODE BLOCK */
+    .code-block {
+      background: #1a0d10;
+      border-radius: 4px;
+      padding: 18px 22px;
+      font-family: 'Courier New', monospace;
+      font-size: 11.5px;
+      line-height: 1.7;
+      color: #e8d5da;
+      overflow-x: auto;
+      white-space: pre;
+      display: none;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+    .code-block.visible { display: block; }
+    .ck { color: #ff6b8a; }
+    .cv { color: #a8e6cf; }
+    .cn { color: #ffd700; }
+    .cc { color: #7a6672; font-style: italic; }
+    .cw { color: #ff9f43; }
+
+    /* KPI ROW */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+    .kpi-card { background: var(--blanco); border-radius: 4px; padding: 14px 18px; border-top: 3px solid var(--morado); }
+    .kpi-val { font-family: Georgia, serif; font-size: 28px; color: var(--morado); line-height: 1; margin-bottom: 4px; }
+    .kpi-val.warn { color: var(--accent); }
+    .kpi-label { font-size: 11px; color: #888; }
+
+    /* BTN ROW */
+    .btn-row { display: flex; gap: 12px; align-items: center; margin-top: 18px; }
+    .btn-primary {
+      background: var(--morado);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 26px;
+      font-size: 14px;
+      font-family: Georgia, serif;
+      cursor: pointer;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-outline {
+      background: transparent;
+      color: var(--morado);
+      border: 1.5px solid var(--morado);
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--morado); color: var(--blanco); }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 26px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+    .btn-accent:hover { background: #d9004a; }
+
+    /* PIPELINE SCREEN */
+    #pipeline-screen { display: none; }
+    .pipeline-header {
+      background: var(--morado-dk);
+      border-radius: 4px;
+      padding: 14px 20px;
+      color: var(--blanco);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+    .pipeline-header-left { display: flex; flex-direction: column; gap: 4px; }
+    .pipeline-header-title { font-family: Georgia, serif; font-size: 16px; }
+    .pipeline-header-meta { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.3px; }
+    .pipeline-progress { display: flex; align-items: center; gap: 10px; }
+    .progress-bar-wrap { width: 120px; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; }
+    .progress-bar { height: 6px; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+    .progress-label { font-size: 11px; color: rgba(255,255,255,0.7); white-space: nowrap; }
+
+    /* PIPELINE LAYOUT */
+    .pipeline-grid { display: grid; grid-template-columns: 40fr 60fr; gap: 18px; }
+
+    /* FIELDS TABLE */
+    .fields-card { background: var(--blanco); border-radius: 4px; overflow: hidden; }
+    .fields-card-title { background: var(--morado); color: var(--blanco); font-size: 12px; font-weight: bold; letter-spacing: 0.5px; padding: 10px 14px; }
+    .fields-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    .fields-table th { padding: 8px 10px; background: rgba(79,6,42,0.06); font-size: 10px; font-weight: bold; color: #666; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #eee; text-align: left; }
+    .fields-table td { padding: 9px 10px; border-bottom: 1px solid #f5f3f4; vertical-align: middle; }
+    .field-name { font-family: 'Courier New', monospace; color: var(--morado); font-weight: bold; }
+    .field-type-as { color: #888; font-size: 10.5px; }
+    .layer-badge { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: bold; white-space: nowrap; }
+    .layer-c1 { background: #e8f8ee; color: #1a7f4e; }
+    .layer-c2 { background: #eaf2fb; color: #1a5276; }
+    .layer-c3 { background: #fef9e7; color: #7d5a00; }
+    .layer-c4 { background: #fdeced; color: #922b21; }
+    .conf-bar-wrap { width: 60px; height: 5px; background: #eee; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 4px; }
+    .conf-bar { height: 5px; border-radius: 3px; }
+    .conf-high  { background: #1a7f4e; }
+    .conf-med   { background: #e0a000; }
+    .conf-low   { background: var(--accent); }
+    .status-auto { color: #1a7f4e; font-weight: bold; font-size: 11px; }
+    .status-rev  { color: #e07000; font-weight: bold; font-size: 11px; }
+    .row-active td { background: rgba(255,0,84,0.04); }
+    .row-done-ok td { background: rgba(26,127,78,0.04); }
+    .row-done-rev td { background: rgba(224,160,0,0.05); }
+
+    /* LAYER DETAIL */
+    .layer-detail-card { background: var(--blanco); border-radius: 4px; padding: 18px 20px; }
+    .field-in-process {
+      background: var(--morado-dk);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+    }
+    .field-in-process strong { color: var(--accent); font-family: 'Courier New', monospace; font-size: 13px; }
+    .layer-block {
+      border-radius: 4px;
+      border: 1.5px solid #e8e8e8;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .layer-block-header {
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.03);
+    }
+    .layer-block-body { padding: 12px 14px; font-size: 12px; color: #444; line-height: 1.6; }
+    .layer-block.done { border-color: #b8e8cc; }
+    .layer-block.done .layer-block-header { background: rgba(26,127,78,0.08); color: var(--ok); }
+    .layer-block.active { border-color: var(--accent); }
+    .layer-block.active .layer-block-header { background: rgba(255,0,84,0.08); color: var(--accent); }
+    .layer-block.pending { opacity: 0.5; }
+    .layer-block-status { font-size: 11px; }
+    .vector-candidates { margin-top: 8px; }
+    .candidate-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: 3px;
+      background: rgba(79,6,42,0.04);
+      margin-bottom: 5px;
+      font-size: 11.5px;
+    }
+    .cand-rank { font-weight: bold; color: var(--morado); width: 18px; flex-shrink: 0; }
+    .cand-name { font-family: 'Courier New', monospace; color: var(--morado); flex: 1; }
+    .cand-dist { color: #888; font-size: 11px; white-space: nowrap; }
+    .cand-stars { color: var(--accent); font-size: 12px; width: 36px; text-align: right; }
+    .log-line { font-family: 'Courier New', monospace; font-size: 11px; color: #555; padding: 3px 0; border-bottom: 1px solid #f5f3f4; }
+    .log-line .arrow { color: var(--accent); font-weight: bold; }
+    .log-line .ok { color: var(--ok); }
+    .log-line .skip { color: #aaa; }
+
+    /* AGENT BUBBLE */
+    .agent-bubble {
+      background: var(--morado);
+      border-radius: 6px;
+      padding: 20px 22px;
+      margin-top: 14px;
+      display: none;
+    }
+    .agent-bubble.visible { display: block; }
+    .agent-bubble-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .agent-av { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: white; flex-shrink: 0; }
+    .agent-name { font-size: 11px; font-weight: bold; color: rgba(255,255,255,0.9); letter-spacing: 0.4px; }
+    .agent-role { font-size: 9px; color: rgba(255,255,255,0.45); }
+    .agent-text { font-size: 12.5px; color: rgba(255,255,255,0.82); line-height: 1.6; margin-bottom: 14px; }
+    .agent-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .agent-opt {
+      padding: 8px 14px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .agent-opt:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* RESULTS SCREEN */
+    #results-screen { display: none; }
+    .results-kpi { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+    .res-card { background: var(--blanco); border-radius: 4px; padding: 16px 18px; border-top: 3px solid var(--morado); }
+    .res-val { font-family: Georgia, serif; font-size: 28px; color: var(--morado); }
+    .res-label { font-size: 11px; color: #888; }
+    .diff-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .diff-table th { padding: 9px 12px; background: var(--morado); color: white; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: left; }
+    .diff-table td { padding: 9px 12px; border-bottom: 1px solid #f0eeed; vertical-align: top; }
+    .diff-table tr:hover td { background: #fdf8f9; }
+    .diff-tag { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: bold; white-space: nowrap; }
+    .diff-type { background: #e8f4fd; color: #1a5276; }
+    .diff-enrich { background: #f4ecf7; color: #6c3483; }
+    .diff-ok { background: var(--ok-bg); color: var(--ok); }
+    .diff-rev { background: var(--warn-bg); color: var(--warn); }
+
+    /* TABS */
+    .tab-group { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 18px; }
+    .tab-btn { padding: 10px 20px; background: none; border: none; font-size: 12.5px; font-weight: bold; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .tab-btn.active { color: var(--morado); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* QA REPORT */
+    .qa-report {
+      background: #1a0d10;
+      border-radius: 4px;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #a8e6cf;
+      line-height: 1.9;
+      white-space: pre;
+    }
+    .qa-dim { color: #7a6672; }
+    .qa-hi  { color: #ffd700; }
+    .qa-ok  { color: #a8e6cf; }
+    .qa-warn{ color: #ff9f43; }
+
+    /* DOWNLOAD BTN */
+    .btn-download {
+      background: var(--ok);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #14663e; }
+
+    /* CTA BLOCK */
+    .cta-block {
+      background: var(--blanco);
+      border-radius: 4px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 22px;
+      border-left: 4px solid var(--accent);
+    }
+    .cta-text { font-size: 14px; color: #333; }
+
+    /* ── MODE 2: SEARCH ── */
+    #mode-search { display: none; }
+    .search-card { background: var(--blanco); border-radius: 4px; padding: 32px; margin-bottom: 18px; }
+    .search-title { font-family: Georgia, serif; font-size: 20px; color: var(--morado-dk); margin-bottom: 20px; }
+    .search-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg label { font-size: 11px; font-weight: bold; color: var(--morado); letter-spacing: 0.5px; }
+    input.finput, textarea.finput {
+      padding: 10px 12px;
+      border: 1.5px solid #ccc;
+      border-radius: 3px;
+      font-size: 13px;
+      color: #333;
+      font-family: Arial, sans-serif;
+      transition: border-color 0.2s;
+    }
+    input.finput:focus, textarea.finput:focus { outline: none; border-color: var(--accent); }
+    .examples-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .example-pill {
+      background: rgba(79,6,42,0.07);
+      border: 1px solid rgba(79,6,42,0.2);
+      color: var(--morado);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      transition: all 0.2s;
+    }
+    .example-pill:hover { background: var(--morado); color: white; }
+    #search-processing { display: none; background: var(--morado-dk); border-radius: 4px; padding: 20px 24px; margin-bottom: 18px; }
+    .sp-title { font-family: Georgia, serif; font-size: 15px; color: var(--blanco); margin-bottom: 14px; }
+    .sp-step { font-size: 12px; color: rgba(255,255,255,0.65); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 10px; }
+    .sp-step.done { color: #a8e6cf; }
+    .sp-step.active { color: var(--accent); }
+    .sp-pbar-wrap { width: 120px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; margin-left: auto; }
+    .sp-pbar { height: 5px; background: var(--accent); border-radius: 3px; transition: width 0.4s; width: 0%; }
+    #search-results { display: none; }
+    .result-card {
+      background: var(--blanco);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      border: 1.5px solid #eee;
+    }
+    .result-card.top { border-color: var(--accent); }
+    .result-card-header { padding: 14px 18px; background: rgba(79,6,42,0.04); display: flex; align-items: center; gap: 14px; }
+    .result-rank { font-family: Georgia, serif; font-size: 20px; color: var(--accent); width: 28px; flex-shrink: 0; }
+    .result-iso { font-family: 'Courier New', monospace; font-size: 15px; color: var(--morado); font-weight: bold; flex: 1; }
+    .result-match-badge { font-size: 11px; padding: 4px 10px; border-radius: 3px; font-weight: bold; }
+    .badge-top  { background: rgba(255,0,84,0.12); color: var(--accent); border: 1px solid rgba(255,0,84,0.3); }
+    .badge-alt  { background: rgba(79,6,42,0.06);  color: var(--morado); border: 1px solid rgba(79,6,42,0.2); }
+    .result-card-body { padding: 14px 18px; }
+    .result-meta { display: flex; gap: 20px; margin-bottom: 10px; }
+    .result-meta-item { font-size: 11px; color: #666; }
+    .result-meta-item strong { color: var(--morado); }
+    .result-def { font-size: 12.5px; color: #444; line-height: 1.6; margin-bottom: 12px; font-style: italic; }
+    .result-yaml { background: #1a0d10; border-radius: 3px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.7; color: #e8d5da; white-space: pre; overflow-x: auto; }
+    .result-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border: 1.5px solid var(--morado); color: var(--morado); background: transparent; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
+    .btn-sm:hover { background: var(--morado); color: white; }
+    .geo-block { background: rgba(79,6,42,0.05); border: 1.5px solid rgba(79,6,42,0.15); border-radius: 4px; padding: 16px 20px; margin-top: 14px; font-size: 13px; color: #444; line-height: 1.7; }
+    .geo-block code { font-family: 'Courier New', monospace; font-size: 11px; background: rgba(79,6,42,0.08); padding: 2px 6px; border-radius: 2px; color: var(--morado); }
+
+    /* SPINNER */
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    #toast { display: none; position: fixed; bottom: 28px; right: 28px; background: var(--ok); color: white; padding: 12px 20px; border-radius: 4px; font-size: 13px; font-weight: bold; z-index: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+
+    footer { background: var(--morado-dk); padding: 14px 48px; display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 48px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Open Business <span>·</span> Accelerator</div>
+  <div class="header-center">Gobierno de APIs · Enriquecimiento del Diccionario de Datos</div>
+  <div class="header-right">
+    <a href="../../index.html" class="back-link">← Volver al inicio</a>
+  </div>
+</header>
+
+<!-- PAGE TITLE -->
+<div class="page-title">
+  <h1>Enriquecimiento de APIs existentes</h1>
+  <p>Pipeline determinista de 4 capas · RAG con ChromaDB · ISO 20022 · 134.136 elementos</p>
+</div>
+
+<!-- TOGGLE -->
+<div class="mode-toggle">
+  <button class="mode-btn active" onclick="setMode('pipeline',this)">⚙ Pipeline completo — Mejorar un YAML</button>
+  <button class="mode-btn" onclick="setMode('search',this)">🔍 Búsqueda simple de campo</button>
+</div>
+
+<!-- ══ MODE 1: PIPELINE ══ -->
+<div id="mode-pipeline">
+  <div class="main">
+    <div class="info-banner">
+      Esta sección procesa un YAML de OpenAPI con un diccionario de datos incompleto o no normalizado. El pipeline aplica <strong>4 capas progresivas</strong> — de mayor a menor determinismo — para enriquecer cada campo con su referencia ISO 20022 canónica. El agente de IA solo interviene en la <strong>Capa 4</strong>, cuando las búsquedas programáticas no logran un match con suficiente confianza.
+    </div>
+
+    <!-- PASO 1: Carga -->
+    <div id="step-upload">
+      <div class="upload-area">
+        <div class="upload-zone">
+          <div class="upload-zone-icon">📄</div>
+          <div style="font-weight:bold;margin-bottom:6px;color:#555;">Sube tu YAML de OpenAPI</div>
+          <div style="margin-bottom:14px;">Formatos aceptados: .yaml · .yml</div>
+        </div>
+        <div class="upload-row">
+          <button class="btn-upload">Seleccionar fichero</button>
+          <span style="font-size:12px;color:#aaa;">o usa el ejemplo precargado →</span>
+          <button class="btn-example" onclick="loadExample()">Cargar Bulk Payments PE</button>
+          <span class="upload-note">YAML con campos mal especificados — ideal para la demo</span>
+        </div>
+        <div class="code-block" id="yaml-preview"></div>
+      </div>
+
+      <div id="yaml-stats" style="display:none;">
+        <div class="kpi-row">
+          <div class="kpi-card"><div class="kpi-val">3</div><div class="kpi-label">paths detectados</div></div>
+          <div class="kpi-card"><div class="kpi-val">8</div><div class="kpi-label">schemas analizados</div></div>
+          <div class="kpi-card"><div class="kpi-val">13</div><div class="kpi-label">campos a procesar</div></div>
+          <div class="kpi-card"><div class="kpi-val warn">4</div><div class="kpi-label">problemas encontrados</div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-primary" onclick="startPipeline()">🚀 Iniciar pipeline de enriquecimiento</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 2: Pipeline -->
+    <div id="pipeline-screen">
+      <div class="pipeline-header">
+        <div class="pipeline-header-left">
+          <div class="pipeline-header-title">⚙ Pipeline ISO 20022 en ejecución</div>
+          <div class="pipeline-header-meta">Base vectorial: iso_completa (134.136 elementos) · ChromaDB HNSW · Modelo: bge-small-en-v1.5 · Métrica: Cosine Distance</div>
+        </div>
+        <div class="pipeline-progress">
+          <div class="progress-bar-wrap"><div class="progress-bar" id="main-progress"></div></div>
+          <span class="progress-label" id="progress-label">0/13</span>
+        </div>
+      </div>
+
+      <div class="pipeline-grid">
+        <!-- Columna izquierda: tabla -->
+        <div class="fields-card">
+          <div class="fields-card-title">Campos procesados</div>
+          <table class="fields-table">
+            <thead>
+              <tr>
+                <th>Campo</th><th>Tipo</th><th>Capa</th><th>Confianza</th><th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="fields-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Columna derecha: detalle -->
+        <div class="layer-detail-card">
+          <div id="field-in-process" class="field-in-process" style="display:none;">
+            Campo en proceso: <strong id="current-field-name">—</strong>
+            <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.5);" id="current-field-payload">—</span>
+          </div>
+          <div id="layers-container">
+            <!-- Layer blocks rendered by JS -->
+          </div>
+          <!-- Agent bubble -->
+          <div class="agent-bubble" id="agent-bubble">
+            <div class="agent-bubble-header">
+              <div class="agent-av">IA</div>
+              <div>
+                <div class="agent-name">ISO 20022 ENRICHMENT AGENT</div>
+                <div class="agent-role">Capa 4 — LLM Decision</div>
+              </div>
+            </div>
+            <div class="agent-text" id="agent-bubble-text">Necesito tu ayuda con este campo.</div>
+            <div class="agent-options" id="agent-options"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 3+4: Resultados -->
+    <div id="results-screen">
+      <div style="font-family:Georgia,serif;font-size:20px;color:var(--morado-dk);margin-bottom:18px;">Resultado del enriquecimiento</div>
+      <div class="results-kpi">
+        <div class="res-card"><div class="res-val">11</div><div class="res-label">campos auto-match</div></div>
+        <div class="res-card"><div class="res-val">2</div><div class="res-label">campos revisados</div></div>
+        <div class="res-card"><div class="res-val">0</div><div class="res-label">sin match</div></div>
+        <div class="res-card"><div class="res-val">4.2s</div><div class="res-label">tiempo total</div></div>
+      </div>
+
+      <div class="tab-group">
+        <button class="tab-btn active" onclick="switchTab('diff',this)">Comparativa As-Is vs To-Be</button>
+        <button class="tab-btn" onclick="switchTab('yaml',this)">YAML To-Be</button>
+        <button class="tab-btn" onclick="switchTab('schema',this)">JSON Schema</button>
+        <button class="tab-btn" onclick="switchTab('qa',this)">Reporte QA</button>
+      </div>
+
+      <!-- TAB: Diff -->
+      <div class="tab-content active" id="tab-diff">
+        <div style="background:white;border-radius:4px;padding:18px;margin-bottom:14px;">
+          <table class="diff-table">
+            <thead><tr><th>Campo</th><th>Tipo As-Is</th><th>ISO 20022</th><th>Tipo To-Be</th><th>Capa</th><th>ΔCambio</th></tr></thead>
+            <tbody>
+              <tr><td><code>amount</code></td><td><span style="color:#e00;font-size:11px;">string</span></td><td><code>ActiveCurrencyAndAmount</code></td><td>object {value, currency}</td><td><span class="layer-badge layer-c1">C1 Exact</span></td><td><span class="diff-tag diff-type">🔄 Tipo cambiado</span></td></tr>
+              <tr><td><code>debtor.id</code></td><td><span style="color:#e00;font-size:11px;">integer</span></td><td><code>Identification.Id</code></td><td>string</td><td><span class="layer-badge layer-c2">C2 Reglas</span></td><td><span class="diff-tag diff-type">🔄 Tipo corregido</span></td></tr>
+              <tr><td><code>debtor.documentType</code></td><td>string</td><td><code>OtherIdentification/SchemeName</code></td><td>string + enum</td><td><span class="layer-badge layer-c4">C4 LLM</span></td><td><span class="diff-tag diff-enrich">📝 Enriquecido</span></td></tr>
+              <tr><td><code>endToEndId</code></td><td>string</td><td><code>EndToEndIdentification</code></td><td>string (maxLen: 35)</td><td><span class="layer-badge layer-c2">C2 Reglas</span></td><td><span class="diff-tag diff-enrich">📝 Restricción añadida</span></td></tr>
+              <tr><td><code>numberOfTransactions</code></td><td><span style="color:#e00;font-size:11px;">number</span></td><td><code>NumberOfTransactions</code></td><td>integer (min: 1)</td><td><span class="layer-badge layer-c3">C3 Vector</span></td><td><span class="diff-tag diff-type">🔄 Tipo precisado</span></td></tr>
+              <tr><td><code>createdAt</code></td><td>string</td><td><code>ISODateTime</code></td><td>string (format: date-time)</td><td><span class="layer-badge layer-c2">C2 Reglas</span></td><td><span class="diff-tag diff-ok">✅ Correcto</span></td></tr>
+              <tr><td><code>debtor.name</code></td><td>string</td><td><code>Debtor.Name</code></td><td>string (maxLen: 140)</td><td><span class="layer-badge layer-c1">C1 Exact</span></td><td><span class="diff-tag diff-enrich">📝 Restricción añadida</span></td></tr>
+              <tr><td><code>creditor.name</code></td><td>string</td><td><code>Creditor.Name</code></td><td>string (maxLen: 140)</td><td><span class="layer-badge layer-c1">C1 Exact</span></td><td><span class="diff-tag diff-enrich">📝 Restricción añadida</span></td></tr>
+              <tr><td><code>creditor.account.number</code></td><td>string</td><td><code>AccountIdentification/IBAN</code></td><td>string (pattern: IBAN)</td><td><span class="layer-badge layer-c3">C3 Vector</span></td><td><span class="diff-tag diff-enrich">📝 Patrón añadido</span></td></tr>
+              <tr><td><code>status</code></td><td><span style="color:#e00;font-size:11px;">object</span></td><td><code>TransactionGroupStatus</code></td><td>string enum</td><td><span class="layer-badge layer-c3">C3 Vector</span></td><td><span class="diff-tag diff-type">🔄 Tipo corregido</span></td></tr>
+              <tr><td><code>header.controlSum</code></td><td>—</td><td><code>RemittanceAmountAndType</code></td><td>object</td><td><span class="layer-badge layer-c4">C4 LLM</span></td><td><span class="diff-tag diff-rev">⚠ Revisión</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: YAML To-Be -->
+      <div class="tab-content" id="tab-yaml">
+        <div class="code-block visible" style="max-height:none;" id="yaml-tobe"></div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn-download" onclick="showToast('✓ YAML To-Be descargado')">⬇ Descargar YAML To-Be</button>
+        </div>
+      </div>
+
+      <!-- TAB: JSON Schema -->
+      <div class="tab-content" id="tab-schema">
+        <div class="code-block visible" style="max-height:none;" id="json-schema-content"></div>
+      </div>
+
+      <!-- TAB: QA Report -->
+      <div class="tab-content" id="tab-qa">
+        <div class="qa-report" id="qa-report-content"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-block">
+        <div class="cta-text">¿Tienes el campo enriquecido? Úsalo para diseñar tu nueva API.</div>
+        <a href="api-designer.html" class="btn-accent">→ Ir al Diseño de APIs con Agentes IA</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODE 2: SEARCH ══ -->
+<div id="mode-search">
+  <div class="main">
+    <div class="search-card">
+      <div class="search-title">🔍 Busca el nombre estándar ISO 20022 para tu campo</div>
+      <div class="search-form">
+        <div class="fg">
+          <label>NOMBRE DEL CAMPO</label>
+          <input class="finput" type="text" id="search-field" placeholder="Ej: amount, documentType, creditorAccount">
+        </div>
+        <div class="fg">
+          <label>DESCRIPCIÓN <span style="font-weight:normal;color:#aaa;">(opcional)</span></label>
+          <input class="finput" type="text" id="search-desc" placeholder="Ej: Importe monetario de la transacción">
+        </div>
+      </div>
+      <div style="margin-bottom:10px;font-size:11px;color:#888;">Ejemplos rápidos:</div>
+      <div class="examples-row">
+        <span class="example-pill" onclick="fillSearch('amount','Importe monetario de la transacción')">amount</span>
+        <span class="example-pill" onclick="fillSearch('documentType','Tipo de documento de identidad')">documentType</span>
+        <span class="example-pill" onclick="fillSearch('endToEndId','Identificador único de extremo a extremo')">endToEndId</span>
+        <span class="example-pill" onclick="fillSearch('creditorAccount','Cuenta bancaria del beneficiario')">creditorAccount</span>
+        <span class="example-pill" onclick="fillSearch('numberOfTransactions','Número de transacciones en el lote')">numberOfTransactions</span>
+        <span class="example-pill" onclick="fillSearch('status','Estado del proceso de pago')">status</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="runSearch()">🔍 Buscar en ISO 20022</button>
+      </div>
+    </div>
+
+    <!-- Processing -->
+    <div id="search-processing">
+      <div class="sp-title" id="sp-query-label">Procesando: —</div>
+      <div class="sp-step" id="sp1">
+        <span>1. Generando embedding del campo...</span>
+        <div class="sp-pbar-wrap"><div class="sp-pbar" id="sp1-bar"></div></div>
+      </div>
+      <div class="sp-step" id="sp2">
+        <span>2. Consultando ChromaDB (134.136 elementos ISO 20022)...</span>
+        <div class="sp-pbar-wrap"><div class="sp-pbar" id="sp2-bar"></div></div>
+      </div>
+      <div class="sp-step" id="sp3">
+        <span>3. Top-3 candidatos encontrados ✓</span>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="search-results">
+      <div style="font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Resultados para: <strong style="color:var(--morado);font-family:'Courier New',monospace;" id="search-result-label">—</strong></div>
+      <div id="search-result-cards"></div>
+      <div class="geo-block">
+        <strong>¿No encuentras tu campo en ISO 20022?</strong><br><br>
+        Si el campo es específico de tu geografía — por ejemplo <code>RFC</code>, <code>CLABE</code> para México · <code>DNI</code>, <code>RUC</code> para Perú · <code>NIT</code>, <code>CC</code> para Colombia — márcalo como campo local:<br><br>
+        <code>x-gov-note: "Local field — specific to [GEO]"</code><br>
+        <code>x-gov-geography: "[MX|PE|CO|ES|AR]"</code><br><br>
+        Estos campos van a <code>/geography-overlays/</code> en el repositorio canónico y no bloquean la aprobación del schema en el proceso de gobernanza.
+      </div>
+      <div class="cta-block" style="margin-top:18px;">
+        <div class="cta-text">¿Tienes el campo enriquecido? Úsalo para diseñar tu nueva API.</div>
+        <a href="api-designer.html" class="btn-accent">→ Ir al Diseño de APIs con Agentes IA</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<footer>
+  <span>Open Business Accelerator · 2026</span>
+  <span>Gobierno de APIs · Versión Demo</span>
+</footer>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────
+
+const YAML_ASIS = `<span class="cc"># Bulk Payments PE — As-Is (ANTES del enriquecimiento)</span>
+<span class="cc"># Problemas: tipos incorrectos, campos sin descripción ISO,</span>
+<span class="cc"># documentType mal mapeado, status ambiguo</span>
+
+<span class="ck">openapi:</span> <span class="cv">"3.0.3"</span>
+<span class="ck">info:</span>
+  <span class="ck">title:</span> <span class="cv">"Bulk Payments PE"</span>
+  <span class="ck">version:</span> <span class="cv">"2.0.19"</span>
+<span class="ck">components:</span>
+  <span class="ck">schemas:</span>
+    <span class="ck">RemittanceCreateRequest:</span>
+      <span class="ck">type:</span> <span class="cv">object</span>
+      <span class="ck">properties:</span>
+        <span class="ck">amount:</span>
+          <span class="ck">type:</span> <span class="cw">string</span>          <span class="cc"># ⚠ debería ser object {value+currency}</span>
+          <span class="ck">description:</span> <span class="cv">"Importe"</span>
+        <span class="ck">status:</span>
+          <span class="ck">type:</span> <span class="cw">object</span>          <span class="cc"># ⚠ ambiguo: ¿string enum u objeto?</span>
+        <span class="ck">debtor:</span>
+          <span class="ck">type:</span> <span class="cv">object</span>
+          <span class="ck">properties:</span>
+            <span class="ck">name:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>
+            <span class="ck">documentType:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>      <span class="cc"># ⚠ baja confianza ISO</span>
+            <span class="ck">id:</span>
+              <span class="ck">type:</span> <span class="cw">integer</span>     <span class="cc"># ⚠ debería ser string</span>
+        <span class="ck">creditor:</span>
+          <span class="ck">type:</span> <span class="cv">object</span>
+          <span class="ck">properties:</span>
+            <span class="ck">name:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>
+            <span class="ck">account:</span>
+              <span class="ck">type:</span> <span class="cv">object</span>
+              <span class="ck">properties:</span>
+                <span class="ck">number:</span>
+                  <span class="ck">type:</span> <span class="cv">string</span>
+        <span class="ck">endToEndId:</span>
+          <span class="ck">type:</span> <span class="cv">string</span>
+        <span class="ck">numberOfTransactions:</span>
+          <span class="ck">type:</span> <span class="cw">number</span>
+        <span class="ck">createdAt:</span>
+          <span class="ck">type:</span> <span class="cv">string</span>
+          <span class="ck">format:</span> <span class="cv">date-time</span>`;
+
+const YAML_TOBE = `<span class="cc"># Bulk Payments PE — To-Be (DESPUÉS del enriquecimiento)</span>
+<span class="cc"># Enriquecido con ISO 20022 · Pipeline 4 capas · bge-small-en-v1.5</span>
+
+<span class="ck">openapi:</span> <span class="cv">"3.1.0"</span>
+<span class="ck">info:</span>
+  <span class="ck">title:</span> <span class="cv">"Bulk Payments PE"</span>
+  <span class="ck">version:</span> <span class="cv">"2.0.19"</span>
+  <span class="ck">x-iso20022-domain:</span> <span class="cv">"pain"</span>
+  <span class="ck">x-gov-owner:</span> <span class="cv">"API Governance · Embedded Finance"</span>
+<span class="ck">components:</span>
+  <span class="ck">schemas:</span>
+    <span class="ck">RemittanceCreateRequest:</span>
+      <span class="ck">type:</span> <span class="cv">object</span>
+      <span class="ck">properties:</span>
+        <span class="ck">amount:</span>
+          <span class="ck">$ref:</span> <span class="cv">"schemas/common/Amount.schema.json"</span>
+          <span class="ck">x-iso20022-ref:</span> <span class="cv">"ActiveCurrencyAndAmount"</span>
+          <span class="ck">x-gov-confidence:</span> <span class="cn">1.0</span>  <span class="cc"># Capa 1 — Exact Match</span>
+        <span class="ck">status:</span>
+          <span class="ck">type:</span> <span class="cv">string</span>
+          <span class="ck">enum:</span> <span class="cv">[PENDING, PROCESSING, COMPLETED, CANCELLED]</span>
+          <span class="ck">x-iso20022-ref:</span> <span class="cv">"TransactionGroupStatus"</span>
+          <span class="ck">x-gov-confidence:</span> <span class="cn">0.74</span>  <span class="cc"># Capa 3 — Embedding</span>
+        <span class="ck">debtor:</span>
+          <span class="ck">type:</span> <span class="cv">object</span>
+          <span class="ck">x-iso20022-ref:</span> <span class="cv">"PartyIdentification"</span>
+          <span class="ck">properties:</span>
+            <span class="ck">name:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>
+              <span class="ck">maxLength:</span> <span class="cn">140</span>
+              <span class="ck">x-iso20022-ref:</span> <span class="cv">"Debtor.Name"</span>
+            <span class="ck">documentType:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>
+              <span class="ck">x-iso20022-ref:</span> <span class="cv">"OtherIdentification/SchemeName"</span>
+              <span class="ck">x-gov-note:</span> <span class="cv">"Values vary by geography: DNI (PE), RFC (MX)"</span>
+              <span class="ck">x-gov-reviewed:</span> <span class="cn">true</span>  <span class="cc"># Capa 4 — LLM + revisión humana</span>
+            <span class="ck">id:</span>
+              <span class="ck">type:</span> <span class="cv">string</span>               <span class="cc"># corregido: integer → string</span>
+              <span class="ck">x-iso20022-ref:</span> <span class="cv">"Identification.Id"</span>
+        <span class="ck">endToEndId:</span>
+          <span class="ck">type:</span> <span class="cv">string</span>
+          <span class="ck">maxLength:</span> <span class="cn">35</span>                 <span class="cc"># añadido por Capa 2 — Rule-Based</span>
+          <span class="ck">x-iso20022-ref:</span> <span class="cv">"EndToEndIdentification"</span>
+        <span class="ck">numberOfTransactions:</span>
+          <span class="ck">type:</span> <span class="cv">integer</span>               <span class="cc"># corregido: number → integer</span>
+          <span class="ck">minimum:</span> <span class="cn">1</span>
+          <span class="ck">x-iso20022-ref:</span> <span class="cv">"NumberOfTransactions"</span>
+      <span class="ck">required:</span> <span class="cv">[amount, debtor, endToEndId]</span>
+      <span class="ck">additionalProperties:</span> <span class="cn">false</span>`;
+
+const JSON_SCHEMA = `{
+  <span class="ck">"$schema"</span>: <span class="cv">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span class="ck">"$id"</span>: <span class="cv">"https://api.bbva.com/schemas/common/Amount.schema.json"</span>,
+  <span class="ck">"title"</span>: <span class="cv">"Amount"</span>,
+  <span class="ck">"x-iso20022-ref"</span>: <span class="cv">"ActiveCurrencyAndAmount"</span>,
+  <span class="ck">"x-gov-owner"</span>: <span class="cv">"API Governance · Embedded Finance"</span>,
+  <span class="ck">"x-gov-confidence"</span>: <span class="cn">1.0</span>,
+  <span class="ck">"x-gov-layer"</span>: <span class="cv">"C1-ExactMatch"</span>,
+  <span class="ck">"type"</span>: <span class="cv">"object"</span>,
+  <span class="ck">"properties"</span>: {
+    <span class="ck">"value"</span>: {
+      <span class="ck">"type"</span>: <span class="cv">"number"</span>,
+      <span class="ck">"minimum"</span>: <span class="cn">0</span>,
+      <span class="ck">"examples"</span>: [<span class="cn">250.00</span>, <span class="cn">1500.50</span>]
+    },
+    <span class="ck">"currency"</span>: {
+      <span class="ck">"type"</span>: <span class="cv">"string"</span>,
+      <span class="ck">"pattern"</span>: <span class="cv">"^[A-Z]{3}$"</span>,
+      <span class="ck">"x-iso20022-ref"</span>: <span class="cv">"ActiveOrHistoricCurrencyCode"</span>,
+      <span class="ck">"examples"</span>: [<span class="cv">"EUR"</span>, <span class="cv">"PEN"</span>, <span class="cv">"MXN"</span>]
+    }
+  },
+  <span class="ck">"required"</span>: [<span class="cv">"value"</span>, <span class="cv">"currency"</span>],
+  <span class="ck">"additionalProperties"</span>: <span class="cn">false</span>
+}`;
+
+const QA_REPORT = `<span class="qa-dim">REPORTE DE ENRIQUECIMIENTO</span>
+<span class="qa-dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="qa-dim">Campos procesados:</span>        <span class="qa-hi">13 / 13  (100%)</span>
+<span class="qa-dim">Resueltos C1 (Exact):</span>     <span class="qa-ok">5 campos  (38%)</span>
+<span class="qa-dim">Resueltos C2 (Reglas):</span>    <span class="qa-ok">3 campos  (23%)</span>
+<span class="qa-dim">Resueltos C3 (Vector):</span>    <span class="qa-ok">3 campos  (23%)</span>
+<span class="qa-dim">Resueltos C4 (LLM):</span>       <span class="qa-warn">2 campos  (15%)  ← intervención del agente</span>
+<span class="qa-dim">Campos locales:</span>           <span class="qa-ok">0 campos   (0%)</span>
+
+<span class="qa-dim">Confianza promedio:</span>       <span class="qa-hi">0.89</span>
+<span class="qa-dim">Umbral aplicado:</span>          <span class="qa-dim">0.75</span>
+<span class="qa-dim">Tiempo total:</span>             <span class="qa-hi">4.2 segundos</span>
+<span class="qa-dim">Base vectorial:</span>           <span class="qa-dim">134.136 elementos ISO 20022</span>
+<span class="qa-dim">Modelo embeddings:</span>        <span class="qa-dim">bge-small-en-v1.5 (384 dims, cosine)</span>
+
+<span class="qa-dim">Correcciones de tipo:</span>     <span class="qa-warn">4 campos corregidos</span>
+<span class="qa-dim">Restricciones añadidas:</span>   <span class="qa-ok">6 propiedades nuevas (maxLength, minimum, enum)</span>
+<span class="qa-dim">$ref generados:</span>           <span class="qa-ok">8 referencias canónicas</span>
+<span class="qa-dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`;
+
+// ── PIPELINE DATA ──────────────────────────────────────────────────
+
+const FIELDS = [
+  { name: 'amount',                  typeAs: 'string',       layer: 'C1', iso: 'ActiveCurrencyAndAmount',          conf: 100, auto: true  },
+  { name: 'status',                  typeAs: 'object',       layer: 'C3', iso: 'TransactionGroupStatus',           conf: 74,  auto: true  },
+  { name: 'debtor.name',             typeAs: 'string',       layer: 'C1', iso: 'Debtor.Name',                      conf: 100, auto: true  },
+  { name: 'debtor.documentType',     typeAs: 'string',       layer: 'C4', iso: 'OtherIdentification/SchemeName',   conf: 61,  auto: false, needsUser: true },
+  { name: 'debtor.id',               typeAs: 'integer',      layer: 'C2', iso: 'Identification.Id',                conf: 100, auto: true  },
+  { name: 'creditor.name',           typeAs: 'string',       layer: 'C1', iso: 'Creditor.Name',                    conf: 100, auto: true  },
+  { name: 'creditor.account.number', typeAs: 'string',       layer: 'C3', iso: 'AccountIdentification/IBAN',       conf: 71,  auto: true  },
+  { name: 'endToEndId',              typeAs: 'string',       layer: 'C2', iso: 'EndToEndIdentification',           conf: 100, auto: true  },
+  { name: 'numberOfTransactions',    typeAs: 'number',       layer: 'C3', iso: 'NumberOfTransactions',             conf: 68,  auto: true  },
+  { name: 'createdAt',               typeAs: 'string/dt',   layer: 'C2', iso: 'ISODateTime',                      conf: 100, auto: true  },
+  { name: 'name (RemittancePatch)',   typeAs: 'string',       layer: 'C1', iso: 'Name.Max140Text',                  conf: 100, auto: true  },
+  { name: 'payments[].paymentAmount',typeAs: '—',            layer: 'C3', iso: 'PaymentAmount',                    conf: 91,  auto: true  },
+  { name: 'header.controlSum',       typeAs: '—',            layer: 'C4', iso: 'RemittanceAmountAndType',          conf: 55,  auto: false, needsUser: true },
+];
+
+const LAYER_COLORS = { C1: 'layer-c1', C2: 'layer-c2', C3: 'layer-c3', C4: 'layer-c4' };
+const LAYER_NAMES  = { C1: 'C1 — Exact Match', C2: 'C2 — Reglas', C3: 'C3 — Vector', C4: 'C4 — LLM' };
+
+let currentFieldIdx = 0;
+let pipelineRunning = false;
+let pendingUserDecision = false;
+
+// ── MODE TOGGLE ───────────────────────────────────────────────────
+
+function setMode(mode, el) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mode-pipeline').style.display = mode === 'pipeline' ? 'block' : 'none';
+  document.getElementById('mode-search').style.display   = mode === 'search'   ? 'block' : 'none';
+}
+
+// ── LOAD EXAMPLE ─────────────────────────────────────────────────
+
+function loadExample() {
+  const pre = document.getElementById('yaml-preview');
+  pre.innerHTML = YAML_ASIS;
+  pre.classList.add('visible');
+  document.getElementById('yaml-stats').style.display = 'block';
+}
+
+// ── START PIPELINE ────────────────────────────────────────────────
+
+function startPipeline() {
+  document.getElementById('step-upload').style.display = 'none';
+  document.getElementById('pipeline-screen').style.display = 'block';
+  document.getElementById('yaml-tobe').innerHTML = YAML_TOBE;
+  document.getElementById('json-schema-content').innerHTML = JSON_SCHEMA;
+  document.getElementById('qa-report-content').innerHTML = QA_REPORT;
+  initFieldsTable();
+  initLayers();
+  currentFieldIdx = 0;
+  processNextField();
+}
+
+function initFieldsTable() {
+  const tbody = document.getElementById('fields-tbody');
+  tbody.innerHTML = '';
+  FIELDS.forEach((f, i) => {
+    const tr = document.createElement('tr');
+    tr.id = 'frow-' + i;
+    tr.innerHTML = `
+      <td><span class="field-name">${f.name}</span></td>
+      <td><span class="field-type-as">${f.typeAs}</span></td>
+      <td><span class="layer-badge ${LAYER_COLORS[f.layer]} pending-badge" id="flayer-${i}">—</span></td>
+      <td><span id="fconf-${i}" style="font-size:11px;color:#aaa;">—</span></td>
+      <td><span id="fstatus-${i}" style="font-size:11px;color:#aaa;">⏳</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function initLayers() {
+  const layerDefs = [
+    { id:'L1', name:'CAPA 1 — Exact Match Algorítmico', sub:'alias-detection.json + semantic-clusters.json · ~0ms · 100% precisión · ~30% cobertura' },
+    { id:'L2', name:'CAPA 2 — Rule-Based Patterns', sub:'Regex sobre nombre de campo · ~25% adicional · Determinista' },
+    { id:'L3', name:'CAPA 3 — Embedding Similarity (RAG)', sub:'ChromaDB HNSW · bge-small-en-v1.5 · 384 dims · Cosine Distance · umbral: 0.75' },
+    { id:'L4', name:'CAPA 4 — LLM Decision', sub:'Solo si C3 distance ≥ 0.65 en todos los candidatos · ~10% casos' },
+    { id:'GEO', name:'GEOGRAPHY OVERLAY', sub:'Campos locales sin equivalente ISO universal · x-gov-geography' },
+  ];
+  const container = document.getElementById('layers-container');
+  container.innerHTML = layerDefs.map(l => `
+    <div class="layer-block pending" id="${l.id}">
+      <div class="layer-block-header">
+        <span>${l.name}</span>
+        <span class="layer-block-status" id="${l.id}-status">⏳ Pendiente</span>
+      </div>
+      <div class="layer-block-body" id="${l.id}-body" style="display:none;">
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">${l.sub}</div>
+        <div id="${l.id}-log"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function processNextField() {
+  if (currentFieldIdx >= FIELDS.length) { showResults(); return; }
+  const f = FIELDS[currentFieldIdx];
+  const pct = Math.round((currentFieldIdx / FIELDS.length) * 100);
+  document.getElementById('main-progress').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = currentFieldIdx + '/' + FIELDS.length;
+
+  // Show field in process
+  document.getElementById('field-in-process').style.display = 'flex';
+  document.getElementById('current-field-name').textContent = f.name;
+  document.getElementById('current-field-payload').textContent = `${f.name} · ${f.typeAs}`;
+
+  // Reset layers
+  ['L1','L2','L3','L4','GEO'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'layer-block pending';
+    document.getElementById(id+'-status').textContent = '⏳ Pendiente';
+    document.getElementById(id+'-body').style.display = 'none';
+    document.getElementById(id+'-log').innerHTML = '';
+  });
+  document.getElementById('agent-bubble').classList.remove('visible');
+
+  // Scroll table row
+  const row = document.getElementById('frow-' + currentFieldIdx);
+  if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  animateLayersForField(f);
+}
+
+function animateLayersForField(f) {
+  const layerOrder = { C1: 0, C2: 1, C3: 2, C4: 3 };
+  const resolvedAt = layerOrder[f.layer];
+  const layerIds = ['L1','L2','L3','L4'];
+
+  let step = 0;
+  function nextStep() {
+    if (step >= 4) return;
+    const id = layerIds[step];
+    const el = document.getElementById(id);
+    el.className = 'layer-block active';
+    document.getElementById(id+'-status').textContent = '🔄 Procesando...';
+    document.getElementById(id+'-body').style.display = 'block';
+
+    setTimeout(() => {
+      if (step < resolvedAt) {
+        // Layer passed through
+        el.className = 'layer-block done';
+        document.getElementById(id+'-status').textContent = '✅ Superada';
+        const log = document.getElementById(id+'-log');
+        log.innerHTML = `<div class="log-line"><span class="skip">→ ${f.name} no resuelto en esta capa</span></div><div class="log-line"><span class="arrow">→</span> CONTINÚA a ${layerIds[step+1] || 'siguiente'}</div>`;
+        step++;
+        setTimeout(nextStep, 300);
+      } else if (step === resolvedAt) {
+        // This is the resolving layer
+        el.className = 'layer-block done';
+        document.getElementById(id+'-status').textContent = '✅ RESUELTO';
+        const log = document.getElementById(id+'-log');
+        if (f.layer === 'C3') {
+          log.innerHTML = buildVectorResult(f);
+        } else if (f.layer === 'C4') {
+          if (f.needsUser) {
+            document.getElementById(id+'-status').textContent = '🤖 Agente interviene';
+            el.className = 'layer-block active';
+            showAgentBubble(f);
+            // Don't advance — wait for user
+            return;
+          }
+        } else {
+          log.innerHTML = `<div class="log-line"><span class="ok">→ Match encontrado:</span> ${f.iso}</div><div class="log-line"><span class="ok">→ Confianza: ${f.conf}%</span></div>`;
+        }
+        markFieldDone(currentFieldIdx, f, false);
+        currentFieldIdx++;
+        setTimeout(processNextField, 350);
+      }
+    }, 380);
+  }
+  nextStep();
+}
+
+function buildVectorResult(f) {
+  const mockResults = {
+    'status':                  [{iso:'TransactionGroupStatus', dist:0.44},{iso:'PaymentGroupStatus', dist:0.47},{iso:'ClosurePending', dist:0.61}],
+    'creditor.account.number': [{iso:'AccountIdentification/IBAN', dist:0.39},{iso:'GenericAccountIdentification', dist:0.45},{iso:'CashAccountType', dist:0.62}],
+    'numberOfTransactions':    [{iso:'NumberOfTransactions', dist:0.41},{iso:'MaximumNumberOfTransactions', dist:0.48},{iso:'TotalNumberOfTransactions', dist:0.51}],
+    'payments[].paymentAmount':[{iso:'PaymentAmount', dist:0.38},{iso:'InstructedAmount', dist:0.44},{iso:'RemittanceAmountAndType', dist:0.52}],
+  };
+  const res = mockResults[f.name] || [{iso:f.iso, dist:0.41},{iso:'Alternative1', dist:0.50},{iso:'Alternative2', dist:0.59}];
+  return `<div class="vector-candidates">` + res.map((r,i) => {
+    const stars = r.dist < 0.40 ? '★★★' : r.dist < 0.50 ? '★★☆' : '★☆☆';
+    return `<div class="candidate-row"><span class="cand-rank">#${i+1}</span><span class="cand-name">${r.iso}</span><span class="cand-dist">dist: ${r.dist}</span><span class="cand-stars">${stars}</span></div>`;
+  }).join('') + `</div><div class="log-line" style="margin-top:8px;"><span class="ok">→ Seleccionado: ${res[0].iso}</span></div>`;
+}
+
+function showAgentBubble(f) {
+  const candidates = {
+    'debtor.documentType': [
+      { opt:'① OtherIdentification/SchemeName', sub:'Tipo de identificación (DNI, PASSPORT, NIT)' },
+      { opt:'② Proprietary/SchemeName',         sub:'Nombre de esquema propietario (más genérico)' },
+      { opt:'③ Campo local (Geography Overlay)', sub:'Sin equivalente ISO universal (DNI/PE, RFC/MX)' },
+    ],
+    'header.controlSum': [
+      { opt:'① RemittanceAmountAndType',  sub:'Suma de control del lote de remesas' },
+      { opt:'② ControlSum',               sub:'Suma de control genérica del grupo de pago' },
+      { opt:'③ Campo local',              sub:'Marcar para revisión del equipo de governance' },
+    ],
+  };
+  const opts = candidates[f.name] || [{ opt:'① Aceptar candidato principal', sub:'' }, { opt:'② Marcar como campo local', sub:'' }];
+  document.getElementById('agent-bubble-text').innerHTML =
+    `Necesito tu ayuda con el campo <strong style="color:var(--accent);font-family:'Courier New',monospace;">${f.name}</strong>.<br><br>
+     He encontrado candidatos en ISO 20022, pero ninguno supera el umbral de confianza (0.75). ¿Cuál aplica a tu caso?`;
+  const optContainer = document.getElementById('agent-options');
+  optContainer.innerHTML = opts.map((o, i) =>
+    `<button class="agent-opt" onclick="resolveAgent(${currentFieldIdx}, '${o.opt.replace(/'/g,"\\'")}')">
+      <strong>${o.opt}</strong><br><small style="opacity:0.7">${o.sub}</small>
+    </button>`
+  ).join('');
+  document.getElementById('agent-bubble').classList.add('visible');
+}
+
+function resolveAgent(idx, choice) {
+  document.getElementById('agent-bubble').classList.remove('visible');
+  document.getElementById('L4-status').textContent = '✅ Resuelto por usuario';
+  document.getElementById('L4').className = 'layer-block done';
+  markFieldDone(idx, FIELDS[idx], true);
+  currentFieldIdx++;
+  setTimeout(processNextField, 400);
+}
+
+function markFieldDone(idx, f, reviewed) {
+  const row = document.getElementById('frow-' + idx);
+  row.className = reviewed ? 'row-done-rev' : 'row-done-ok';
+  document.getElementById('flayer-' + idx).textContent = f.layer;
+  document.getElementById('flayer-' + idx).className = `layer-badge ${LAYER_COLORS[f.layer]}`;
+  const confEl = document.getElementById('fconf-' + idx);
+  const confClass = f.conf >= 75 ? 'conf-high' : f.conf >= 60 ? 'conf-med' : 'conf-low';
+  confEl.innerHTML = `<div class="conf-bar-wrap"><div class="conf-bar ${confClass}" style="width:${f.conf}%"></div></div>${f.conf}%`;
+  document.getElementById('fstatus-' + idx).innerHTML = reviewed
+    ? '<span class="status-rev">⚠ Revisión</span>'
+    : '<span class="status-auto">✅ Auto</span>';
+}
+
+function showResults() {
+  document.getElementById('main-progress').style.width = '100%';
+  document.getElementById('progress-label').textContent = '13/13';
+  document.getElementById('field-in-process').style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('pipeline-screen').style.display = 'none';
+    document.getElementById('results-screen').style.display = 'block';
+  }, 500);
+}
+
+// ── TABS ──────────────────────────────────────────────────────────
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// ── SEARCH ────────────────────────────────────────────────────────
+
+function fillSearch(field, desc) {
+  document.getElementById('search-field').value = field;
+  document.getElementById('search-desc').value  = desc;
+}
+
+const SEARCH_MOCK = {
+  amount:              { candidates: [{ iso:'ActiveCurrencyAndAmount', dist:0.31, type:'Complex Type', domain:'pain', def:'A number of monetary units specified in an active currency where the unit of currency is explicit and compliant with ISO 4217.', yaml:`amount:\n  type: object\n  x-iso20022-ref: "ActiveCurrencyAndAmount"\n  properties:\n    value: { type: number, minimum: 0 }\n    currency: { type: string, pattern: "^[A-Z]{3}$" }\n  required: [value, currency]`}, { iso:'Amount', dist:0.44, type:'Simple Type', domain:'common', def:'Number of monetary units specified in a currency.', yaml:`amount:\n  type: number\n  minimum: 0\n  x-iso20022-ref: "Amount"`}, { iso:'RemittanceAmountAndType', dist:0.52, type:'Complex Type', domain:'camt', def:'Remittance amount with type information.', yaml:`amount:\n  $ref: "#/components/schemas/RemittanceAmountAndType"`}] },
+  documentType:        { candidates: [{ iso:'OtherIdentification/SchemeName', dist:0.49, type:'Element', domain:'payments', def:'Name of the identification scheme in proprietary form.', yaml:`documentType:\n  type: string\n  x-iso20022-ref: "OtherIdentification/SchemeName"\n  x-gov-note: "Values vary by geography: DNI (PE), RFC (MX)"`}, { iso:'Proprietary/SchemeName', dist:0.51, type:'Element', domain:'common', def:'Proprietary scheme name for identification.', yaml:`documentType:\n  type: string\n  x-iso20022-ref: "Proprietary/SchemeName"`}, { iso:'IdentificationType/Code', dist:0.58, type:'CodeSet', domain:'accounts', def:'Type of identification code.', yaml:`documentType:\n  type: string\n  x-iso20022-ref: "IdentificationType/Code"`}] },
+  endToEndId:          { candidates: [{ iso:'EndToEndIdentification', dist:0.35, type:'Identifier', domain:'pain', def:'Unique identification assigned by the initiating party to unambiguously identify the transaction. This identification is passed on, unchanged, throughout the entire end-to-end chain.', yaml:`endToEndId:\n  type: string\n  maxLength: 35\n  x-iso20022-ref: "EndToEndIdentification"`}, { iso:'PaymentIdentification', dist:0.48, type:'Complex Type', domain:'pain', def:'Set of elements used to reference a payment instruction.', yaml:`endToEndId:\n  type: string\n  x-iso20022-ref: "PaymentIdentification"`}, { iso:'TransactionIdentification', dist:0.55, type:'Identifier', domain:'camt', def:'Unique identification of the transaction.', yaml:`endToEndId:\n  type: string\n  x-iso20022-ref: "TransactionIdentification"`}] },
+  creditorAccount:     { candidates: [{ iso:'AccountIdentification/IBAN', dist:0.38, type:'Identifier', domain:'pain', def:'International Bank Account Number. Identifier used internationally by financial institutions to uniquely identify the account of a customer.', yaml:`creditorAccount:\n  type: object\n  x-iso20022-ref: "AccountIdentification"\n  properties:\n    iban:\n      type: string\n      pattern: "^[A-Z]{2}[0-9]{2}[A-Z0-9]+$"\n      x-iso20022-ref: "AccountIdentification.IBAN"`}, { iso:'GenericAccountIdentification', dist:0.45, type:'Complex Type', domain:'common', def:'Unique and unambiguous identification of a person.', yaml:`creditorAccount:\n  $ref: "#/components/schemas/GenericAccountIdentification"`}, { iso:'CashAccountType', dist:0.62, type:'CodeSet', domain:'payments', def:'Nature or use of the cash account.', yaml:`creditorAccount:\n  type: string\n  x-iso20022-ref: "CashAccountType"`}] },
+  numberOfTransactions:{ candidates: [{ iso:'NumberOfTransactions', dist:0.41, type:'Quantity', domain:'pain', def:'Number of individual transactions contained in the message.', yaml:`numberOfTransactions:\n  type: integer\n  minimum: 1\n  x-iso20022-ref: "NumberOfTransactions"`}, { iso:'MaximumNumberOfTransactions', dist:0.48, type:'Quantity', domain:'pain', def:'Maximum accepted number of transactions in the message.', yaml:`numberOfTransactions:\n  type: integer\n  x-iso20022-ref: "MaximumNumberOfTransactions"`}, { iso:'TotalNumberOfTransactions', dist:0.51, type:'Quantity', domain:'camt', def:'Total number of entries.', yaml:`numberOfTransactions:\n  type: integer\n  x-iso20022-ref: "TotalNumberOfTransactions"`}] },
+  status:              { candidates: [{ iso:'TransactionGroupStatus', dist:0.44, type:'CodeSet', domain:'pain', def:'Specifies the status of the group.', yaml:`status:\n  type: string\n  enum: [PENDING, PROCESSING, COMPLETED, CANCELLED]\n  x-iso20022-ref: "TransactionGroupStatus"`}, { iso:'PaymentGroupStatus', dist:0.47, type:'CodeSet', domain:'pain', def:'Specifies the status of a group of payment instructions.', yaml:`status:\n  type: string\n  x-iso20022-ref: "PaymentGroupStatus"`}, { iso:'ClosurePending', dist:0.61, type:'CodeSet', domain:'camt', def:'Account closure is pending.', yaml:`status:\n  type: string\n  x-iso20022-ref: "ClosurePending"`}] },
+};
+
+function runSearch() {
+  const field = document.getElementById('search-field').value.trim();
+  if (!field) return;
+  const key = field.toLowerCase().replace(/[^a-z]/g,'');
+  const data = SEARCH_MOCK[field] || SEARCH_MOCK[key] || SEARCH_MOCK.amount;
+
+  document.getElementById('search-results').style.display = 'none';
+  const proc = document.getElementById('search-processing');
+  proc.style.display = 'block';
+  document.getElementById('sp-query-label').textContent = `Procesando: "${field}"`;
+  ['sp1','sp2','sp3'].forEach(id => { document.getElementById(id).className = 'sp-step'; });
+  document.getElementById('sp1-bar').style.width = '0%';
+  document.getElementById('sp2-bar').style.width = '0%';
+
+  // Animate
+  setTimeout(() => {
+    document.getElementById('sp1').className = 'sp-step active';
+    document.getElementById('sp1-bar').style.width = '100%';
+    setTimeout(() => {
+      document.getElementById('sp1').className = 'sp-step done';
+      document.getElementById('sp2').className = 'sp-step active';
+      document.getElementById('sp2-bar').style.width = '100%';
+      setTimeout(() => {
+        document.getElementById('sp2').className = 'sp-step done';
+        document.getElementById('sp3').className = 'sp-step done';
+        setTimeout(() => {
+          proc.style.display = 'none';
+          renderSearchResults(field, data);
+        }, 400);
+      }, 600);
+    }, 500);
+  }, 300);
+}
+
+function renderSearchResults(field, data) {
+  document.getElementById('search-result-label').textContent = field;
+  const container = document.getElementById('search-result-cards');
+  const medals = ['🏆 MATCH', 'Alternativa', 'Alternativa'];
+  const badgeClass = ['badge-top', 'badge-alt', 'badge-alt'];
+  const confLabel = d => d < 0.40 ? 'ALTA (> 0.75)' : d < 0.50 ? 'MEDIA (0.50–0.75)' : 'BAJA (< 0.50)';
+  container.innerHTML = data.candidates.map((c, i) => `
+    <div class="result-card ${i===0?'top':''}">
+      <div class="result-card-header">
+        <span class="result-rank">#${i+1}</span>
+        <span class="result-iso">${c.iso}</span>
+        <span class="result-match-badge ${badgeClass[i]}">${medals[i]}</span>
+      </div>
+      <div class="result-card-body">
+        <div class="result-meta">
+          <div class="result-meta-item"><strong>Distancia coseno:</strong> ${c.dist}</div>
+          <div class="result-meta-item"><strong>Confianza:</strong> ${confLabel(c.dist)}</div>
+          <div class="result-meta-item"><strong>Tipo ISO:</strong> ${c.type}</div>
+          <div class="result-meta-item"><strong>Dominio:</strong> ${c.domain}</div>
+        </div>
+        ${i === 0 ? `
+          <div class="result-def">"${c.def}"</div>
+          <div class="result-yaml">${c.yaml}</div>
+          <div class="result-actions">
+            <button class="btn-sm" onclick="showToast('✓ Estándar aplicado')">✓ Usar este estándar</button>
+            <button class="btn-sm" onclick="showToast('✓ YAML copiado al portapapeles')">📋 Copiar YAML</button>
+          </div>
+        ` : `
+          <div class="result-def">"${c.def}"</div>
+          <div class="result-actions"><button class="btn-sm" onclick="this.closest('.result-card-body').querySelector('.result-yaml')&&this.closest('.result-card-body').querySelector('.result-yaml').remove(); const y=document.createElement('div');y.className='result-yaml';y.textContent='${c.yaml.replace(/'/g,'\\\'')}';this.closest('.result-card-body').insertBefore(y,this.parentElement);">Ver detalles</button></div>
+        `}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('search-results').style.display = 'block';
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+</script>
+<script src="../../assets/nav.js" data-current="enrichment"></script>
+</body>
+</html>

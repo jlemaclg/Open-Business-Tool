@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery de Casos de Uso · Open Business Accelerator</title>
+  <style>
+    :root {
+      --morado:    #4F062A;
+      --accent:    #FF0054;
+      --gris:      #E3E2DA;
+      --blanco:    #FFFFFF;
+      --morado-dk: #260717;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--gris);
+      color: #1a1a1a;
+      min-width: 1280px;
+    }
+    /* ── HEADER ── */
+    header {
+      background: var(--morado-dk);
+      padding: 14px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: var(--blanco);
+    }
+    .logo span { color: var(--accent); }
+    .header-center {
+      font-family: Georgia, serif;
+      font-size: 16px;
+      color: var(--blanco);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .back-link {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--blanco); }
+    .badge-beta {
+      background: var(--accent);
+      color: var(--blanco);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      padding: 4px 8px;
+      border-radius: 2px;
+    }
+    /* ── PAGE TITLE ── */
+    .page-title {
+      background: var(--morado);
+      padding: 32px 48px;
+      color: var(--blanco);
+    }
+    .page-title h1 {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: normal;
+      margin-bottom: 6px;
+    }
+    .page-title p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+    /* ── STEPS INDICATOR ── */
+    .steps-bar {
+      background: var(--blanco);
+      padding: 16px 48px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ddd;
+      color: #999;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-dot.active { background: var(--accent); color: var(--blanco); }
+    .step-dot.done { background: var(--morado); color: var(--blanco); }
+    .step-label {
+      font-size: 12px;
+      color: #888;
+    }
+    .step-label.active { color: var(--accent); font-weight: bold; }
+    .step-label.done { color: var(--morado); }
+    .step-connector {
+      height: 2px;
+      flex: 1;
+      background: #ddd;
+      margin: 0 8px;
+    }
+    .step-connector.done { background: var(--morado); }
+    /* ── MAIN CONTENT ── */
+    .main { padding: 40px 48px; max-width: 1280px; }
+    /* ── TABS ── */
+    .tab-group {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      border-bottom: 2px solid #ccc;
+    }
+    .tab-btn {
+      padding: 12px 28px;
+      background: none;
+      border: none;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: var(--morado);
+      border-bottom-color: var(--accent);
+      font-weight: bold;
+    }
+    /* ── CATALOG ── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .catalog-category {
+      background: var(--blanco);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .catalog-cat-header {
+      background: var(--morado);
+      color: var(--blanco);
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .catalog-cat-header:hover { background: var(--accent); }
+    .catalog-cat-body {
+      padding: 8px 0;
+      display: none;
+    }
+    .catalog-cat-body.open { display: block; }
+    .catalog-item {
+      padding: 9px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #333;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .catalog-item:hover { background: #fdf0f4; border-left-color: var(--accent); }
+    .catalog-item.selected {
+      background: #fff0f4;
+      border-left-color: var(--accent);
+      color: var(--morado);
+      font-weight: bold;
+    }
+    /* ── CUSTOM FORM ── */
+    .custom-form { display: none; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--morado);
+      letter-spacing: 0.5px;
+    }
+    input[type="text"], textarea, select {
+      padding: 10px 12px;
+      border: 1.5px solid #ccc;
+      border-radius: 3px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #333;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider-toggle {
+      position: absolute;
+      inset: 0;
+      background: #ccc;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider-toggle::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .slider-toggle { background: var(--accent); }
+    .toggle input:checked + .slider-toggle::before { transform: translateX(18px); }
+    /* ── AUDIENCE SECTION ── */
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      font-weight: normal;
+      color: var(--morado-dk);
+      margin-bottom: 20px;
+    }
+    .audience-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .audience-card {
+      background: var(--blanco);
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .audience-card.selected { border-color: var(--accent); background: #fff0f4; }
+    .audience-name {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--morado);
+      margin-bottom: 4px;
+    }
+    .audience-pct {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+    .audience-users { font-size: 11px; color: #888; }
+    /* ── SLIDERS ── */
+    .sliders-block {
+      background: var(--blanco);
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .slider-name { font-size: 13px; color: #444; width: 140px; flex-shrink: 0; }
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--morado);
+    }
+    .slider-val {
+      font-family: Georgia, serif;
+      font-size: 15px;
+      color: var(--accent);
+      font-weight: bold;
+      width: 44px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .slider-warning {
+      font-size: 12px;
+      color: #e05a00;
+      display: none;
+    }
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: var(--morado);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 28px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--morado);
+      border: 2px solid var(--morado);
+      padding: 10px 24px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--morado); color: var(--blanco); }
+    .btn-disabled {
+      background: #e8e8e8;
+      color: #aaa;
+      border: 1.5px solid #ddd;
+      padding: 10px 22px;
+      font-size: 13px;
+      cursor: not-allowed;
+      border-radius: 3px;
+    }
+    .btn-row { display: flex; gap: 16px; align-items: center; margin-top: 24px; }
+    /* ── LOADING SCREEN ── */
+    #loading-screen {
+      display: none;
+      background: var(--morado-dk);
+      padding: 60px 48px;
+      min-height: 400px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .loading-title {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      color: var(--blanco);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .loading-steps { width: 520px; }
+    .loading-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: color 0.3s;
+    }
+    .loading-step.done { color: rgba(255,255,255,0.9); }
+    .loading-step.active { color: var(--accent); }
+    .step-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .step-icon.active { border-color: var(--accent); color: var(--accent); }
+    .step-icon.done { border-color: #44cc88; background: #44cc88; color: white; }
+    /* ── RESULTS ── */
+    #results-screen { display: none; padding-top: 8px; }
+    .results-grid {
+      display: grid;
+      grid-template-columns: 60fr 40fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    .results-card {
+      background: var(--blanco);
+      border-radius: 4px;
+      padding: 24px;
+    }
+    .results-card h3 {
+      font-family: Georgia, serif;
+      font-size: 17px;
+      font-weight: normal;
+      color: var(--morado-dk);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--gris);
+    }
+    /* Propensión table */
+    .propension-table { width: 100%; border-collapse: collapse; }
+    .propension-table th {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 2px solid var(--gris);
+    }
+    .propension-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .rank-medal { font-size: 18px; }
+    .seg-name { font-weight: bold; color: var(--morado); }
+    .pct-bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .pct-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--accent);
+      transition: width 1s ease;
+    }
+    .pct-label { font-size: 13px; font-weight: bold; color: var(--accent); white-space: nowrap; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .var-tag {
+      background: #f5eef1;
+      color: var(--morado);
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 2px;
+      border: 1px solid #e8d0d8;
+    }
+    /* TAM SAM SOM */
+    .tsm-funnel { text-align: center; }
+    .tsm-block {
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      cursor: default;
+    }
+    .tsm-block.tam { background: var(--morado); color: var(--blanco); }
+    .tsm-block.sam { background: #7a1040; color: var(--blanco); width: 85%; margin: 0 auto 10px; }
+    .tsm-block.som { background: var(--accent); color: var(--blanco); width: 68%; margin: 0 auto; }
+    .tsm-label { font-size: 11px; letter-spacing: 2px; opacity: 0.7; margin-bottom: 4px; }
+    .tsm-users {
+      font-family: Georgia, serif;
+      font-size: 22px;
+    }
+    .tsm-eur { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+    .tsm-pct-input {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 12px;
+      width: 48px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .tsm-note { font-size: 11px; color: #888; margin-top: 14px; font-style: italic; line-height: 1.5; }
+    /* Insights */
+    .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .insight-card {
+      background: var(--blanco);
+      border-radius: 4px;
+      padding: 20px;
+      border-top: 3px solid var(--accent);
+    }
+    .insight-icon { font-size: 22px; margin-bottom: 8px; }
+    .insight-title { font-size: 12px; font-weight: bold; color: var(--morado); letter-spacing: 0.5px; margin-bottom: 8px; }
+    .insight-text { font-size: 13px; color: #555; line-height: 1.6; }
+    /* API recommendations */
+    .api-reco-block {
+      background: var(--morado-dk);
+      border-radius: 4px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .api-reco-block h3 {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: normal;
+      color: var(--blanco);
+      margin-bottom: 18px;
+    }
+    .api-pill {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--blanco);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 3px;
+      margin: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    .api-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 14px;
+    }
+    .api-desc { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 16px; line-height: 1.6; }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--blanco);
+      border: none;
+      padding: 14px 32px;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 3px;
+      font-family: Georgia, serif;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-accent:hover { background: #e0004a; }
+    /* ── SELECTED LABEL ── */
+    .selected-uc-label {
+      background: #fff0f4;
+      border: 1.5px solid var(--accent);
+      border-radius: 3px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--morado);
+      font-weight: bold;
+      margin-bottom: 20px;
+      display: none;
+    }
+    /* tooltips */
+    .tooltip-wrap { position: relative; display: inline-block; }
+    .tooltip-wrap .tooltip-content {
+      display: none;
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      font-size: 11px;
+      padding: 8px 12px;
+      border-radius: 3px;
+      width: 220px;
+      z-index: 200;
+      line-height: 1.5;
+    }
+    .tooltip-wrap:hover .tooltip-content { display: block; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Open Business <span>·</span> Accelerator</div>
+    <div class="header-center">Discovery de Casos de Uso</div>
+    <div class="header-right">
+      <a href="../../../index.html" class="back-link">← Volver al inicio</a>
+      <span class="badge-beta">FASE BETA</span>
+    </div>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <div class="page-title">
+    <h1>Discovery de Casos de Uso</h1>
+    <p>Identifica qué segmentos de tu cartera tienen mayor propensión a adoptar un nuevo producto</p>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps-bar" id="steps-bar">
+    <div class="step-item">
+      <div class="step-dot active" id="sd1">1</div>
+      <span class="step-label active" id="sl1">Caso de uso</span>
+    </div>
+    <div class="step-connector" id="sc1"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd2">2</div>
+      <span class="step-label" id="sl2">Audiencias</span>
+    </div>
+    <div class="step-connector" id="sc2"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd3">3</div>
+      <span class="step-label" id="sl3">Análisis</span>
+    </div>
+    <div class="step-connector" id="sc3"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd4">4</div>
+      <span class="step-label" id="sl4">Resultados</span>
+    </div>
+    <div class="step-connector" id="sc4"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd5">5</div>
+      <span class="step-label" id="sl5">APIs</span>
+    </div>
+  </div>
+
+  <!-- ── STEP 1 ── -->
+  <div class="main" id="step1">
+    <div class="section-title">Selecciona o crea un caso de uso</div>
+
+    <div class="tab-group">
+      <button class="tab-btn active" onclick="switchTab('catalog')">Seleccionar del catálogo</button>
+      <button class="tab-btn" onclick="switchTab('custom')">Crear caso de uso propio</button>
+    </div>
+
+    <!-- CATALOG TAB -->
+    <div id="tab-catalog">
+      <div class="catalog-grid">
+        <!-- A: PAGOS EMBEBIDOS -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            A. Pagos Embebidos <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Pagos dentro de ERP','PAGOS')">Pagos dentro de ERP</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pagos en marketplaces','PAGOS')">Pagos en marketplaces</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pagos en apps de delivery','PAGOS')">Pagos en apps de delivery</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pagos en plataformas SaaS','PAGOS')">Pagos en plataformas SaaS</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pago en checkout e-commerce','PAGOS')">Pago en checkout e-commerce</div>
+            <div class="catalog-item" onclick="selectUC(this,'Recaudación digital automatizada','PAGOS')">Recaudación digital automatizada</div>
+          </div>
+        </div>
+        <!-- B: CUENTAS -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            B. Cuentas Embebidas <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Cuenta para usuarios finales dentro de apps','CUENTAS')">Cuenta para usuarios finales dentro de apps</div>
+            <div class="catalog-item" onclick="selectUC(this,'Wallet para clientes de plataformas','CUENTAS')">Wallet para clientes de plataformas</div>
+            <div class="catalog-item" onclick="selectUC(this,'Cuenta para sellers en marketplaces','CUENTAS')">Cuenta para sellers en marketplaces</div>
+            <div class="catalog-item" onclick="selectUC(this,'Cuenta empresarial en ERP','CUENTAS')">Cuenta empresarial en ERP</div>
+            <div class="catalog-item" onclick="selectUC(this,'Subcuentas para gestión financiera interna','CUENTAS')">Subcuentas para gestión financiera interna</div>
+          </div>
+        </div>
+        <!-- C: CRÉDITO -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            C. Crédito Embebido <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item selected" onclick="selectUC(this,'Crédito para gig workers','CRÉDITO')">Crédito para gig workers</div>
+            <div class="catalog-item" onclick="selectUC(this,'Checkout financing (BNPL)','CRÉDITO')">Checkout financing (BNPL)</div>
+            <div class="catalog-item" onclick="selectUC(this,'Capital de trabajo para sellers','CRÉDITO')">Capital de trabajo para sellers</div>
+            <div class="catalog-item" onclick="selectUC(this,'Adelanto de sueldo','CRÉDITO')">Adelanto de sueldo</div>
+            <div class="catalog-item" onclick="selectUC(this,'Crédito educativo','CRÉDITO')">Crédito educativo</div>
+            <div class="catalog-item" onclick="selectUC(this,'Líneas de crédito en ERP','CRÉDITO')">Líneas de crédito en ERP</div>
+          </div>
+        </div>
+        <!-- D: RECAUDACIÓN -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            D. Recaudación y Dispersión <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Pago a proveedores automatizado','DISPERSIÓN')">Pago a proveedores automatizado</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pago de planillas','DISPERSIÓN')">Pago de planillas</div>
+            <div class="catalog-item" onclick="selectUC(this,'Pago a freelancers','DISPERSIÓN')">Pago a freelancers</div>
+            <div class="catalog-item" onclick="selectUC(this,'Distribución de subsidios','DISPERSIÓN')">Distribución de subsidios</div>
+            <div class="catalog-item" onclick="selectUC(this,'Split de pagos en plataformas','DISPERSIÓN')">Split de pagos en plataformas</div>
+          </div>
+        </div>
+        <!-- E: SEGUROS -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            E. Seguros Embebidos <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Seguro en compra (e-commerce)','SEGUROS')">Seguro en compra (e-commerce)</div>
+            <div class="catalog-item" onclick="selectUC(this,'Seguro por uso (on-demand)','SEGUROS')">Seguro por uso (on-demand)</div>
+            <div class="catalog-item" onclick="selectUC(this,'Seguro para freelancers','SEGUROS')">Seguro para freelancers</div>
+            <div class="catalog-item" onclick="selectUC(this,'Microseguros','SEGUROS')">Microseguros</div>
+          </div>
+        </div>
+        <!-- F: INVERSIÓN -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            F. Inversión y Ahorro Embebido <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Ahorro automático','INVERSIÓN')">Ahorro automático</div>
+            <div class="catalog-item" onclick="selectUC(this,'Redondeo de compras','INVERSIÓN')">Redondeo de compras</div>
+            <div class="catalog-item" onclick="selectUC(this,'Microinversiones','INVERSIÓN')">Microinversiones</div>
+            <div class="catalog-item" onclick="selectUC(this,'Fondos de inversión desde apps','INVERSIÓN')">Fondos de inversión desde apps</div>
+          </div>
+        </div>
+        <!-- G: DATA -->
+        <div class="catalog-category">
+          <div class="catalog-cat-header" onclick="toggleCat(this)">
+            G. Data-Driven Use Cases <span>▸</span>
+          </div>
+          <div class="catalog-cat-body">
+            <div class="catalog-item" onclick="selectUC(this,'Personal finance management en apps','DATA')">Personal finance management en apps</div>
+            <div class="catalog-item" onclick="selectUC(this,'Scoring alternativo para terceros','DATA')">Scoring alternativo para terceros</div>
+            <div class="catalog-item" onclick="selectUC(this,'Precalificación crediticia en tiempo real','DATA')">Precalificación crediticia en tiempo real</div>
+            <div class="catalog-item" onclick="selectUC(this,'Insights financieros para empresas','DATA')">Insights financieros para empresas</div>
+          </div>
+        </div>
+      </div>
+      <div id="catalog-selected-label" class="selected-uc-label">
+        ✓ Caso seleccionado: <span id="uc-name-display">Crédito para gig workers</span>
+      </div>
+    </div>
+
+    <!-- CUSTOM TAB -->
+    <div id="tab-custom" class="custom-form">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>NOMBRE DEL CASO DE USO *</label>
+          <input type="text" id="custom-name" placeholder="Ej: Crédito agrícola para pequeños productores" oninput="checkCustomForm()">
+        </div>
+        <div class="form-group full">
+          <label>DESCRIPCIÓN</label>
+          <textarea id="custom-desc" placeholder="Describe el producto o servicio..." oninput="checkCustomForm()"></textarea>
+        </div>
+        <div class="form-group">
+          <label>CATEGORÍA PRINCIPAL</label>
+          <select id="custom-cat" onchange="checkCustomForm()">
+            <option value="">-- Seleccionar --</option>
+            <option>Pagos</option>
+            <option>Crédito</option>
+            <option>Cuentas</option>
+            <option>Seguros</option>
+            <option>Inversión</option>
+            <option>Datos</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>CANAL DE DISTRIBUCIÓN</label>
+          <select id="custom-canal">
+            <option>App móvil</option>
+            <option>Web</option>
+            <option>API B2B</option>
+            <option>ERP</option>
+            <option>Marketplace</option>
+            <option>Omnicanal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>TICKET PROMEDIO ESTIMADO</label>
+          <select id="custom-ticket">
+            <option>&lt;50€</option>
+            <option>50–500€</option>
+            <option selected>500–5.000€</option>
+            <option>&gt;5.000€</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>FRECUENCIA DE USO ESPERADA</label>
+          <select id="custom-freq">
+            <option>Única</option>
+            <option>Mensual</option>
+            <option>Semanal</option>
+            <option>Diaria</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>¿REQUIERE SCORING CREDITICIO?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="custom-scoring"><span class="slider-toggle"></span></label>
+            <span style="font-size:13px;color:#444">Sí / No</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>¿REQUIERE KYC?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="custom-kyc"><span class="slider-toggle"></span></label>
+            <span style="font-size:13px;color:#444">Sí / No</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-next-step1" onclick="goToStep2()">Analizar este caso de uso →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2 ── -->
+  <div class="main" id="step2" style="display:none;">
+    <div class="section-title">Configuración de audiencias y variables</div>
+    <div class="selected-uc-label" id="step2-uc-label" style="display:block;margin-bottom:24px;"></div>
+
+    <div style="margin-bottom:18px;font-size:13px;color:#555;">
+      Todos los segmentos están activos por defecto. Haz clic para desactivar alguno.
+    </div>
+    <div class="audience-cards">
+      <div class="audience-card selected tooltip-wrap" id="aud-gig" onclick="toggleAud('gig')">
+        <div class="audience-name">GIG Economy</div>
+        <div class="audience-pct">28%</div>
+        <div class="audience-users">~588.000 usuarios</div>
+        <div class="tooltip-content">Trabajadores de plataformas (Uber, Glovo, Bolt). Ingresos variables pero frecuentes, alta actividad digital. Variables clave: ingresos_plataforma, valoracion_media, servicios_completados.</div>
+      </div>
+      <div class="audience-card selected tooltip-wrap" id="aud-inf" onclick="toggleAud('inf')">
+        <div class="audience-name">Informal</div>
+        <div class="audience-pct">19%</div>
+        <div class="audience-users">~399.000 usuarios</div>
+        <div class="tooltip-content">Trabajadores de economía informal, autónomos no registrados. Ingresos en efectivo, baja huella digital. Variables clave: estabilidad_flujo, visitas_comercios_sem, transferencias_mes.</div>
+      </div>
+      <div class="audience-card selected tooltip-wrap" id="aud-thin" onclick="toggleAud('thin')">
+        <div class="audience-name">Thin File</div>
+        <div class="audience-pct">35%</div>
+        <div class="audience-users">~735.000 usuarios</div>
+        <div class="tooltip-content">Personas con historial crediticio escaso. Jóvenes, inmigrantes recientes. Variables clave: antiguedad_sim, alquiler_al_dia, servicios_basicos_al_dia.</div>
+      </div>
+      <div class="audience-card selected tooltip-wrap" id="aud-emp" onclick="toggleAud('emp')">
+        <div class="audience-name">Emprendedor</div>
+        <div class="audience-pct">18%</div>
+        <div class="audience-users">~378.000 usuarios</div>
+        <div class="tooltip-content">Pequeños empresarios, fundadores de startup, autónomos formalizados. Variables clave: cobros_recurrentes, actividad_laboral_declarada, saldo_billetera.</div>
+      </div>
+    </div>
+
+    <div class="sliders-block">
+      <div style="font-family:Georgia,serif;font-size:16px;margin-bottom:16px;color:var(--morado-dk);">Parámetros de la cartera</div>
+      <div class="slider-row">
+        <span class="slider-name">Universo total</span>
+        <input type="range" min="500000" max="5000000" step="100000" value="2100000" id="sl-total" oninput="updateSliders()">
+        <span class="slider-val" id="sv-total">2.100.000</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-name">Clientes activos app</span>
+        <input type="range" min="10" max="100" value="67" id="sl-app" oninput="updateSliders()">
+        <span class="slider-val" id="sv-app">67%</span>
+      </div>
+      <div style="height:1px;background:#eee;margin:12px 0;"></div>
+      <div style="font-size:12px;color:#888;margin-bottom:10px;">Segmentación de cartera (debe sumar 100%)</div>
+      <div class="slider-row">
+        <span class="slider-name">GIG Economy</span>
+        <input type="range" min="0" max="100" value="28" id="sl-gig" oninput="updatePcts()">
+        <span class="slider-val" id="sv-gig">28%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-name">Informal</span>
+        <input type="range" min="0" max="100" value="19" id="sl-inf" oninput="updatePcts()">
+        <span class="slider-val" id="sv-inf">19%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-name">Thin File</span>
+        <input type="range" min="0" max="100" value="35" id="sl-thin" oninput="updatePcts()">
+        <span class="slider-val" id="sv-thin">35%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-name">Emprendedor</span>
+        <input type="range" min="0" max="100" value="18" id="sl-emp" oninput="updatePcts()">
+        <span class="slider-val" id="sv-emp">18%</span>
+      </div>
+      <div class="slider-warning" id="pct-warning">⚠ La suma de segmentos debe ser 100%. Suma actual: <span id="pct-sum">100</span>%</div>
+    </div>
+
+    <div class="btn-row">
+      <div class="tooltip-wrap">
+        <button class="btn-disabled">📤 Importar mi cartera (CSV/Excel)</button>
+        <div class="tooltip-content" style="bottom:130%;">En la versión completa podrás importar tu propia cartera para un análisis personalizado.</div>
+      </div>
+      <span style="font-size:11px;background:#ffe;border:1px solid #ddd;padding:4px 8px;border-radius:2px;color:#888;">Próximamente</span>
+    </div>
+    <div class="btn-row" style="margin-top:28px;">
+      <button class="btn-outline" onclick="goToStep1()">← Volver</button>
+      <button class="btn-primary" onclick="startAnalysis()">Calcular propensión →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3 (LOADING) ── -->
+  <div id="loading-screen" style="display:none;background:var(--morado-dk);padding:60px 48px;min-height:400px;display:none;align-items:center;justify-content:center;flex-direction:column;">
+    <div class="loading-title">Analizando caso de uso...</div>
+    <div class="loading-steps">
+      <div class="loading-step" id="ls1">
+        <div class="step-icon" id="li1">1</div>
+        <span>Clasificando el caso de uso en el catálogo ISO 20022...</span>
+      </div>
+      <div class="loading-step" id="ls2">
+        <div class="step-icon" id="li2">2</div>
+        <span>Cruzando variables de scoring alternativo con los segmentos...</span>
+      </div>
+      <div class="loading-step" id="ls3">
+        <div class="step-icon" id="li3">3</div>
+        <span>Calculando propensión de adopción por segmento...</span>
+      </div>
+      <div class="loading-step" id="ls4">
+        <div class="step-icon" id="li4">4</div>
+        <span>Estimando TAM / SAM / SOM según parámetros de cartera...</span>
+      </div>
+      <div class="loading-step" id="ls5">
+        <div class="step-icon" id="li5">5</div>
+        <span>Identificando APIs necesarias para este caso de uso...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 4+5 (RESULTS) ── -->
+  <div class="main" id="results-screen" style="display:none;">
+    <div class="selected-uc-label" id="results-uc-label" style="display:block;margin-bottom:24px;"></div>
+
+    <div class="results-grid">
+      <!-- Propensión -->
+      <div class="results-card">
+        <h3>Propensión por segmento</h3>
+        <table class="propension-table" id="propension-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Segmento</th><th>Propensión</th><th>Adopción est. 12m</th><th>Variables clave</th>
+            </tr>
+          </thead>
+          <tbody id="propension-tbody"></tbody>
+        </table>
+      </div>
+      <!-- TAM SAM SOM -->
+      <div class="results-card">
+        <h3>TAM / SAM / SOM</h3>
+        <div class="tsm-funnel">
+          <div class="tsm-block tam">
+            <div class="tsm-label">TAM — Mercado Total</div>
+            <div class="tsm-users" id="tam-users">847.000 usuarios</div>
+            <div class="tsm-eur" id="tam-eur">€127M potencial anual</div>
+          </div>
+          <div style="font-size:11px;color:#aaa;text-align:center;margin:4px 0;">
+            SAM = <input class="tsm-pct-input" id="sam-pct" value="48" onchange="recalcTSM()">% del TAM
+          </div>
+          <div class="tsm-block sam">
+            <div class="tsm-label">SAM — Mercado Servible</div>
+            <div class="tsm-users" id="sam-users">407.000 usuarios</div>
+            <div class="tsm-eur" id="sam-eur">€61M potencial anual</div>
+          </div>
+          <div style="font-size:11px;color:#aaa;text-align:center;margin:4px 0;">
+            SOM = <input class="tsm-pct-input" id="som-pct" value="20" onchange="recalcTSM()">% del SAM
+          </div>
+          <div class="tsm-block som">
+            <div class="tsm-label">SOM — Mercado Obtenible (12m)</div>
+            <div class="tsm-users" id="som-users">81.000 usuarios</div>
+            <div class="tsm-eur" id="som-eur">€12M estimado año 1</div>
+          </div>
+        </div>
+        <div class="tsm-note">* Estimaciones orientativas basadas en datos sintéticos de referencia Minsait. El análisis sobre datos reales requiere parametrización completa de la cartera.</div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-title">VELOCIDAD DE ADOPCIÓN</div>
+        <div class="insight-text" id="insight1">El segmento GIG Economy muestra patrones de adopción rápida: 72% realizan su primera transacción en los primeros 30 días tras el onboarding.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">💰</div>
+        <div class="insight-title">TICKET MEDIO ESPERADO</div>
+        <div class="insight-text" id="insight2">El ticket medio estimado para este caso de uso en el segmento prioritario es de €340/mes, con ratio de recurrencia mensual del 78%.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">⚠️</div>
+        <div class="insight-title">RIESGO DE ABANDONO</div>
+        <div class="insight-text" id="insight3">Los usuarios Thin File presentan mayor churn en mes 3 si no reciben un segundo producto complementario (seguro o cuenta de ahorro asociada).</div>
+      </div>
+    </div>
+
+    <!-- API RECOMMENDATIONS -->
+    <div class="api-reco-block">
+      <h3>Para implementar este caso de uso necesitas:</h3>
+      <div class="api-label">APIs requeridas</div>
+      <div id="apis-required"></div>
+      <div class="api-label">APIs complementarias</div>
+      <div id="apis-complementary"></div>
+      <div class="api-desc" id="api-desc-text">
+        Son necesarias <strong>2 APIs principales</strong> y <strong>2 APIs de soporte</strong> para implementar el flujo completo. El agente de diseño te ayudará a generarlas con el estándar ISO 20022.
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <a href="../../2-api-design/api-designer.html" id="cta-design" class="btn-accent">Diseñar estas APIs con el Agente IA →</a>
+      <a href="../../../index.html" class="btn-outline">Volver al inicio</a>
+      <button class="btn-outline" onclick="restart()">Nuevo análisis</button>
+    </div>
+  </div>
+
+  <script>
+    // ── STATE ──
+    let selectedUCName = 'Crédito para gig workers';
+    let selectedUCCat  = 'CRÉDITO';
+    let activeTab = 'catalog';
+
+    // Init: mark C category open + selected
+    document.addEventListener('DOMContentLoaded', () => {
+      // Open C category
+      const cats = document.querySelectorAll('.catalog-cat-header');
+      cats.forEach(h => {
+        if (h.textContent.includes('Crédito Embebido')) {
+          h.querySelector('span').textContent = '▾';
+          h.nextElementSibling.classList.add('open');
+        }
+      });
+      document.getElementById('catalog-selected-label').style.display = 'block';
+      document.getElementById('uc-name-display').textContent = selectedUCName;
+      updateSliders();
+    });
+
+    function toggleCat(el) {
+      const body = el.nextElementSibling;
+      const arrow = el.querySelector('span');
+      if (body.classList.contains('open')) {
+        body.classList.remove('open');
+        arrow.textContent = '▸';
+      } else {
+        body.classList.add('open');
+        arrow.textContent = '▾';
+      }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-catalog').style.display = tab === 'catalog' ? 'block' : 'none';
+      document.getElementById('tab-custom').style.display = tab === 'custom' ? 'block' : 'none';
+      checkCustomForm();
+    }
+
+    function selectUC(el, name, cat) {
+      document.querySelectorAll('.catalog-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedUCName = name;
+      selectedUCCat  = cat;
+      const lbl = document.getElementById('catalog-selected-label');
+      lbl.style.display = 'block';
+      document.getElementById('uc-name-display').textContent = name;
+    }
+
+    function checkCustomForm() {
+      if (activeTab === 'custom') {
+        const name = document.getElementById('custom-name').value.trim();
+        const cat  = document.getElementById('custom-cat').value;
+        document.getElementById('btn-next-step1').disabled = !(name && cat);
+      } else {
+        document.getElementById('btn-next-step1').disabled = !selectedUCName;
+      }
+    }
+
+    function updateSliders() {
+      const total = parseInt(document.getElementById('sl-total').value);
+      document.getElementById('sv-total').textContent = total.toLocaleString('es-ES');
+      const app = document.getElementById('sl-app').value;
+      document.getElementById('sv-app').textContent = app + '%';
+    }
+
+    function updatePcts() {
+      const g = parseInt(document.getElementById('sl-gig').value);
+      const i = parseInt(document.getElementById('sl-inf').value);
+      const t = parseInt(document.getElementById('sl-thin').value);
+      const e = parseInt(document.getElementById('sl-emp').value);
+      document.getElementById('sv-gig').textContent = g + '%';
+      document.getElementById('sv-inf').textContent = i + '%';
+      document.getElementById('sv-thin').textContent = t + '%';
+      document.getElementById('sv-emp').textContent = e + '%';
+      const sum = g + i + t + e;
+      const warn = document.getElementById('pct-warning');
+      document.getElementById('pct-sum').textContent = sum;
+      warn.style.display = sum !== 100 ? 'block' : 'none';
+    }
+
+    function toggleAud(seg) {
+      const el = document.getElementById('aud-' + seg);
+      el.classList.toggle('selected');
+    }
+
+    function goToStep1() {
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step1').style.display = 'block';
+      setStep(1);
+    }
+
+    function goToStep2() {
+      if (activeTab === 'custom') {
+        const name = document.getElementById('custom-name').value.trim();
+        const cat  = document.getElementById('custom-cat').value;
+        if (!name || !cat) return;
+        selectedUCName = name;
+        selectedUCCat  = cat;
+      }
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+      document.getElementById('step2-uc-label').textContent = '✓ Caso seleccionado: ' + selectedUCName;
+      setStep(2);
+    }
+
+    function startAnalysis() {
+      document.getElementById('step2').style.display = 'none';
+      const ls = document.getElementById('loading-screen');
+      ls.style.display = 'flex';
+      setStep(3);
+      // Animate steps
+      const steps = [1,2,3,4,5];
+      let idx = 0;
+      function animNext() {
+        if (idx > 0) {
+          document.getElementById('ls' + idx).classList.remove('active');
+          document.getElementById('ls' + idx).classList.add('done');
+          document.getElementById('li' + idx).classList.remove('active');
+          document.getElementById('li' + idx).classList.add('done');
+          document.getElementById('li' + idx).textContent = '✓';
+        }
+        if (idx < steps.length) {
+          idx++;
+          document.getElementById('ls' + idx).classList.add('active');
+          document.getElementById('li' + idx).classList.add('active');
+          setTimeout(animNext, 520);
+        } else {
+          setTimeout(showResults, 600);
+        }
+      }
+      animNext();
+    }
+
+    function showResults() {
+      document.getElementById('loading-screen').style.display = 'none';
+      buildResults();
+      document.getElementById('results-screen').style.display = 'block';
+      setStep(4);
+      // animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.pct-bar').forEach(b => {
+          const w = b.getAttribute('data-w');
+          b.style.width = w + '%';
+        });
+      }, 100);
+    }
+
+    // ── PROPENSION MATRIX ──
+    const matrix = {
+      'CRÉDITO':    { gig:87, inf:31, thin:54, emp:41 },
+      'PAGOS':      { gig:83, inf:52, thin:44, emp:67 },
+      'CUENTAS':    { gig:61, inf:73, thin:58, emp:45 },
+      'SEGUROS':    { gig:72, inf:55, thin:61, emp:43 },
+      'INVERSIÓN':  { gig:55, inf:42, thin:48, emp:61 },
+      'DATA':       { gig:77, inf:68, thin:81, emp:59 },
+      'DISPERSIÓN': { gig:48, inf:77, thin:35, emp:55 },
+      'DEFAULT':    { gig:60, inf:50, thin:55, emp:45 }
+    };
+    const segVars = {
+      gig:  ['ingresos_plataforma_mensual','valoracion_media','servicios_completados'],
+      inf:  ['estabilidad_flujo','cobros_recurrentes_externos','alquiler_al_dia'],
+      thin: ['antiguedad_sim','alquiler_al_dia','servicios_basicos_al_dia'],
+      emp:  ['cobros_recurrentes_externos','actividad_laboral_declarada','saldo_billetera']
+    };
+    const segNames = { gig:'GIG Economy', inf:'Informal', thin:'Thin File', emp:'Emprendedor' };
+    const medals = ['🥇','🥈','🥉','4'];
+    const apiMap = {
+      'CRÉDITO': {
+        req: ['POST /credit-applications','GET /credit-scoring/alternative','POST /disbursements','GET /repayment-schedule'],
+        comp: ['POST /kyc/lite','GET /income-verification/gig']
+      },
+      'PAGOS': {
+        req: ['POST /payments','GET /payment-status/{id}','POST /payments/batch'],
+        comp: ['POST /kyc/lite','GET /accounts/{id}/balance']
+      },
+      'CUENTAS': {
+        req: ['POST /accounts','GET /accounts/{id}','GET /accounts/{id}/balance'],
+        comp: ['POST /kyc/lite','GET /transactions']
+      },
+      'SEGUROS': {
+        req: ['POST /insurance/policies','GET /insurance/quotes','PATCH /insurance/status/{id}'],
+        comp: ['POST /kyc/lite','GET /credit-scoring/alternative']
+      },
+      'INVERSIÓN': {
+        req: ['POST /savings/accounts','GET /investment/products','POST /investment/orders'],
+        comp: ['GET /accounts/{id}/balance','GET /transactions']
+      },
+      'DATA': {
+        req: ['POST /credit-scoring/alternative','GET /scoring/{id}/report','POST /credit-scoring/batch'],
+        comp: ['GET /income-verification','GET /behavioral-analytics']
+      },
+      'DISPERSIÓN': {
+        req: ['POST /disbursements','GET /disbursements/{id}','POST /payments/batch'],
+        comp: ['GET /accounts/{id}','POST /kyc/lite']
+      },
+      'DEFAULT': {
+        req: ['POST /resource','GET /resource/{id}','PATCH /resource/{id}'],
+        comp: ['POST /kyc/lite','GET /accounts/{id}']
+      }
+    };
+
+    let tamBase = 847000;
+
+    function buildResults() {
+      const cat = matrix[selectedUCCat] || matrix['DEFAULT'];
+      const total = parseInt(document.getElementById('sl-total').value);
+      const appPct = parseInt(document.getElementById('sl-app').value) / 100;
+      const sliders = {
+        gig:  parseInt(document.getElementById('sl-gig').value) / 100,
+        inf:  parseInt(document.getElementById('sl-inf').value) / 100,
+        thin: parseInt(document.getElementById('sl-thin').value) / 100,
+        emp:  parseInt(document.getElementById('sl-emp').value) / 100
+      };
+
+      document.getElementById('results-uc-label').textContent = '✓ Analizando: ' + selectedUCName;
+
+      // Build sorted rows
+      const rows = ['gig','inf','thin','emp'].map(seg => ({
+        seg,
+        pct: cat[seg],
+        users: Math.round(total * sliders[seg] * appPct * (cat[seg]/100) * 0.65)
+      })).sort((a,b) => b.pct - a.pct);
+
+      const tbody = document.getElementById('propension-tbody');
+      tbody.innerHTML = '';
+      rows.forEach((r, i) => {
+        const vars = segVars[r.seg].map(v => `<span class="var-tag">${v}</span>`).join('');
+        const adoptEst = Math.round(r.pct * 0.72);
+        const penetration = (r.pct * sliders[r.seg] / 100).toFixed(1);
+        tbody.innerHTML += `<tr>
+          <td><span class="rank-medal">${medals[i] || (i+1)}</span></td>
+          <td><div class="seg-name">${segNames[r.seg]}</div></td>
+          <td>
+            <div class="pct-bar-wrap">
+              <div style="width:120px;background:#f0e8ec;border-radius:4px;height:8px;overflow:hidden;">
+                <div class="pct-bar" data-w="${r.pct}" style="width:0%;height:8px;background:var(--accent);border-radius:4px;transition:width 0.9s ease;"></div>
+              </div>
+              <span class="pct-label">${r.pct}%</span>
+            </div>
+          </td>
+          <td>${adoptEst}% en 12m</td>
+          <td><div class="tag-row">${vars}</div></td>
+        </tr>`;
+      });
+
+      // TAM SAM SOM
+      tamBase = rows.reduce((acc, r) => acc + r.users, 0);
+      recalcTSM();
+
+      // APIs
+      const apis = apiMap[selectedUCCat] || apiMap['DEFAULT'];
+      document.getElementById('apis-required').innerHTML = apis.req.map(a => `<span class="api-pill">${a}</span>`).join('');
+      document.getElementById('apis-complementary').innerHTML = apis.comp.map(a => `<span class="api-pill">${a}</span>`).join('');
+      document.getElementById('api-desc-text').innerHTML = `Son necesarias <strong>${apis.req.length} APIs principales</strong> y <strong>${apis.comp.length} APIs de soporte</strong> para implementar el flujo completo. El agente de diseño te ayudará a generarlas con el estándar ISO 20022.`;
+
+      // CTA
+      const qs = encodeURIComponent(selectedUCName);
+      document.getElementById('cta-design').href = `../../2-api-design/api-designer.html?usecase=${qs}`;
+    }
+
+    function recalcTSM() {
+      const samP = parseFloat(document.getElementById('sam-pct').value) / 100 || 0.48;
+      const somP = parseFloat(document.getElementById('som-pct').value) / 100 || 0.20;
+      const tamU = tamBase;
+      const samU = Math.round(tamU * samP);
+      const somU = Math.round(samU * somP);
+      const eur = u => `€${Math.round(u * 150 / 1e6)}M`;
+      document.getElementById('tam-users').textContent = tamU.toLocaleString('es-ES') + ' usuarios';
+      document.getElementById('tam-eur').textContent = `€${Math.round(tamU * 150 / 1e6)}M potencial anual`;
+      document.getElementById('sam-users').textContent = samU.toLocaleString('es-ES') + ' usuarios';
+      document.getElementById('sam-eur').textContent = `€${Math.round(samU * 150 / 1e6)}M potencial anual`;
+      document.getElementById('som-users').textContent = somU.toLocaleString('es-ES') + ' usuarios';
+      document.getElementById('som-eur').textContent = `€${Math.round(somU * 150 / 1e6)}M estimado año 1`;
+    }
+
+    function setStep(n) {
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById('sd'+i);
+        const lbl = document.getElementById('sl'+i);
+        dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+        lbl.className = 'step-label' + (i < n ? ' done' : i === n ? ' active' : '');
+        if (dot.classList.contains('done')) dot.textContent = '✓';
+        else dot.textContent = i;
+        if (i < 5) {
+          const conn = document.getElementById('sc'+i);
+          if (conn) conn.className = 'step-connector' + (i < n ? ' done' : '');
+        }
+      }
+    }
+
+    function restart() {
+      document.getElementById('results-screen').style.display = 'none';
+      document.getElementById('step1').style.display = 'block';
+      setStep(1);
+    }
+  </script>
+<script src="../../../assets/nav.js" data-current="discovery"></script>
+</body>
+</html>

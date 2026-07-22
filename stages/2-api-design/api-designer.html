@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>API Designer · Open Business Accelerator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui.css"/>
+<style>
+/* ── Minsait Tokens ─────────────────────────────────── */
+:root {
+  --morado:      #4F062A;
+  --morado-dk:   #260717;
+  --morado-mid:  #3a0420;
+  --accent:      #FF0054;
+  --gris:        #E3E2DA;
+  --blanco:      #FFFFFF;
+  --m10:         rgba(79,6,42,0.08);
+  --m20:         rgba(79,6,42,0.18);
+  --a10:         rgba(255,0,84,0.12);
+  --text:        #260717;
+  --text-m:      #5a2b3d;
+  --text-l:      rgba(79,6,42,0.52);
+  --border:      rgba(79,6,42,0.14);
+  --ok:          #1a7f4e;  --ok-bg:   #d4f0e2;
+  --warn:        #7d5a00;  --warn-bg: #fff3cd;
+  --err:         #922b21;  --err-bg:  #fdedec;
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { font-family:Arial,Helvetica,sans-serif; background:var(--gris); color:var(--text); }
+
+/* ══════════════════════════════════════════════════════
+   PORTADA
+══════════════════════════════════════════════════════ */
+#portada {
+  min-height:100vh; background:var(--morado);
+  display:flex; flex-direction:column;
+}
+.p-top { background:var(--blanco); height:68px; display:flex; align-items:center; padding:0 56px; gap:20px; }
+.logo { font-family:Georgia,serif; font-size:19px; color:var(--morado); }
+.p-top-sep { width:1px; height:28px; background:var(--border); }
+.p-top-tag { font-size:11px; color:var(--text-l); letter-spacing:.6px; }
+.p-top-back { margin-left:auto; font-size:11px; color:var(--text-l); text-decoration:none; letter-spacing:.4px; display:flex; align-items:center; gap:5px; transition:color .2s; }
+.p-top-back:hover { color:var(--morado); }
+.p-body { flex:1; display:flex; align-items:center; padding:64px 56px; }
+.p-content { max-width:660px; }
+.p-eyebrow { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:22px; }
+.p-div { width:44px; height:2px; background:var(--accent); margin-bottom:24px; }
+.p-h1 { font-family:Georgia,serif; font-size:52px; font-weight:400; color:var(--blanco); line-height:1.08; letter-spacing:-.5px; margin-bottom:18px; }
+.p-h1 span { color:var(--accent); }
+.p-sub { font-family:Georgia,serif; font-size:17px; font-weight:300; color:rgba(255,255,255,.68); line-height:1.6; margin-bottom:52px; }
+.p-phases { display:flex; gap:20px; margin-bottom:52px; flex-wrap:wrap; }
+.p-phase { display:flex; align-items:center; gap:14px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:6px; padding:14px 20px; }
+.p-phase-n { font-family:Georgia,serif; font-size:26px; color:var(--accent); min-width:28px; }
+.p-phase-name { font-size:12px; font-weight:700; color:var(--blanco); letter-spacing:.5px; text-transform:uppercase; }
+.p-phase-desc { font-size:11px; color:rgba(255,255,255,.48); margin-top:3px; }
+.p-footer { border-top:1px solid rgba(255,255,255,.1); padding:18px 56px; display:flex; justify-content:space-between; align-items:center; }
+.p-date { font-size:11px; color:rgba(255,255,255,.38); letter-spacing:.5px; }
+.p-tag { font-size:9px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:4px 11px; border-radius:10px; background:var(--accent); color:var(--blanco); }
+
+/* ══════════════════════════════════════════════════════
+   FIXED HEADER — Brand + Lifecycle
+══════════════════════════════════════════════════════ */
+#app-header {
+  display:none; position:fixed; top:0; left:0; right:0; z-index:200;
+  flex-direction:column;
+  box-shadow:0 2px 16px rgba(38,7,23,.35);
+}
+/* Row 1: Brand */
+.hdr-brand {
+  background:var(--morado-dk); height:42px;
+  display:flex; align-items:center; padding:0 40px; gap:16px;
+}
+.hdr-logo { font-family:Georgia,serif; font-size:16px; color:var(--blanco); }
+.hdr-sep { width:1px; height:20px; background:rgba(255,255,255,.15); }
+.hdr-prod { font-size:10px; color:rgba(255,255,255,.45); letter-spacing:.8px; text-transform:uppercase; }
+.hdr-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+.hdr-team-badge {
+  font-size:10px; padding:3px 10px; border-radius:10px;
+  background:rgba(255,0,84,.18); border:1px solid rgba(255,0,84,.3);
+  color:rgba(255,255,255,.8); letter-spacing:.4px;
+}
+
+/* Row 2: Lifecycle Bar */
+.hdr-lifecycle {
+  background:var(--morado-mid); height:66px;
+  display:flex; align-items:center; padding:0 0 0 40px;
+  gap:0; overflow:hidden;
+}
+.lc-label { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-right:16px; white-space:nowrap; }
+
+/* Phase 1 active group */
+.lc-phase1 {
+  display:flex; align-items:center; gap:0;
+  background:rgba(255,0,84,.08); border:1px solid rgba(255,0,84,.22);
+  border-radius:6px; padding:6px 16px 6px 14px;
+  position:relative;
+}
+.lc-ph1-title {
+  font-size:9px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  color:rgba(255,255,255,.55); margin-right:14px; white-space:nowrap;
+}
+.lc-steps { display:flex; align-items:center; gap:0; }
+.lc-step {
+  display:flex; align-items:center; gap:7px; flex-direction:column;
+  position:relative;
+}
+.lc-dot {
+  width:26px; height:26px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700;
+  background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.35); transition:all .4s;
+  flex-shrink:0;
+}
+.lc-dot.active { background:var(--accent); border-color:var(--accent); color:var(--blanco); box-shadow:0 0 0 3px rgba(255,0,84,.25); }
+.lc-dot.done   { background:rgba(26,127,78,.35); border-color:#1a7f4e; color:#a8e6cf; }
+.lc-step-lbl { font-size:9px; color:rgba(255,255,255,.45); white-space:nowrap; line-height:1; }
+.lc-step-lbl.active { color:rgba(255,255,255,.85); }
+.lc-step-lbl.done   { color:rgba(255,255,255,.6); }
+.lc-line {
+  width:28px; height:1.5px; background:rgba(255,255,255,.15);
+  margin-bottom:14px; flex-shrink:0; transition:background .4s;
+}
+.lc-line.done { background:rgba(26,127,78,.5); }
+.lc-arrow { font-size:13px; color:rgba(255,255,255,.2); margin:0 14px; padding-bottom:2px; }
+
+/* Pending phases */
+.lc-phase-pending {
+  display:flex; flex-direction:column; align-items:center;
+  padding:4px 16px; opacity:.38; white-space:nowrap;
+}
+.lc-ph-name { font-size:10px; font-weight:700; color:var(--blanco); letter-spacing:.4px; }
+.lc-ph-tag  { font-size:9px; color:rgba(255,255,255,.5); margin-top:2px; letter-spacing:.3px; }
+.lc-ph-dot  { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.25); margin-top:4px; }
+
+/* ══════════════════════════════════════════════════════
+   MAIN APP (single screen)
+══════════════════════════════════════════════════════ */
+#app { display:none; padding-top:108px; min-height:100vh; }
+
+.section { display:none; animation:fadeUp .3s ease; }
+.section.visible { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.wrap { max-width:1100px; margin:0 auto; padding:44px 44px 64px; }
+.wrap-sm { max-width:740px; margin:0 auto; padding:44px 44px 64px; }
+
+/* Section headers */
+.sec-hdr { background:var(--morado); padding:44px 0 36px; margin-bottom:0; }
+.sec-hdr .wrap { padding-top:0; padding-bottom:0; }
+.sec-hdr h2 { font-family:Georgia,serif; font-size:26px; font-weight:400; color:var(--blanco); margin-bottom:6px; }
+.sec-hdr .sub { font-family:Georgia,serif; font-size:14px; font-weight:300; color:rgba(255,255,255,.62); margin-bottom:0; }
+.eyebrow { font-size:10px; letter-spacing:1.8px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; opacity:1; }
+
+/* ── Buttons ── */
+.btn { display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:4px; border:none; font-family:Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:.5px; cursor:pointer; transition:all .2s; text-decoration:none; }
+.btn-p { background:var(--morado); color:var(--blanco); }
+.btn-p:hover { background:var(--morado-dk); transform:translateY(-1px); box-shadow:0 4px 14px rgba(79,6,42,.3); }
+.btn-a { background:var(--accent); color:var(--blanco); }
+.btn-a:hover { background:#d9004a; transform:translateY(-1px); box-shadow:0 4px 14px rgba(255,0,84,.3); }
+.btn-o { background:transparent; color:var(--morado); border:1.5px solid var(--morado); }
+.btn-o:hover { background:var(--m10); }
+.btn:disabled { opacity:.4; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
+.btn svg { width:15px; height:15px; flex-shrink:0; }
+
+/* ── Cards ── */
+.card { background:var(--blanco); border-radius:6px; padding:28px 30px; box-shadow:0 1px 3px rgba(79,6,42,.06); }
+
+/* ── Form ── */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.fg { margin-bottom:20px; }
+.fg label { display:block; font-size:11px; font-weight:700; letter-spacing:.9px; text-transform:uppercase; color:var(--morado); margin-bottom:7px; opacity:.8; }
+input, textarea, select { width:100%; border:1.5px solid var(--border); border-radius:4px; padding:11px 13px; font-family:Arial,sans-serif; font-size:14px; color:var(--text); background:var(--blanco); outline:none; transition:border-color .2s; }
+input:focus, textarea:focus, select:focus { border-color:var(--morado); box-shadow:0 0 0 3px var(--m10); }
+textarea { resize:vertical; min-height:100px; line-height:1.5; }
+
+/* ── Tables ── */
+.tbl { width:100%; border-collapse:collapse; font-size:13px; }
+.tbl th { text-align:left; padding:10px 14px; background:var(--morado); color:var(--blanco); font-size:10.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; }
+.tbl th:first-child { border-radius:4px 0 0 0; }
+.tbl th:last-child  { border-radius:0 4px 0 0; }
+.tbl td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.4; }
+.tbl tr:nth-child(even) td { background:var(--m10); }
+.tbl code { font-family:'Courier New',monospace; font-size:11.5px; background:var(--m10); padding:2px 6px; border-radius:3px; color:var(--morado); }
+
+/* ── Badges ── */
+.b { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.b-ok   { background:var(--ok-bg); color:var(--ok); }
+.b-warn { background:var(--warn-bg); color:var(--warn); }
+.b-err  { background:var(--err-bg); color:var(--err); }
+.b-iso  { background:#e8f4fd; color:#1a5276; }
+.b-loc  { background:#f4ecf7; color:#6c3483; }
+.bm { display:inline-block; padding:3px 9px; border-radius:3px; font-size:11px; font-weight:700; }
+.m-post   { background:#e8f8f5; color:#1e8449; }
+.m-get    { background:#eaf2fb; color:#1a5276; }
+.m-patch  { background:#fef9e7; color:#7d5a00; }
+.m-delete { background:#fdedec; color:#922b21; }
+
+/* ── Tabs ── */
+.tabs { display:flex; border-bottom:2px solid var(--border); margin-bottom:22px; }
+.tab { padding:10px 20px; font-size:12.5px; font-weight:700; color:var(--text-l); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .2s; letter-spacing:.2px; }
+.tab.on { color:var(--morado); border-bottom-color:var(--accent); }
+.tab:hover:not(.on) { color:var(--morado); }
+.tp { display:none; }
+.tp.on { display:block; animation:fadeUp .2s ease; }
+
+/* ══════════════════════════════════════════════════════
+   INLINE AGENT LOADING CARD
+══════════════════════════════════════════════════════ */
+.agent-card {
+  background:var(--morado-dk); border-radius:8px; padding:36px 40px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.ag-title { font-family:Georgia,serif; font-size:22px; color:var(--blanco); margin-bottom:6px; }
+.ag-title span { color:var(--accent); }
+.ag-sub { font-size:12px; color:rgba(255,255,255,.45); margin-bottom:38px; letter-spacing:.4px; }
+.ag-steps { display:flex; flex-direction:column; gap:13px; width:100%; max-width:520px; }
+.ag-step { display:flex; align-items:center; gap:14px; opacity:0; transform:translateX(-10px); transition:all .4s ease; }
+.ag-step.vis { opacity:1; transform:translateX(0); }
+.ag-icon { width:32px; height:32px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .3s; }
+.ag-icon.p { background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.14); }
+.ag-icon.l { background:rgba(255,0,84,.15); border:1.5px solid var(--accent); animation:pulse 1.2s infinite; }
+.ag-icon.d { background:rgba(26,127,78,.25); border:1.5px solid #1a7f4e; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.45} }
+.ag-lbl { font-size:13px; color:rgba(255,255,255,.72); line-height:1.4; }
+.ag-lbl.d { color:rgba(255,255,255,.92); }
+.ag-pill { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); font-size:10.5px; color:rgba(255,255,255,.5); margin-top:36px; letter-spacing:.4px; }
+
+/* ── Agent completion panel ── */
+.ag-done-panel { display:none; flex-direction:column; align-items:center; gap:16px; margin-top:32px; animation:fadeUp .4s ease; }
+.ag-done-panel.vis { display:flex; }
+.ag-done-check { width:56px; height:56px; border-radius:50%; background:rgba(26,127,78,.25); border:2px solid #1a7f4e; display:flex; align-items:center; justify-content:center; }
+.ag-done-title { font-family:Georgia,serif; font-size:18px; color:var(--blanco); text-align:center; }
+.ag-done-sub { font-size:12px; color:rgba(255,255,255,.5); text-align:center; letter-spacing:.3px; }
+.ag-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); animation:pulse 1.2s infinite; flex-shrink:0; }
+
+/* ── LLM Selector ── */
+.llm-grid { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+.llm-summary { font-size:11px; color:var(--text-l); }
+.llm-card { flex:1; min-width:130px; padding:12px 14px; border-radius:6px; border:1.5px solid var(--border); background:var(--blanco); cursor:pointer; transition:all .2s; }
+.llm-card:hover { border-color:var(--morado); background:var(--m10); }
+.llm-card.sel { border-color:var(--accent); background:var(--a10); box-shadow:0 0 0 3px var(--a10); }
+.llm-name { font-size:13px; font-weight:700; color:var(--morado); margin-bottom:3px; }
+.llm-prov { font-size:11px; color:var(--text-l); margin-bottom:8px; }
+.llm-tag { display:inline-block; padding:2px 7px; border-radius:8px; font-size:9px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.llm-prop { background:#fde8f0; color:#a0062a; }
+.llm-oss  { background:#e8f8f0; color:#1a7f4e; }
+.llm-note { margin-top:10px; font-size:11.5px; color:var(--text-m); display:flex; align-items:flex-start; gap:7px; background:var(--m10); border-radius:4px; padding:8px 12px; line-height:1.5; }
+.hdr-llm-badge { font-size:10px; padding:3px 10px; border-radius:10px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.7); letter-spacing:.4px; display:flex; align-items:center; gap:6px; }
+.hdr-llm-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+/* ══════════════════════════════════════════════════════
+   AGENT QUESTION BUBBLE
+══════════════════════════════════════════════════════ */
+.aq { background:var(--morado); border-radius:8px; padding:20px 24px; margin:22px 0; }
+.aq-hdr { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.aq-av { width:30px; height:30px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--blanco); flex-shrink:0; }
+.aq-nm { font-size:11px; font-weight:700; color:rgba(255,255,255,.88); letter-spacing:.4px; }
+.aq-rl { font-size:9px; color:rgba(255,255,255,.42); }
+.aq-txt { font-size:13px; color:rgba(255,255,255,.82); line-height:1.6; margin-bottom:16px; }
+.aq-txt code { background:rgba(255,255,255,.12); padding:2px 7px; border-radius:3px; font-family:'Courier New',monospace; color:rgba(255,255,255,.95); font-size:11.5px; }
+.aq-opts { display:flex; flex-wrap:wrap; gap:10px; }
+.aq-opt { padding:9px 15px; border-radius:4px; border:1.5px solid rgba(255,255,255,.18); font-size:12px; color:rgba(255,255,255,.76); background:rgba(255,255,255,.05); cursor:pointer; transition:all .2s; }
+.aq-opt:hover { background:rgba(255,255,255,.12); border-color:var(--accent); color:var(--blanco); }
+.aq-opt.sel { background:var(--accent); border-color:var(--accent); color:var(--blanco); }
+
+/* ══════════════════════════════════════════════════════
+   DATA MODEL VISUAL
+══════════════════════════════════════════════════════ */
+.model-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.model-card { background:var(--blanco); border-radius:6px; padding:20px; }
+.model-header { font-family:'Courier New',monospace; font-size:13px; color:var(--morado); font-weight:700; padding-bottom:10px; margin-bottom:12px; border-bottom:2px solid var(--accent); display:flex; justify-content:space-between; align-items:center; }
+.model-iso { font-size:9px; font-weight:400; background:var(--m10); color:var(--text-l); padding:2px 8px; border-radius:10px; font-family:Arial,sans-serif; }
+.model-field { display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); gap:8px; }
+.model-field:last-child { border-bottom:none; }
+.mf-name { font-family:'Courier New',monospace; font-size:12px; color:var(--morado); }
+.mf-type { font-size:10px; color:var(--text-l); }
+.mf-ref  { font-size:10px; background:#e8f4fd; color:#1a5276; padding:1px 6px; border-radius:8px; white-space:nowrap; }
+.model-arrow { display:flex; align-items:center; justify-content:center; font-size:20px; color:rgba(255,0,84,.4); }
+
+/* ── Mermaid containers ── */
+.mermaid-wrap { background:var(--blanco); border-radius:6px; padding:24px; overflow-x:auto; }
+.mermaid { text-align:center; }
+/* Override mermaid defaults to match brand */
+.mermaid svg { max-width:100%; }
+
+.diag-tabs { display:flex; gap:8px; margin-bottom:16px; }
+.dtab { padding:7px 16px; border-radius:4px; font-size:12px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:var(--blanco); color:var(--text-l); transition:all .2s; }
+.dtab.on { background:var(--morado); color:var(--blanco); border-color:var(--morado); }
+
+/* ── Code block ── */
+.code { background:#1a0d10; border-radius:6px; padding:22px 26px; font-family:'Courier New',monospace; font-size:12px; line-height:1.75; overflow-x:auto; color:#e8d5da; white-space:pre; }
+.ck { color:#ff6b8a; }
+.cv { color:#a8e6cf; }
+.cn { color:#ffd700; }
+.cc { color:#7a6672; font-style:italic; }
+.cm { color:#8ec7f7; }
+.ct { color:#c8e6c9; }
+
+/* ── Stats ── */
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:24px; }
+.stat { background:var(--blanco); border-radius:6px; padding:18px 20px; border-top:3px solid var(--accent); }
+.stat-n { font-family:Georgia,serif; font-size:36px; font-weight:400; color:var(--morado); line-height:1; margin-bottom:5px; }
+.stat-l { font-size:10px; color:var(--text-l); text-transform:uppercase; letter-spacing:.8px; }
+
+/* ── Ticker ── */
+.ticker { background:var(--morado); color:var(--blanco); padding:14px 24px; border-radius:6px; font-size:13px; text-align:center; margin-top:26px; line-height:1.45; }
+.ticker .hl { color:var(--accent); font-weight:700; }
+
+/* ── Stub note ── */
+.stub { background:#eaf4fe; border:1.5px dashed #2980b9; border-radius:4px; padding:9px 14px; font-size:11px; color:#1a5276; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+
+/* ── Section divider ── */
+.sdiv { display:flex; align-items:center; gap:14px; margin:28px 0 20px; }
+.sdiv h3 { font-family:Georgia,serif; font-size:18px; color:var(--morado); font-weight:400; white-space:nowrap; }
+.sdiv-l { flex:1; height:1px; background:var(--border); }
+
+/* ── Coverage bars ── */
+.cov-row { margin-bottom:16px; }
+.cov-label { display:flex; justify-content:space-between; font-size:12px; color:var(--text-m); margin-bottom:5px; }
+.cov-bar { height:7px; background:var(--gris); border-radius:4px; overflow:hidden; }
+.cov-fill { height:100%; border-radius:4px; }
+
+/* ── Confirm bar ── */
+.confirm-bar { background:var(--blanco); border-radius:6px; border:1.5px solid var(--border); padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:28px; }
+
+/* ── Review gate ── */
+.review-progress { display:flex; align-items:center; gap:10px; margin-bottom:24px; flex-wrap:wrap; }
+.review-done-bar { background:var(--ok-bg); border:1.5px solid var(--ok); border-radius:6px; padding:18px 24px; display:none; align-items:center; justify-content:space-between; gap:16px; margin-top:22px; animation:fadeUp .3s ease; }
+.review-done-bar.vis { display:flex; }
+.rd-txt { font-size:13px; color:var(--ok); font-weight:700; margin-bottom:3px; }
+.rd-sub { font-size:11px; color:var(--ok); opacity:.75; }
+.aq-resolved { background:rgba(26,127,78,.18); border:1px solid rgba(26,127,78,.4); border-radius:6px; padding:14px 20px; display:flex; align-items:center; gap:14px; margin-top:0; }
+.aq-resolved-icon { width:30px; height:30px; border-radius:50%; background:rgba(26,127,78,.3); border:1.5px solid #1a7f4e; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+/* ── UML path diagram ── */
+.path-flow { display:flex; flex-direction:column; gap:8px; }
+.path-item { display:flex; align-items:center; gap:12px; background:var(--blanco); border-radius:4px; padding:10px 14px; border:1px solid var(--border); }
+.path-m { width:54px; text-align:center; flex-shrink:0; }
+.path-url { font-family:'Courier New',monospace; font-size:12px; color:var(--morado); flex:1; }
+.path-desc { font-size:11px; color:var(--text-l); min-width:200px; }
+.path-iso { font-size:10px; background:#e8f4fd; color:#1a5276; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+
+@media(max-width:768px) {
+  .wrap,.wrap-sm { padding:32px 20px 48px; }
+  .form-row { grid-template-columns:1fr; }
+  .model-grid { grid-template-columns:1fr; }
+  .hdr-lifecycle { padding-left:16px; }
+  .p-body { padding:44px 28px; }
+  .p-footer { padding:18px 28px; }
+  .p-phases { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+  PORTADA
+══════════════════════════════════════════════════════════════ -->
+<div id="portada">
+  <div class="p-top">
+    <div class="logo">Open Business Accelerator</div>
+    <div class="p-top-sep"></div>
+    <div class="p-top-tag">GOBIERNO DE APIs &amp; AGENTES IA · OPEN BUSINESS TECH</div>
+    <a href="../../index.html" class="p-top-back">← Inicio</a>
+  </div>
+  <div class="p-body">
+    <div class="p-content">
+      <div class="p-eyebrow">API Designer · Demo · 2026</div>
+      <div class="p-div"></div>
+      <h1 class="p-h1">De la visión de negocio<br>a la <span>API en producción</span></h1>
+      <p class="p-sub">Un pipeline agéntico que transforma la descripción de un equipo funcional en una especificación OpenAPI 3.1 normalizada con ISO 20022, lista para el equipo de desarrollo — sin intervención técnica manual.</p>
+      <div class="p-phases">
+        <div class="p-phase">
+          <div class="p-phase-n">01</div>
+          <div>
+            <div class="p-phase-name">Business Analyst Agent</div>
+            <div class="p-phase-desc">Descubrimiento conversacional · Diccionario ISO 20022</div>
+          </div>
+        </div>
+        <div class="p-phase">
+          <div class="p-phase-n">02</div>
+          <div>
+            <div class="p-phase-name">API Builder Agent</div>
+            <div class="p-phase-desc">Generación automática · OpenAPI 3.1 · JSON Schema</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-a" onclick="startApp()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        Ver cómo funciona
+      </button>
+    </div>
+  </div>
+  <div class="p-footer">
+    <div class="p-date">Open Business Accelerator · Abril 2026</div>
+    <div class="p-tag">Demo</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+  FIXED HEADER (visible durante la demo)
+══════════════════════════════════════════════════════════════ -->
+<div id="app-header">
+  <!-- Row 1: Brand -->
+  <div class="hdr-brand">
+    <div class="hdr-logo">Open Business Accelerator</div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-prod">Gobierno de APIs · Diseñador de APIs Agéntico</div>
+    <div class="hdr-right">
+      <a href="../../index.html" style="font-size:11px;color:rgba(255,255,255,.55);text-decoration:none;letter-spacing:.4px;margin-right:4px;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">← Inicio</a>
+      <div class="hdr-llm-badge" id="llmBadge">Claude 4 Opus</div>
+      <div class="hdr-team-badge" id="teamBadge">Equipo no seleccionado</div>
+    </div>
+  </div>
+
+  <!-- Row 2: Lifecycle bar -->
+  <div class="hdr-lifecycle">
+    <div class="lc-label">Ciclo de vida</div>
+
+    <!-- Phase 1: Active -->
+    <div class="lc-phase1">
+      <div class="lc-ph1-title">Diseño &amp; Creación</div>
+      <div class="lc-steps">
+        <!-- Step 1 -->
+        <div class="lc-step">
+          <div class="lc-dot active" id="lcs1">1</div>
+          <div class="lc-step-lbl active" id="lcl1">Caso de Uso</div>
+        </div>
+        <div class="lc-line" id="lcline1"></div>
+        <!-- Step 2 -->
+        <div class="lc-step">
+          <div class="lc-dot" id="lcs2">2</div>
+          <div class="lc-step-lbl" id="lcl2">BA Agente</div>
+        </div>
+        <div class="lc-line" id="lcline2"></div>
+        <!-- Step 3 -->
+        <div class="lc-step">
+          <div class="lc-dot" id="lcs3">3</div>
+          <div class="lc-step-lbl" id="lcl3">Propuesta</div>
+        </div>
+        <div class="lc-line" id="lcline3"></div>
+        <!-- Step 4 -->
+        <div class="lc-step">
+          <div class="lc-dot" id="lcs4">4</div>
+          <div class="lc-step-lbl" id="lcl4">API Builder</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lc-arrow">→</div>
+    <div class="lc-phase-pending">
+      <div class="lc-ph-name">Revisión &amp; Aprobación</div>
+      <div class="lc-ph-tag">Próxima iteración</div>
+      <div class="lc-ph-dot"></div>
+    </div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-phase-pending">
+      <div class="lc-ph-name">Publicación</div>
+      <div class="lc-ph-tag">Pendiente</div>
+      <div class="lc-ph-dot"></div>
+    </div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-phase-pending">
+      <div class="lc-ph-name">Gestión &amp; Versioning</div>
+      <div class="lc-ph-tag">Pendiente</div>
+      <div class="lc-ph-dot"></div>
+    </div>
+    <div class="lc-arrow">→</div>
+    <div class="lc-phase-pending">
+      <div class="lc-ph-name">Depreciación</div>
+      <div class="lc-ph-tag">Pendiente</div>
+      <div class="lc-ph-dot"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+  APP — SINGLE SCREEN EXPERIENCE
+══════════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── SECTION 1: Formulario ──────────────────────────────── -->
+  <div class="section visible" id="sec1">
+    <div class="sec-hdr">
+      <div class="wrap">
+        <div class="eyebrow">Fase 1 · Business Analyst Agent</div>
+        <h2>Describe tu <span style="color:var(--accent)">caso de uso</span> de negocio</h2>
+        <p class="sub">El agente analizará las funcionalidades y diseñará la API con campos normalizados según ISO 20022.</p>
+      </div>
+    </div>
+    <div class="wrap-sm">
+      <div class="stub" id="stub1">🔌 LLM_CALL [Anthropic / Claude 4 Opus] → business-analyst (skill: discover-use-case + design-data-dictionary)</div>
+      <div class="card">
+        <div class="form-row">
+          <div class="fg">
+            <label>Equipo / Departamento solicitante</label>
+            <select id="fTeam" onchange="updateTeamBadge()">
+              <option value="">Seleccionar equipo...</option>
+              <option value="Créditos &amp; Financiamiento" selected>Créditos &amp; Financiamiento</option>
+              <option value="Pagos &amp; Transferencias">Pagos &amp; Transferencias</option>
+              <option value="Banca Digital &amp; Producto">Banca Digital &amp; Producto</option>
+              <option value="Seguros &amp; Protección">Seguros &amp; Protección</option>
+              <option value="KYC &amp; Cumplimiento">KYC &amp; Cumplimiento</option>
+              <option value="Tesorería &amp; Mercados">Tesorería &amp; Mercados</option>
+              <option value="Open Banking &amp; APIs">Open Banking &amp; APIs</option>
+              <option value="Banca Empresas">Banca Empresas</option>
+              <option value="Riesgo &amp; Análisis">Riesgo &amp; Análisis</option>
+              <option value="Operaciones">Operaciones</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Nombre del caso de uso</label>
+            <input type="text" id="fUseCase" value="Remesas Internacionales"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Motor LLM <span style="font-size:10px;font-weight:400;color:var(--text-l);text-transform:none;letter-spacing:0">— arquitectura desacoplada, elige según tu necesidad</span></label>
+          <div class="llm-summary" id="llmSummary">Selección curada con 4 modelos principales para mantener la demo limpia y comparable.</div>
+          <div class="llm-grid" id="llmGrid">
+          </div>
+          <div class="llm-note">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 11V8M8 5h.01"/></svg>
+            El pipeline agéntico es <strong>LLM-agnóstico</strong> — el modelo se inyecta como parámetro de configuración sin cambios en el código de los agentes, y el catálogo puede ampliarse sin tocar la lógica de negocio.
+          </div>
+        </div>
+        <div class="fg">
+          <label>Describe los procesos y funcionalidades</label>
+          <textarea id="fDesc">Necesito una API para que un cliente pueda enviar dinero a un beneficiario en otro país. Los procesos principales son: crear una remesa indicando emisor, receptor e importe en la moneda destino; consultar el estado de la remesa en tiempo real; y cancelarla si todavía no ha sido procesada. El emisor tiene cuenta en el banco y el receptor puede recibir en cuenta bancaria. El equipo de Créditos necesita saber si la operación supone un límite de crédito del cliente.</textarea>
+        </div>
+        <button class="btn btn-a" onclick="runPhase1()" style="margin-top:8px">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+          Analizar con Business Analyst Agent
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: BA Agent loading ──────────────────────── -->
+  <div class="section" id="sec2">
+    <div class="wrap-sm">
+      <div class="agent-card">
+        <div class="eyebrow" style="color:var(--accent)">Business Analyst Agent</div>
+        <h2 class="ag-title">Analizando el <span>caso de uso</span></h2>
+        <p class="ag-sub">El agente está diseñando la propuesta de API con normalización ISO 20022</p>
+        <div class="ag-steps" id="ag1Steps">
+          <div class="ag-step" id="as1">
+            <div class="ag-icon p" id="ai1"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Clasificando dominio ISO 20022 (pain · camt · pacs...)</span>
+          </div>
+          <div class="ag-step" id="as2">
+            <div class="ag-icon p" id="ai2"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Extrayendo entidades, procesos y relaciones del caso de uso</span>
+          </div>
+          <div class="ag-step" id="as3">
+            <div class="ag-icon p" id="ai3"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Derivando paths REST y operaciones HTTP desde los procesos</span>
+          </div>
+          <div class="ag-step" id="as4">
+            <div class="ag-icon p" id="ai4"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Mapeando campos al Data Dictionary ISO 20022 (PartyIdentification, ActiveCurrencyAndAmount...)</span>
+          </div>
+          <div class="ag-step" id="as5">
+            <div class="ag-icon p" id="ai5"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Generando diagramas UML del modelo de datos</span>
+          </div>
+          <div class="ag-step" id="as6">
+            <div class="ag-icon p" id="ai6"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+            <span class="ag-lbl">Identificando campos con mapeo incierto para validación del equipo</span>
+          </div>
+        </div>
+        <div class="ag-pill" id="ag1Pill">
+          <div class="ag-dot"></div>
+          <span>business-analyst · Anthropic / Claude 4 Opus · skill: discover-use-case + design-data-dictionary</span>
+        </div>
+
+        <!-- Completion panel -->
+        <div class="ag-done-panel" id="ag1Done">
+          <div class="ag-done-check">
+            <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="#1a7f4e" stroke-width="2.5"><path d="M3 8l4 4 6-6"/></svg>
+          </div>
+          <div class="ag-done-title">Análisis completado</div>
+          <div class="ag-done-sub">El agente ha diseñado la propuesta y el diccionario de datos</div>
+          <button class="btn btn-a" onclick="advanceToSec3()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            Ver propuesta del agente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: Phase 1 Results ───────────────────────── -->
+  <div class="section" id="sec3">
+
+    <!-- ░░ PANEL A: Review gate (shown first) ░░ -->
+    <div id="sec3-review">
+      <div class="sec-hdr">
+        <div class="wrap">
+          <div class="eyebrow">Business Analyst Agent · Revisión de decisiones</div>
+          <h2>El agente necesita <span style="color:var(--accent)">tu criterio</span> en 1 punto</h2>
+          <p class="sub">Responde la duda del agente antes de ver la propuesta completa. El diccionario tiene un campo de baja confianza que requiere decisión manual.</p>
+        </div>
+      </div>
+      <div class="wrap-sm">
+        <div class="review-progress">
+          <span class="b b-warn" id="review-pending">⚠ 1 campo requiere decisión</span>
+          <span class="b b-ok" id="review-ok" style="display:none">✓ Todas las decisiones resueltas</span>
+          <span style="font-size:11px;color:var(--text-l)">— responde para desbloquear la propuesta</span>
+        </div>
+
+        <!-- Agent question -->
+        <div class="aq">
+          <div class="aq-hdr">
+            <div class="aq-av">BA</div>
+            <div>
+              <div class="aq-nm">Business Analyst Agent · inline validation</div>
+              <div class="aq-rl">skill: design-data-dictionary · campo con baja confianza</div>
+            </div>
+          </div>
+          <p class="aq-txt">
+            🔍 Tengo una duda sobre <code>debtor.documentType</code>: el campo puede tomar dos caminos en ISO 20022.<br><br>
+            <strong style="color:rgba(255,255,255,.95)">Opción A — ISO 20022:</strong> Mapearlo a <code>OtherIdentification.SchemeName</code> con un enum estructurado (DNI, PASSPORT, RFC, RUC...). Correcto si hay un catálogo internacional de tipos de documento.<br><br>
+            <strong style="color:rgba(255,255,255,.95)">Opción B — Campo local:</strong> Marcarlo como <code>x-gov-note: "Local field"</code> con un enum específico por mercado. Correcto si los valores son distintos entre entidades o países y no existe un estándar común que aplique.
+          </p>
+          <div class="aq-opts">
+            <div class="aq-opt" id="aqa" onclick="selectAq('a')">Opción A — OtherIdentification / SchemeName (ISO 20022)</div>
+            <div class="aq-opt" id="aqb" onclick="selectAq('b')">Opción B — Campo local con enum por entidad</div>
+          </div>
+        </div>
+
+        <!-- Done bar (appears after answering) -->
+        <div class="review-done-bar" id="reviewDoneBar">
+          <div>
+            <div class="rd-txt">✓ Decisión registrada — diccionario validado</div>
+            <div class="rd-sub" id="reviewDoneSub">documentType pendiente de decisión</div>
+          </div>
+          <button class="btn btn-a" onclick="showProposal()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            Ver propuesta completa
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░ PANEL B: Full proposal (unlocked after review) ░░ -->
+    <div id="sec3-proposal" style="display:none">
+      <div class="sec-hdr">
+        <div class="wrap">
+          <div class="eyebrow">Business Analyst Agent · Propuesta</div>
+          <h2>Propuesta para <span id="s3uc" style="color:var(--accent)">Remesas Internacionales</span></h2>
+          <p class="sub">Revisa la estructura generada. El diccionario ya está validado — confirma para generar los artefactos.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="tabs">
+          <button class="tab on" onclick="setTab('t1','tp1-paths')">Paths propuestos</button>
+          <button class="tab" onclick="setTab('t1','tp1-dict')">Diccionario de datos</button>
+          <button class="tab" onclick="setTab('t1','tp1-diagram');renderDiagrams()">Diagrama del modelo</button>
+        </div>
+
+        <!-- Paths -->
+        <div class="tp on" id="tp1-paths">
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="tbl">
+            <thead>
+              <tr><th style="width:74px">Método</th><th>Path</th><th>Descripción</th><th>ISO 20022</th><th>operationId</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="bm m-post">POST</span></td><td><code>/remittances</code></td><td>Crear nueva remesa internacional</td><td><span class="b b-iso">pain.001</span></td><td><code>createRemittance</code></td></tr>
+              <tr><td><span class="bm m-get">GET</span></td><td><code>/remittances</code></td><td>Listar remesas con filtros de estado</td><td><span class="b b-iso">camt.053</span></td><td><code>listRemittances</code></td></tr>
+              <tr><td><span class="bm m-get">GET</span></td><td><code>/remittances/{id}</code></td><td>Consultar detalle de una remesa</td><td><span class="b b-iso">camt.053</span></td><td><code>getRemittance</code></td></tr>
+              <tr><td><span class="bm m-patch">PATCH</span></td><td><code>/remittances/{id}</code></td><td>Actualizar datos antes de procesar</td><td><span class="b b-iso">pain.002</span></td><td><code>updateRemittance</code></td></tr>
+              <tr><td><span class="bm m-delete">DELETE</span></td><td><code>/remittances/{id}</code></td><td>Cancelar remesa (estado PENDING)</td><td><span class="b b-iso">camt.055</span></td><td><code>cancelRemittance</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dictionary -->
+      <div class="tp" id="tp1-dict">
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+          <table class="tbl">
+            <thead>
+              <tr><th>Campo</th><th>Tipo</th><th>Referencia ISO 20022</th><th>Tipo ISO</th><th style="width:70px">Oblig.</th><th>Confianza</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>remittanceId</code></td><td>string</td><td>PaymentIdentification.EndToEndId</td><td><span class="b b-iso">Max35Text</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>amount</code></td><td>object</td><td>ActiveCurrencyAndAmount</td><td><span class="b b-iso">Object</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>amount.value</code></td><td>number</td><td>Amount</td><td><span class="b b-iso">Decimal</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>amount.currency</code></td><td>string</td><td>ActiveOrHistoricCurrencyCode</td><td><span class="b b-iso">ISO4217</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>debtor</code></td><td>object</td><td>PartyIdentification (Debtor)</td><td><span class="b b-iso">Object</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>debtor.name</code></td><td>string</td><td>Debtor.Name</td><td><span class="b b-iso">Max140Text</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>debtor.documentType</code></td><td>string</td><td>— <em style="font-size:11px;color:var(--warn)">requiere decisión</em></td><td><span class="b b-warn">⚠ Revisar</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-err">Baja</span></td></tr>
+              <tr><td><code>creditor</code></td><td>object</td><td>PartyIdentification (Creditor)</td><td><span class="b b-iso">Object</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>creditor.name</code></td><td>string</td><td>Creditor.Name</td><td><span class="b b-iso">Max140Text</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>creditor.account.iban</code></td><td>string</td><td>AccountIdentification.IBAN</td><td><span class="b b-iso">IBAN2007</span></td><td><span class="b b-warn">○</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>status</code></td><td>string enum</td><td>TransactionGroupStatus</td><td><span class="b b-iso">Enum</span></td><td><span class="b b-ok">✓</span></td><td><span class="b b-ok">Alta</span></td></tr>
+              <tr><td><code>creditLimitCheck</code></td><td>boolean</td><td>— <em style="font-size:11px;color:#6c3483">campo local</em></td><td><span class="b b-loc">Local</span></td><td><span class="b b-warn">○</span></td><td>—</td></tr>
+              <tr><td><code>createdAt</code></td><td>string</td><td>— <em style="font-size:11px;color:#6c3483">campo local</em></td><td><span class="b b-loc">Local</span></td><td><span class="b b-ok">✓</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Decision resolved indicator (replaces the question in the dict tab) -->
+        <div class="aq-resolved" id="aqResolved">
+          <div class="aq-resolved-icon">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#1a7f4e" stroke-width="2.5"><path d="M3 8l4 4 6-6"/></svg>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.9)">Decisión tomada en la etapa de revisión</div>
+            <div id="aqResolvedText" style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px">documentType → pendiente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagram -->
+      <div class="tp" id="tp1-diagram">
+        <div class="diag-tabs">
+          <div class="dtab on" id="dt1" onclick="setDiagTab(1)">Modelo de datos</div>
+          <div class="dtab" id="dt2" onclick="setDiagTab(2)">Diagrama de clases (UML)</div>
+          <div class="dtab" id="dt3" onclick="setDiagTab(3)">Flujo del proceso</div>
+        </div>
+
+        <!-- Diagrama 1: Modelo visual -->
+        <div id="diag1">
+          <div class="model-grid">
+            <div>
+              <div class="model-card">
+                <div class="model-header">Remittance <span class="model-iso">pain.001</span></div>
+                <div class="model-field"><span class="mf-name">remittanceId</span><span class="mf-type">string</span><span class="mf-ref">Max35Text</span></div>
+                <div class="model-field"><span class="mf-name">status</span><span class="mf-type">enum</span><span class="mf-ref">TransactionGroupStatus</span></div>
+                <div class="model-field"><span class="mf-name">amount</span><span class="mf-type">→ Amount</span><span class="mf-ref">ActiveCurrencyAndAmount</span></div>
+                <div class="model-field"><span class="mf-name">debtor</span><span class="mf-type">→ Party</span><span class="mf-ref">PartyIdentification</span></div>
+                <div class="model-field"><span class="mf-name">creditor</span><span class="mf-type">→ Party</span><span class="mf-ref">PartyIdentification</span></div>
+                <div class="model-field"><span class="mf-name">creditLimitCheck</span><span class="mf-type">boolean</span><span class="b b-loc" style="font-size:9px">Local</span></div>
+                <div class="model-field"><span class="mf-name">createdAt</span><span class="mf-type">date-time</span><span class="b b-loc" style="font-size:9px">Local</span></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="model-card">
+                <div class="model-header">Amount <span class="model-iso">ActiveCurrencyAndAmount</span></div>
+                <div class="model-field"><span class="mf-name">value</span><span class="mf-type">number</span><span class="mf-ref">Decimal</span></div>
+                <div class="model-field"><span class="mf-name">currency</span><span class="mf-type">string</span><span class="mf-ref">ISO4217CurrencyCode</span></div>
+              </div>
+              <div class="model-card">
+                <div class="model-header">Party <span class="model-iso">PartyIdentification</span></div>
+                <div class="model-field"><span class="mf-name">name</span><span class="mf-type">string</span><span class="mf-ref">Max140Text</span></div>
+                <div class="model-field"><span class="mf-name">documentType</span><span class="mf-type">string</span><span class="b b-warn" style="font-size:9px">Revisar</span></div>
+                <div class="model-field"><span class="mf-name">account</span><span class="mf-type">→ Account</span><span class="mf-ref">AccountIdentification</span></div>
+              </div>
+              <div class="model-card">
+                <div class="model-header">Account <span class="model-iso">AccountIdentification</span></div>
+                <div class="model-field"><span class="mf-name">iban</span><span class="mf-type">string</span><span class="mf-ref">IBAN2007Identifier</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diagrama 2: UML Class (Mermaid) -->
+        <div id="diag2" style="display:none">
+          <div class="mermaid-wrap">
+            <div class="mermaid" id="mermaid-class">
+classDiagram
+    class Remittance {
+        &lt;&lt;pain.001&gt;&gt;
+        +String remittanceId
+        +String status
+        +DateTime createdAt
+        +Boolean creditLimitCheck
+        +create()
+        +cancel()
+        +getStatus()
+    }
+    class Amount {
+        &lt;&lt;ActiveCurrencyAndAmount&gt;&gt;
+        +Number value
+        +String currency
+    }
+    class Party {
+        &lt;&lt;PartyIdentification&gt;&gt;
+        +String name
+        +String documentType
+    }
+    class Account {
+        &lt;&lt;AccountIdentification&gt;&gt;
+        +String iban
+    }
+    Remittance "1" --> "1" Amount : amount
+    Remittance "1" --> "1" Party : debtor
+    Remittance "1" --> "1" Party : creditor
+    Party "1" --> "0..1" Account : account
+            </div>
+          </div>
+        </div>
+
+        <!-- Diagrama 3: Sequence (Mermaid) -->
+        <div id="diag3" style="display:none">
+          <div class="mermaid-wrap">
+            <div class="mermaid" id="mermaid-seq">
+sequenceDiagram
+    actor B as Equipo Créditos
+    participant BA as Business Analyst Agent
+    participant AB as API Builder Agent
+    actor D as Equipo Desarrollo
+
+    B->>BA: Describe caso de uso (Remesas)
+    BA->>BA: Clasifica dominio ISO 20022
+    BA->>BA: Mapea campos al estándar
+    BA->>B: Propone paths + diccionario
+    B-->>BA: Responde dudas (documentType)
+    B->>BA: ✓ Aprueba diseño
+    BA->>AB: data-dictionary.json aprobado
+    AB->>AB: Genera JSON Schemas
+    AB->>AB: Construye OpenAPI 3.1.0
+    AB->>AB: Valida $ref + cobertura ISO
+    AB->>D: openapi.yaml + schemas/ listos
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm bar -->
+      <div class="confirm-bar">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--morado);margin-bottom:4px">¿El diseño es correcto?</div>
+          <div style="font-size:12px;color:var(--text-l)">El diccionario ya está validado. Confirma para que el API Builder Agent genere los artefactos.</div>
+        </div>
+        <button class="btn btn-a" id="btnConfirm" onclick="runPhase2()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          Confirmar y generar API
+        </button>
+      </div>
+
+      <div class="ticker">
+        El agente propone <span class="hl">5 paths</span> y <span class="hl">13 campos</span> — 10 mapeados a ISO 20022 (77%) · 2 campos locales · 1 campo resuelto en revisión.
+      </div>
+    </div>
+    </div><!-- /sec3-proposal -->
+  </div><!-- /sec3 -->
+
+
+  <!-- ── SECTION 4: API Builder loading ─────────────────── -->
+  <div class="section" id="sec4">
+    <div class="wrap-sm">
+      <div class="agent-card">
+        <div class="eyebrow" style="color:var(--accent)">API Builder Agent</div>
+        <h2 class="ag-title">Generando los <span>artefactos</span></h2>
+        <p class="ag-sub">El agente está construyendo los ficheros desde el diccionario aprobado</p>
+        <div class="ag-steps">
+          <div class="ag-step" id="bs1"><div class="ag-icon p" id="bi1"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Leyendo data-dictionary.json aprobado y validando estructura</span></div>
+          <div class="ag-step" id="bs2"><div class="ag-icon p" id="bi2"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Generando schemas comunes: Amount.schema.json, Party.schema.json, Account.schema.json</span></div>
+          <div class="ag-step" id="bs3"><div class="ag-icon p" id="bi3"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Generando schemas de recurso: Remittance.schema.json, CreateRequest.schema.json</span></div>
+          <div class="ag-step" id="bs4"><div class="ag-icon p" id="bi4"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Construyendo OpenAPI 3.1.0 con $ref a los schemas canónicos</span></div>
+          <div class="ag-step" id="bs5"><div class="ag-icon p" id="bi5"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Validando referencias $ref, cobertura ISO 20022 y responses HTTP</span></div>
+          <div class="ag-step" id="bs6"><div class="ag-icon p" id="bi6"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div><span class="ag-lbl">Generando reporte de cobertura y data-dictionary.md para equipos funcionales</span></div>
+        </div>
+        <div class="ag-pill" id="ag2Pill">
+          <div class="ag-dot"></div>
+          <span>api-builder · Anthropic / Claude 4 Opus · skill: generate-oas-api · JSON Schema Draft 2020-12</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: Final artifacts ────────────────────── -->
+  <div class="section" id="sec5">
+    <div class="sec-hdr">
+      <div class="wrap">
+        <div class="eyebrow">API Builder Agent · Generación completada</div>
+        <h2>API <span style="color:var(--accent)">lista para desarrollo</span></h2>
+        <p class="sub">Los artefactos han sido generados y validados. El equipo de desarrollo puede usar el OpenAPI YAML directamente.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <!-- Artifact list -->
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px">
+        <table class="tbl">
+          <thead><tr><th>Artefacto</th><th>Ruta</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>OpenAPI 3.1.0 YAML</td><td><code>output/api/openapi.yaml</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>JSON Schema — Amount (común)</td><td><code>output/api/schemas/common/Amount.schema.json</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>JSON Schema — Party (común)</td><td><code>output/api/schemas/common/Party.schema.json</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>JSON Schema — Remittance</td><td><code>output/api/schemas/Remittance.schema.json</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>JSON Schema — CreateRequest</td><td><code>output/api/schemas/RemittanceCreateRequest.schema.json</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>Data Dictionary Markdown</td><td><code>output/api/data-dictionary.md</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+            <tr><td>Generation Report</td><td><code>output/api/generation-report.md</code></td><td><span class="b b-ok">✅ Generado</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat"><div class="stat-n">13</div><div class="stat-l">Campos totales</div></div>
+        <div class="stat"><div class="stat-n" style="color:var(--ok)">10</div><div class="stat-l">Mapeados ISO 20022</div></div>
+        <div class="stat"><div class="stat-n" style="color:#6c3483">2</div><div class="stat-l">Campos locales</div></div>
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l">Endpoints</div></div>
+        <div class="stat"><div class="stat-n">7</div><div class="stat-l">Schemas JSON</div></div>
+        <div class="stat"><div class="stat-n" style="color:var(--ok)">✓</div><div class="stat-l">Todos los $ref OK</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab on" onclick="setTab('t2','tp2-yaml')">OpenAPI YAML</button>
+        <button class="tab" onclick="setTab('t2','tp2-schema')">JSON Schema</button>
+        <button class="tab" onclick="setTab('t2','tp2-report')">Reporte</button>
+        <button class="tab" onclick="setTab('t2','tp2-swagger');initSwaggerUI()">&#128196; Swagger UI</button>
+      </div>
+
+      <!-- YAML -->
+      <div class="tp on" id="tp2-yaml">
+        <div class="stub" id="stub4">🔌 LLM_CALL [Anthropic / Claude 4 Opus] → api-builder (skill: generate-oas-api). Este YAML se generará dinámicamente al conectar el LLM seleccionado.</div>
+        <div class="code"><span class="cc"># OpenAPI 3.1.0 — Remesas Internacionales
+# Generado por api-builder · skill: generate-oas-api
+# Equipo solicitante: Créditos &amp; Financiamiento</span>
+
+<span class="ck">openapi</span>: <span class="cv">"3.1.0"</span>
+<span class="ck">info</span>:
+  <span class="ck">title</span>: <span class="cv">"International Remittances API"</span>
+  <span class="ck">version</span>: <span class="cv">"1.0.0"</span>
+  <span class="ck">x-gov-owner</span>: <span class="cv">"API Governance · Embedded Finance"</span>
+  <span class="ck">x-gov-team</span>: <span class="cv">"Créditos &amp; Financiamiento"</span>
+  <span class="ck">x-gov-use-case</span>: <span class="cv">"international-remittances"</span>
+  <span class="ck">x-iso20022-domain</span>: <span class="cv">"pain"</span>
+
+<span class="ck">servers</span>:
+  - <span class="ck">url</span>: <span class="cv">"https://api.financial-entity.com/remittances/v1"</span>
+  - <span class="ck">url</span>: <span class="cv">"https://api-sandbox.financial-entity.com/remittances/v1"</span>
+
+<span class="ck">paths</span>:
+  <span class="ck">/remittances</span>:
+    <span class="cm">post</span>:
+      <span class="ck">summary</span>: <span class="cv">"Create a new international remittance"</span>
+      <span class="ck">operationId</span>: <span class="cv">"createRemittance"</span>
+      <span class="ck">requestBody</span>:
+        <span class="ck">required</span>: <span class="ct">true</span>
+        <span class="ck">content</span>:
+          <span class="cv">"application/json"</span>:
+            <span class="ck">schema</span>:
+              <span class="ck">$ref</span>: <span class="cv">"#/components/schemas/RemittanceCreateRequest"</span>
+      <span class="ck">responses</span>:
+        <span class="cv">"201"</span>: { <span class="ck">$ref</span>: <span class="cv">"#/components/responses/RemittanceCreated"</span> }
+        <span class="cv">"400"</span>: { <span class="ck">$ref</span>: <span class="cv">"#/components/responses/BadRequest"</span> }
+        <span class="cv">"500"</span>: { <span class="ck">$ref</span>: <span class="cv">"#/components/responses/InternalServerError"</span> }
+
+<span class="ck">components</span>:
+  <span class="ck">schemas</span>:
+    <span class="ck">Remittance</span>:
+      <span class="ck">type</span>: <span class="cv">"object"</span>
+      <span class="ck">x-iso20022-ref</span>: <span class="cv">"CreditTransferTransaction"</span>
+      <span class="ck">x-gov-owner</span>: <span class="cv">"API Governance"</span>
+      <span class="ck">x-gov-version</span>: <span class="cv">"1.0.0"</span>
+      <span class="ck">properties</span>:
+        <span class="ck">remittanceId</span>:
+          <span class="ck">type</span>: <span class="cv">"string"</span>; <span class="ck">maxLength</span>: <span class="cn">35</span>
+          <span class="ck">x-iso20022-ref</span>: <span class="cv">"PaymentIdentification.EndToEndIdentification"</span>
+          <span class="ck">x-iso20022-type</span>: <span class="cv">"Max35Text"</span>
+        <span class="ck">amount</span>:
+          <span class="ck">$ref</span>: <span class="cv">"schemas/common/Amount.schema.json"</span>
+        <span class="ck">debtor</span>:
+          <span class="ck">$ref</span>: <span class="cv">"schemas/common/Party.schema.json"</span>
+        <span class="ck">creditor</span>:
+          <span class="ck">$ref</span>: <span class="cv">"schemas/common/Party.schema.json"</span>
+        <span class="ck">status</span>:
+          <span class="ck">type</span>: <span class="cv">"string"</span>
+          <span class="ck">enum</span>: [<span class="cv">"PENDING"</span>, <span class="cv">"PROCESSING"</span>, <span class="cv">"COMPLETED"</span>, <span class="cv">"CANCELLED"</span>]
+          <span class="ck">x-iso20022-ref</span>: <span class="cv">"TransactionGroupStatus"</span>
+        <span class="ck">creditLimitCheck</span>:
+          <span class="ck">type</span>: <span class="cv">"boolean"</span>
+          <span class="ck">x-gov-note</span>: <span class="cv">"Local field — specific to Créditos team workflow"</span>
+      <span class="ck">required</span>: [<span class="cv">"remittanceId"</span>, <span class="cv">"amount"</span>, <span class="cv">"debtor"</span>, <span class="cv">"creditor"</span>, <span class="cv">"status"</span>]
+      <span class="ck">additionalProperties</span>: <span class="ct">false</span></div>
+      </div>
+
+      <!-- Schema -->
+      <div class="tp" id="tp2-schema">
+        <div class="code"><span class="cc">{
+  // Amount.schema.json — tipo común · ISO 20022 ActiveCurrencyAndAmount
+  // Referenciado por $ref desde Remittance, RemittanceCreateRequest y futuros schemas
+}</span>
+{
+  <span class="ck">"$schema"</span>: <span class="cv">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span class="ck">"$id"</span>: <span class="cv">"https://api.financial-entity.com/schemas/common/Amount.schema.json"</span>,
+  <span class="ck">"title"</span>: <span class="cv">"Amount"</span>,
+  <span class="ck">"description"</span>: <span class="cv">"ISO 20022 ActiveCurrencyAndAmount — monetary value with currency"</span>,
+  <span class="ck">"type"</span>: <span class="cv">"object"</span>,
+  <span class="ck">"x-iso20022-ref"</span>: <span class="cv">"ActiveCurrencyAndAmount"</span>,
+  <span class="ck">"x-gov-owner"</span>: <span class="cv">"API Governance · Embedded Finance"</span>,
+  <span class="ck">"x-gov-version"</span>: <span class="cv">"1.0.0"</span>,
+  <span class="ck">"x-gov-use-case"</span>: <span class="cv">"international-remittances"</span>,
+  <span class="ck">"properties"</span>: {
+    <span class="ck">"value"</span>: {
+      <span class="ck">"type"</span>: <span class="cv">"number"</span>,
+      <span class="ck">"minimum"</span>: <span class="cn">0</span>,
+      <span class="ck">"description"</span>: <span class="cv">"Monetary amount. Decimals: 2"</span>,
+      <span class="ck">"examples"</span>: [<span class="cn">250.00</span>, <span class="cn">1500.50</span>]
+    },
+    <span class="ck">"currency"</span>: {
+      <span class="ck">"type"</span>: <span class="cv">"string"</span>,
+      <span class="ck">"pattern"</span>: <span class="cv">"^[A-Z]{3}$"</span>,
+      <span class="ck">"x-iso20022-ref"</span>: <span class="cv">"ActiveOrHistoricCurrencyCode"</span>,
+      <span class="ck">"examples"</span>: [<span class="cv">"EUR"</span>, <span class="cv">"USD"</span>, <span class="cv">"MXN"</span>]
+    }
+  },
+  <span class="ck">"required"</span>: [<span class="cv">"value"</span>, <span class="cv">"currency"</span>],
+  <span class="ck">"additionalProperties"</span>: <span class="ct">false</span>
+}</div>
+      </div>
+
+      <!-- Report -->
+      <div class="tp" id="tp2-report">
+        <div class="card">
+          <div class="sdiv"><h3>Cobertura ISO 20022</h3><div class="sdiv-l"></div></div>
+          <div class="cov-row">
+            <div class="cov-label"><span>Campos mapeados ISO 20022</span><strong style="color:var(--ok)">77% — 10 de 13</strong></div>
+            <div class="cov-bar"><div class="cov-fill" style="width:77%;background:var(--ok)"></div></div>
+          </div>
+          <div class="cov-row">
+            <div class="cov-label"><span>Referencias $ref validadas</span><strong style="color:var(--ok)">100% — 7 de 7</strong></div>
+            <div class="cov-bar"><div class="cov-fill" style="width:100%;background:var(--ok)"></div></div>
+          </div>
+          <div class="cov-row" style="margin-bottom:0">
+            <div class="cov-label"><span>Campos locales sin ISO equivalente</span><strong style="color:#6c3483">2 campos</strong></div>
+            <div class="cov-bar"><div class="cov-fill" style="width:15%;background:#8e44ad"></div></div>
+          </div>
+
+          <div class="sdiv" style="margin-top:26px"><h3>Estado de campos</h3><div class="sdiv-l"></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--ok-bg);border-radius:4px">
+              <span style="font-size:13px;color:var(--ok);font-weight:700">✅ Alta confianza — auto-aceptados</span>
+              <span class="b b-ok">9 campos (L2 &lt; 0.35)</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--warn-bg);border-radius:4px">
+              <span style="font-size:13px;color:var(--warn);font-weight:700">⚠ Revisado por el equipo</span>
+              <span class="b b-warn">1 campo — documentType → OtherIdentification/SchemeName</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(108,52,131,.08);border-radius:4px">
+              <span style="font-size:13px;color:#6c3483;font-weight:700">🏷 Campos locales</span>
+              <span class="b b-loc">2 — creditLimitCheck, createdAt</span>
+            </div>
+          </div>
+
+          <div class="sdiv"><h3>Próximos pasos</h3><div class="sdiv-l"></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:10px 14px;border-left:3px solid var(--accent);background:var(--blanco);border-radius:0 4px 4px 0;font-size:13px">Compartir <code>output/api/openapi.yaml</code> con el equipo de desarrollo para iniciar la implementación.</div>
+            <div style="padding:10px 14px;border-left:3px solid var(--morado);background:var(--blanco);border-radius:0 4px 4px 0;font-size:13px">Fase siguiente: <strong>Revisión &amp; Aprobación</strong> — el equipo de Gobierno de APIs validará el diseño con Spectral antes de publicar en el catálogo.</div>
+            <div style="padding:10px 14px;border-left:3px solid var(--morado);background:var(--blanco);border-radius:0 4px 4px 0;font-size:13px">El campo <code>creditLimitCheck</code> es local al equipo de Créditos. Evaluar en futuras versiones si debe estandarizarse como referencia ISO para otros equipos.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Swagger UI -->
+      <div class="tp" id="tp2-swagger">
+        <div style="background:var(--blanco);border-radius:6px;overflow:hidden;border:1px solid var(--border)">
+          <div id="swagger-ui-container"></div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="margin-top:26px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-p" onclick="downloadYaml()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v7M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Descargar OpenAPI YAML
+        </button>
+        <button class="btn btn-o" onclick="resetDemo()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8a6 6 0 1 0 12 0 6 6 0 0 0-12 0"/><path d="M8 5l-2 3h4l-2 3"/></svg>
+          Nueva demo
+        </button>
+      </div>
+
+      <div class="ticker">
+        <span class="hl">Créditos &amp; Financiamiento</span> tiene su API lista: <span class="hl">5 endpoints</span>, <span class="hl">7 schemas</span>, <span class="hl">77% cobertura ISO 20022</span> — sin esfuerzo manual de diseño técnico.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+  JAVASCRIPT
+══════════════════════════════════════════════════════════════ -->
+<script>
+// ── Mermaid config ───────────────────────────────────────────
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#E3E2DA',
+    primaryTextColor: '#260717',
+    primaryBorderColor: '#4F062A',
+    lineColor: '#FF0054',
+    secondaryColor: '#f4ecf7',
+    tertiaryColor: '#e8f4fd',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    fontSize: '13px'
+  },
+  sequence: { actorMargin: 50, messageMargin: 30, mirrorActors: false }
+});
+
+let mermaidDone = {};
+let aqDone = false;
+const llmCatalog = [
+  { name: 'Claude 4 Opus', provider: 'Anthropic', providerLabel: 'Anthropic', type: 'Propietario' },
+  { name: 'GPT-4.1', provider: 'OpenAI', providerLabel: 'OpenAI', type: 'Propietario' },
+  { name: 'Gemini 2.5 Pro', provider: 'Google', providerLabel: 'Google DeepMind', type: 'Propietario' },
+  { name: 'Llama 4 Maverick', provider: 'Meta', providerLabel: 'Meta · Open Source', type: 'Open Source' },
+];
+
+let selectedLlm = { name: 'Claude 4 Opus', provider: 'Anthropic' };
+
+function getLlmTagClass(type) {
+  return type === 'Propietario' ? 'llm-prop' : 'llm-oss';
+}
+
+function buildLlmCard(model) {
+  const isSelected = model.name === selectedLlm.name && model.provider === selectedLlm.provider;
+  const card = document.createElement('div');
+  card.className = `llm-card${isSelected ? ' sel' : ''}`;
+  card.dataset.llm = model.name;
+  card.dataset.provider = model.provider;
+  card.onclick = function() { selectLlm(card); };
+  card.innerHTML = `
+    <div class="llm-name">${model.name}</div>
+    <div class="llm-prov">${model.providerLabel}</div>
+    <span class="llm-tag ${getLlmTagClass(model.type)}">${model.type}</span>
+  `;
+  return card;
+}
+
+function renderLlmOptions() {
+  const grid = document.getElementById('llmGrid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+  llmCatalog.forEach(model => grid.appendChild(buildLlmCard(model)));
+
+  const summary = document.getElementById('llmSummary');
+  if (summary) {
+    summary.textContent = `${llmCatalog.length} modelos principales disponibles para comparar proveedores líderes sin saturar la interfaz.`;
+  }
+}
+
+// ── Start app ────────────────────────────────────────────────
+function startApp() {
+  document.getElementById('portada').style.display = 'none';
+  document.getElementById('app-header').style.display = 'flex';
+  document.getElementById('app').style.display = 'block';
+  updateTeamBadge();
+}
+
+// ── Team badge ────────────────────────────────────────────────
+function updateTeamBadge() {
+  const sel = document.getElementById('fTeam');
+  const val = sel ? sel.value : '';
+  document.getElementById('teamBadge').textContent = val || 'Equipo no seleccionado';
+}
+
+// ── LLM selector ─────────────────────────────────────────────
+function selectLlm(el) {
+  document.querySelectorAll('.llm-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedLlm = { name: el.dataset.llm, provider: el.dataset.provider };
+  updateLlmBadge();
+}
+
+function updateLlmBadge() {
+  const badge = document.getElementById('llmBadge');
+  if (badge) badge.textContent = selectedLlm.name;
+  const p1 = document.getElementById('ag1Pill');
+  if (p1) p1.querySelector('span').textContent = `business-analyst · ${selectedLlm.provider} / ${selectedLlm.name} · skill: discover-use-case + design-data-dictionary`;
+  const p2 = document.getElementById('ag2Pill');
+  if (p2) p2.querySelector('span').textContent = `api-builder · ${selectedLlm.provider} / ${selectedLlm.name} · skill: generate-oas-api · JSON Schema Draft 2020-12`;
+  const s1 = document.getElementById('stub1');
+  if (s1) s1.textContent = `🔌 LLM_CALL [${selectedLlm.provider} / ${selectedLlm.name}] → business-analyst (skill: discover-use-case + design-data-dictionary)`;
+  const s4 = document.getElementById('stub4');
+  if (s4) s4.textContent = `🔌 LLM_CALL [${selectedLlm.provider} / ${selectedLlm.name}] → api-builder (skill: generate-oas-api). Este YAML se generará dinámicamente al conectar el LLM seleccionado.`;
+}
+
+// ── Lifecycle bar progress ────────────────────────────────────
+function setLcStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const dot  = document.getElementById('lcs' + i);
+    const lbl  = document.getElementById('lcl' + i);
+    const line = document.getElementById('lcline' + i);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active','done');
+    if (line) line.classList.remove('done');
+    if (i < n) {
+      dot.classList.add('done'); lbl.classList.add('done');
+      if (line) line.classList.add('done');
+    } else if (i === n) {
+      dot.classList.add('active'); lbl.classList.add('active');
+    }
+  }
+}
+
+// ── Show section ──────────────────────────────────────────────
+function showSec(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  const el = document.getElementById(id);
+  el.classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Tabs ──────────────────────────────────────────────────────
+function setTab(group, panelId) {
+  const panels = group === 't1'
+    ? ['tp1-paths','tp1-dict','tp1-diagram']
+    : ['tp2-yaml','tp2-schema','tp2-report','tp2-swagger'];
+  const container = group === 't1' ? document.getElementById('sec3-proposal') : document.getElementById('sec5');
+  const btns = container.querySelectorAll('.tab');
+  panels.forEach((p, i) => {
+    document.getElementById(p).classList.toggle('on', p === panelId);
+    if (btns[i]) btns[i].classList.toggle('on', p === panelId);
+  });
+}
+
+// ── Diagram tabs ─────────────────────────────────────────────
+function setDiagTab(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('diag'+i).style.display = i===n ? 'block' : 'none';
+    document.getElementById('dt'+i).classList.toggle('on', i===n);
+  });
+}
+
+// ── Render Mermaid on demand ──────────────────────────────────
+function renderDiagrams() {
+  ['mermaid-class','mermaid-seq'].forEach(id => {
+    if (mermaidDone[id]) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    const def = el.textContent.trim();
+    mermaid.render(id + '-svg', def).then(({svg}) => {
+      el.innerHTML = svg;
+      mermaidDone[id] = true;
+    }).catch(e => {
+      el.innerHTML = '<p style="color:#922b21;font-size:12px;padding:20px">Error al renderizar diagrama. Requiere conexión a internet (cdnjs.cloudflare.com).</p>';
+      console.warn('Mermaid error:', e);
+    });
+  });
+}
+
+// ── Agent question ────────────────────────────────────────────
+function selectAq(opt) {
+  document.getElementById('aqa').classList.toggle('sel', opt === 'a');
+  document.getElementById('aqb').classList.toggle('sel', opt === 'b');
+  aqDone = true;
+  // Show the done bar in the review gate
+  document.getElementById('reviewDoneBar').classList.add('vis');
+  document.getElementById('review-pending').style.display = 'none';
+  document.getElementById('review-ok').style.display = 'inline-block';
+  // Update the resolved indicator in the dict tab
+  const label = opt === 'a'
+    ? 'OtherIdentification / SchemeName (ISO 20022)'
+    : 'Campo local con enum por entidad';
+  document.getElementById('reviewDoneSub').textContent = `documentType → ${label}`;
+  document.getElementById('aqResolvedText').textContent = `documentType → ${label}`;
+  // Scroll to the done bar
+  document.getElementById('reviewDoneBar').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── Phase 1 animation ─────────────────────────────────────────
+function runPhase1() {
+  setLcStep(2);
+  showSec('sec2');
+  animateSteps('a', 6, () => {
+    // Show completion panel instead of auto-advancing
+    document.getElementById('ag1Done').classList.add('vis');
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  });
+}
+
+function advanceToSec3() {
+  const uc = document.getElementById('fUseCase').value || 'Remesas Internacionales';
+  document.getElementById('s3uc').textContent = uc;
+  // Ensure review gate is shown, proposal hidden
+  document.getElementById('sec3-review').style.display = 'block';
+  document.getElementById('sec3-proposal').style.display = 'none';
+  setLcStep(3);
+  showSec('sec3');
+}
+
+function showProposal() {
+  document.getElementById('sec3-review').style.display = 'none';
+  document.getElementById('sec3-proposal').style.display = 'block';
+  showSec('sec3');
+}
+
+// ── Phase 2 animation ─────────────────────────────────────────
+function runPhase2() {
+  setLcStep(4);
+  showSec('sec4');
+  animateSteps('b', 6, () => {
+    showSec('sec5');
+  });
+}
+
+// ── Generic step animator ─────────────────────────────────────
+function animateSteps(prefix, count, onDone) {
+  const delays = [800, 2800, 5200, 8000, 11000, 14200];
+  const doneDel = 1100;
+
+  for (let i = 1; i <= count; i++) {
+    const idx = i;
+    setTimeout(() => {
+      const stepEl = document.getElementById(prefix + 's' + idx);
+      const iconEl = document.getElementById(prefix + 'i' + idx);
+      if (!stepEl || !iconEl) return;
+      stepEl.classList.add('vis');
+      iconEl.className = 'ag-icon l';
+      iconEl.innerHTML = spinSvg();
+    }, delays[i-1]);
+
+    setTimeout(() => {
+      const iconEl = document.getElementById(prefix + 'i' + idx);
+      const lblEl = document.getElementById(prefix + 's' + idx)?.querySelector('.ag-lbl');
+      if (!iconEl) return;
+      iconEl.className = 'ag-icon d';
+      iconEl.innerHTML = checkSvg();
+      if (lblEl) lblEl.classList.add('d');
+    }, delays[i-1] + doneDel);
+  }
+
+  setTimeout(onDone, delays[count-1] + doneDel + 700);
+}
+
+function spinSvg() {
+  return `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="2.5"><circle cx="8" cy="8" r="5" stroke-dasharray="20" stroke-dashoffset="5"/></svg>`;
+}
+function checkSvg() {
+  return `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#1a7f4e" stroke-width="2.5"><path d="M3 8l4 4 6-6"/></svg>`;
+}
+
+// ── Reset ─────────────────────────────────────────────────────
+function resetDemo() {
+  // Reset steps
+  ['a','b'].forEach(p => {
+    for (let i=1;i<=6;i++) {
+      const s = document.getElementById(p+'s'+i);
+      const ic = document.getElementById(p+'i'+i);
+      if (s) { s.classList.remove('vis'); }
+      if (ic) {
+        ic.className = 'ag-icon p';
+        ic.innerHTML = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>`;
+      }
+    }
+  });
+  // Reset completion panels
+  document.getElementById('ag1Done').classList.remove('vis');
+  // Reset review gate
+  document.getElementById('sec3-review').style.display = 'block';
+  document.getElementById('sec3-proposal').style.display = 'none';
+  document.getElementById('reviewDoneBar').classList.remove('vis');
+  document.getElementById('review-pending').style.display = 'inline-block';
+  document.getElementById('review-ok').style.display = 'none';
+  document.getElementById('reviewDoneSub').textContent = 'documentType pendiente de decisión';
+  document.getElementById('aqResolvedText').textContent = 'documentType → pendiente';
+  // Reset aq
+  aqDone = false;
+  document.getElementById('aqa').classList.remove('sel');
+  document.getElementById('aqb').classList.remove('sel');
+  // Reset tabs
+  setTab('t1','tp1-paths');
+  setDiagTab(1);
+  mermaidDone = {};
+  setLcStep(1);
+  showSec('sec1');
+}
+
+// ── Download YAML ─────────────────────────────────────────────
+function downloadYaml() {
+  const yaml = `openapi: "3.1.0"
+info:
+  title: "International Remittances API"
+  version: "1.0.0"
+  x-gov-owner: "API Governance · Embedded Finance"
+  x-gov-team: "Créditos & Financiamiento"
+  x-gov-use-case: "international-remittances"
+  x-iso20022-domain: "pain"
+servers:
+  - url: "https://api.financial-entity.com/remittances/v1"
+    description: "Production"
+  - url: "https://api-sandbox.financial-entity.com/remittances/v1"
+    description: "Sandbox"
+paths:
+  /remittances:
+    post:
+      summary: "Create a new international remittance"
+      operationId: "createRemittance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RemittanceCreateRequest"
+      responses:
+        "201":
+          description: "Remittance created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Remittance"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    get:
+      summary: "List remittances"
+      operationId: "listRemittances"
+      responses:
+        "200":
+          description: "List of remittances"
+  /remittances/{remittance-id}:
+    get:
+      summary: "Get remittance details"
+      operationId: "getRemittance"
+      parameters:
+        - in: path
+          name: remittance-id
+          required: true
+          schema: {type: string, maxLength: 35}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Remittance"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      summary: "Update remittance"
+      operationId: "updateRemittance"
+      responses:
+        "200":
+          description: "Updated"
+    delete:
+      summary: "Cancel remittance"
+      operationId: "cancelRemittance"
+      responses:
+        "204":
+          description: "Cancelled"
+components:
+  schemas:
+    Remittance:
+      type: object
+      x-iso20022-ref: "CreditTransferTransaction"
+      x-gov-owner: "API Governance"
+      x-gov-version: "1.0.0"
+      x-gov-team: "Créditos & Financiamiento"
+      properties:
+        remittanceId:
+          type: string
+          maxLength: 35
+          x-iso20022-ref: "PaymentIdentification.EndToEndIdentification"
+          x-iso20022-type: "Max35Text"
+          example: "REM-2026-00042"
+        amount:
+          $ref: "schemas/common/Amount.schema.json"
+        debtor:
+          $ref: "schemas/common/Party.schema.json"
+        creditor:
+          $ref: "schemas/common/Party.schema.json"
+        status:
+          type: string
+          enum: [PENDING, PROCESSING, COMPLETED, CANCELLED]
+          x-iso20022-ref: "TransactionGroupStatus"
+        creditLimitCheck:
+          type: boolean
+          x-gov-note: "Local field — specific to Créditos team workflow"
+        createdAt:
+          type: string
+          format: date-time
+          x-gov-note: "Local field — audit timestamp"
+      required: [remittanceId, amount, debtor, creditor, status]
+      additionalProperties: false
+    Amount:
+      $ref: "schemas/common/Amount.schema.json"
+    Party:
+      $ref: "schemas/common/Party.schema.json"
+`;
+  const blob = new Blob([yaml], { type: 'text/yaml' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'openapi-remittances-v1.yaml';
+  a.click();
+}
+
+// ── Swagger UI ───────────────────────────────────────────
+let swaggerInited = false;
+function getApiSpec() {
+  return {
+    openapi: '3.1.0',
+    info: {
+      title: 'International Remittances API',
+      version: '1.0.0',
+      description: 'Pipeline agéntico Open Business Accelerator · Gobierno de APIs & Agentes IA\n\nGenerado por **API Designer** — arquitectura LLM-agnóstica.',
+    },
+    servers: [
+      { url: 'https://api.financial-entity.com/remittances/v1', description: 'Production' },
+      { url: 'https://api-sandbox.financial-entity.com/remittances/v1', description: 'Sandbox' },
+    ],
+    tags: [{ name: 'Remittances', description: 'Operaciones de remesas internacionales (ISO 20022 pain.001)' }],
+    paths: {
+      '/remittances': {
+        post: {
+          tags: ['Remittances'],
+          summary: 'Crear una remesa internacional',
+          operationId: 'createRemittance',
+          requestBody: { required: true, content: { 'application/json': { schema: { '$ref': '#/components/schemas/RemittanceCreateRequest' } } } },
+          responses: {
+            '201': { description: 'Remesa creada', content: { 'application/json': { schema: { '$ref': '#/components/schemas/Remittance' } } } },
+            '400': { description: 'Datos inválidos' },
+            '500': { description: 'Error interno' },
+          },
+        },
+        get: {
+          tags: ['Remittances'],
+          summary: 'Listar remesas',
+          operationId: 'listRemittances',
+          parameters: [{ in: 'query', name: 'status', schema: { type: 'string', enum: ['PENDING','PROCESSING','COMPLETED','CANCELLED'] }, description: 'Filtrar por estado' }],
+          responses: { '200': { description: 'Lista de remesas', content: { 'application/json': { schema: { type: 'array', items: { '$ref': '#/components/schemas/Remittance' } } } } } },
+        },
+      },
+      '/remittances/{remittance-id}': {
+        parameters: [{ in: 'path', name: 'remittance-id', required: true, schema: { type: 'string', maxLength: 35 }, description: 'ID único de la remesa (ISO 20022 Max35Text)' }],
+        get: {
+          tags: ['Remittances'],
+          summary: 'Consultar detalle de una remesa',
+          operationId: 'getRemittance',
+          responses: {
+            '200': { description: 'Detalle', content: { 'application/json': { schema: { '$ref': '#/components/schemas/Remittance' } } } },
+            '404': { description: 'No encontrada' },
+          },
+        },
+        patch: {
+          tags: ['Remittances'],
+          summary: 'Actualizar datos antes de procesar',
+          operationId: 'updateRemittance',
+          requestBody: { content: { 'application/json': { schema: { '$ref': '#/components/schemas/RemittanceCreateRequest' } } } },
+          responses: { '200': { description: 'Actualizada' } },
+        },
+        delete: {
+          tags: ['Remittances'],
+          summary: 'Cancelar remesa (estado PENDING)',
+          operationId: 'cancelRemittance',
+          responses: { '204': { description: 'Cancelada' } },
+        },
+      },
+    },
+    components: {
+      schemas: {
+        Amount: {
+          type: 'object',
+          description: 'ISO 20022 ActiveCurrencyAndAmount',
+          properties: {
+            value: { type: 'number', minimum: 0, example: 250.00 },
+            currency: { type: 'string', pattern: '^[A-Z]{3}$', example: 'EUR' },
+          },
+          required: ['value', 'currency'],
+          additionalProperties: false,
+        },
+        Account: {
+          type: 'object',
+          description: 'ISO 20022 AccountIdentification',
+          properties: { iban: { type: 'string', example: 'ES7921000813610123456789' } },
+        },
+        Party: {
+          type: 'object',
+          description: 'ISO 20022 PartyIdentification',
+          properties: {
+            name: { type: 'string', maxLength: 140, example: 'Juan Pérez' },
+            documentType: { type: 'string', enum: ['DNI','PASSPORT','RFC','RUC','OTHER'] },
+            account: { '$ref': '#/components/schemas/Account' },
+          },
+          required: ['name'],
+        },
+        Remittance: {
+          type: 'object',
+          description: 'ISO 20022 CreditTransferTransaction (pain.001)',
+          properties: {
+            remittanceId: { type: 'string', maxLength: 35, example: 'REM-2026-00042' },
+            amount: { '$ref': '#/components/schemas/Amount' },
+            debtor: { '$ref': '#/components/schemas/Party' },
+            creditor: { '$ref': '#/components/schemas/Party' },
+            status: { type: 'string', enum: ['PENDING','PROCESSING','COMPLETED','CANCELLED'], example: 'PENDING' },
+            creditLimitCheck: { type: 'boolean', description: 'Campo local — equipo Créditos & Financiamiento' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+          required: ['remittanceId','amount','debtor','creditor','status'],
+          additionalProperties: false,
+        },
+        RemittanceCreateRequest: {
+          type: 'object',
+          properties: {
+            amount: { '$ref': '#/components/schemas/Amount' },
+            debtor: { '$ref': '#/components/schemas/Party' },
+            creditor: { '$ref': '#/components/schemas/Party' },
+            creditLimitCheck: { type: 'boolean' },
+          },
+          required: ['amount','debtor','creditor'],
+        },
+      },
+    },
+  };
+}
+
+function initSwaggerUI() {
+  if (swaggerInited) return;
+  swaggerInited = true;
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-bundle.js';
+  script.onload = function() {
+    SwaggerUIBundle({
+      spec: getApiSpec(),
+      domNode: document.getElementById('swagger-ui-container'),
+      presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
+      layout: 'BaseLayout',
+      deepLinking: false,
+      defaultModelsExpandDepth: 1,
+      defaultModelExpandDepth: 2,
+      displayRequestDuration: true,
+      tryItOutEnabled: false,
+    });
+  };
+  document.head.appendChild(script);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+renderLlmOptions();
+updateTeamBadge();
+updateLlmBadge();
+</script>
+<script src="../../assets/nav.js" data-current="api-designer"></script>
+</body>
+</html>

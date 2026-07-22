@@ -1,0 +1,16 @@
+# Archivo y PoC pesada — no publicar en el repo (público durante la demo)
+_archive/
+_to_delete/
+
+# Metodología propietaria — excluida mientras el repo sea público
+kb/
+
+# Salidas generadas del pipeline
+io/output/**/*
+!io/output/**/
+!io/output/**/.gitkeep
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+node_modules/

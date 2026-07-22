@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Business Accelerator</title>
+  <style>
+    :root {
+      --morado:    #4F062A;
+      --accent:    #FF0054;
+      --gris:      #E3E2DA;
+      --blanco:    #FFFFFF;
+      --morado-dk: #260717;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--gris);
+      color: #1a1a1a;
+      min-width: 1280px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; }
+
+    /* ── Animaciones de entrada ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .anim   { animation: fadeUp .6s ease both; }
+    .anim-1 { animation-delay: .05s; } .anim-2 { animation-delay: .15s; }
+    .anim-3 { animation-delay: .25s; } .anim-4 { animation-delay: .35s; }
+    .anim-5 { animation-delay: .45s; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--morado-dk);
+      padding: 16px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-family: Georgia, serif; font-size: 22px; color: var(--blanco); letter-spacing: .5px; }
+    .logo span { color: var(--accent); }
+    .header-tagline { font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+    .header-right { font-size: 12px; color: rgba(255,255,255,.5); letter-spacing: 1px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, var(--morado-dk) 0%, var(--morado) 78%, #6a0f3d 100%);
+      padding: 60px 48px 0;
+      text-align: center;
+      color: var(--blanco);
+      overflow: hidden;
+    }
+    .hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+    .hero h1 { font-family: Georgia, serif; font-size: 44px; font-weight: normal; line-height: 1.22; margin-bottom: 18px; }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: 15.5px; color: rgba(255,255,255,.8); line-height: 1.65;
+      max-width: 820px; margin: 0 auto 8px;
+    }
+    .hero-sub strong { color: var(--blanco); font-weight: bold; }
+
+    /* ── RECORRIDO (nodos clicables) ── */
+    .journey { position: relative; max-width: 1080px; margin: 48px auto 0; padding-bottom: 100px; }
+    .journey-stages {
+      display: flex; justify-content: space-between; max-width: 1000px; margin: 0 auto 14px;
+    }
+    .journey-stage {
+      font-size: 10px; letter-spacing: 2.2px; text-transform: uppercase; color: rgba(255,255,255,.45);
+    }
+    .journey-track { position: relative; max-width: 1000px; margin: 0 auto; }
+    .journey-line {
+      position: absolute; top: 33px; left: 60px; right: 60px; height: 2px;
+      background: rgba(255,255,255,.22);
+    }
+    .journey-nodes { position: relative; display: flex; justify-content: space-between; }
+    .journey-node { width: 182px; text-align: center; transition: transform .2s; position: relative; }
+    .journey-node:hover { transform: translateY(-4px); }
+    .node-circle {
+      width: 66px; height: 66px; border-radius: 50%;
+      background: var(--morado-dk); border: 2px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px; transition: border-color .2s, box-shadow .2s, background .2s;
+      font-family: Georgia, serif; font-size: 21px; color: var(--blanco);
+    }
+    .journey-node:hover .node-circle {
+      border-color: var(--accent); background: var(--accent);
+      box-shadow: 0 0 0 8px rgba(255,0,84,.18);
+    }
+    .node-name { font-family: Georgia, serif; font-size: 15.5px; color: var(--blanco); margin-bottom: 5px; }
+    .node-beta {
+      display: inline-block; vertical-align: 2px; margin-left: 6px;
+      background: var(--accent); color: var(--blanco);
+      font-family: Arial, sans-serif; font-size: 8px; font-weight: bold;
+      letter-spacing: 1px; padding: 2px 5px; border-radius: 2px;
+    }
+    .node-q { font-size: 11.5px; color: rgba(255,255,255,.6); line-height: 1.45; padding: 0 6px; margin-bottom: 9px; }
+    .node-cta {
+      font-size: 11px; font-weight: bold; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--accent); transition: color .2s;
+    }
+    .journey-node:hover .node-cta { color: var(--blanco); }
+
+    /* Flecha de retorno (el bucle) */
+    .journey-loop { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 66px; pointer-events: none; }
+    .journey-loop svg { width: 100%; height: 100%; }
+    .loop-caption {
+      position: absolute; left: 0; right: 0; bottom: 0; text-align: center;
+      font-size: 11.5px; font-style: italic; color: rgba(255,255,255,.75);
+      font-family: Georgia, serif; letter-spacing: .3px;
+    }
+    .loop-caption b { color: var(--accent); font-style: normal; font-family: Arial, sans-serif; font-weight: bold; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+    /* ── CÓMO FUNCIONA (3 pasos) ── */
+    .how { background: var(--blanco); padding: 48px 48px 52px; flex: 1; }
+    .how-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: stretch; gap: 0; }
+    .how-step { flex: 1; padding: 0 28px; position: relative; }
+    .how-step + .how-step { border-left: 1px solid rgba(79,6,42,.12); }
+    .how-num {
+      font-family: Georgia, serif; font-size: 15px; color: var(--accent);
+      letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .how-title { font-family: Georgia, serif; font-size: 18px; color: var(--morado-dk); margin-bottom: 8px; }
+    .how-text { font-size: 13px; color: #555; line-height: 1.6; }
+    .how-text strong { color: var(--morado); }
+    .how-text a { color: var(--accent); font-weight: bold; }
+    .how-text a:hover { text-decoration: underline; }
+
+    /* ── OUTCOMES ── */
+    .outcomes-bar { background: var(--morado); padding: 28px 48px; }
+    .outcomes-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+    .outcome-item { text-align: center; }
+    .outcome-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin: 0 auto 10px; }
+    .outcome-text { font-size: 12px; color: rgba(255,255,255,.85); letter-spacing: .3px; line-height: 1.5; }
+    .outcome-text strong { color: var(--blanco); display: block; margin-bottom: 2px; }
+
+    footer {
+      background: var(--morado-dk); padding: 16px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 11px; color: rgba(255,255,255,.4); letter-spacing: 1px; }
+    .footer-right { font-size: 11px; color: rgba(255,255,255,.3); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div>
+      <div class="logo">Open Business <span>Accelerator</span></div>
+      <div class="header-tagline">Plataforma de casos de uso y APIs de negocio · Embedded Finance / BaaS</div>
+    </div>
+    <div class="header-right">Entorno de Demo · 2026</div>
+  </header>
+
+  <!-- HERO + RECORRIDO -->
+  <div class="hero">
+    <div class="hero-label anim anim-1">Open Business · Open Finance · Embedded Finance · BaaS</div>
+    <h1 class="anim anim-1">Del discovery al despliegue de<br><em>casos de uso y APIs de negocio</em></h1>
+    <p class="hero-sub anim anim-2">
+      El <strong>set up de la entidad</strong>, casos de uso simulados con <strong>agentes de IA</strong>
+      y validación en <strong>sandbox con partners reales</strong> — para Open Finance,
+      <strong>Embedded Finance y BaaS</strong>, con el business case y la inversión
+      actualizándose en cada paso.
+    </p>
+
+    <div class="journey anim anim-3">
+      <div class="journey-stages">
+        <span class="journey-stage">Etapa 1 · Discovery &amp; Assessment</span>
+        <span class="journey-stage">Etapa 2 · Diseño de APIs</span>
+        <span class="journey-stage">Etapa 3 · Validación</span>
+      </div>
+      <div class="journey-track">
+        <div class="journey-line"></div>
+        <div class="journey-nodes">
+          <a class="journey-node" href="stages/1-discovery/assessment/index.html">
+            <div class="node-circle">01</div>
+            <div class="node-name">Assessment</div>
+            <div class="node-q">¿Dónde está la entidad y qué le falta?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+          <a class="journey-node" href="stages/1-discovery/market-discovery/index.html">
+            <div class="node-circle">02</div>
+            <div class="node-name">Discovery<span class="node-beta">BETA</span></div>
+            <div class="node-q">¿Qué oportunidad hay en el mercado?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+          <a class="journey-node" href="stages/2-api-design/api-designer.html">
+            <div class="node-circle">03</div>
+            <div class="node-name">Diseño de APIs</div>
+            <div class="node-q">¿Cómo se construye el caso de uso?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+          <a class="journey-node" href="stages/2-api-design/enrichment.html">
+            <div class="node-circle">04</div>
+            <div class="node-name">Enrichment</div>
+            <div class="node-q">¿Mis APIs hablan el estándar ISO 20022?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+          <a class="journey-node" href="stages/3-api-lab/index.html">
+            <div class="node-circle">05</div>
+            <div class="node-name">API Lab<span class="node-beta">BETA</span></div>
+            <div class="node-q">¿Funciona con partners y comercios reales?</div>
+            <div class="node-cta">Entrar →</div>
+          </a>
+        </div>
+      </div>
+      <div class="journey-loop">
+        <svg viewBox="0 0 1000 66" preserveAspectRatio="none" fill="none">
+          <path d="M 940 4 C 940 46, 60 46, 60 4"
+                stroke="#FF0054" stroke-width="1.8" stroke-dasharray="6 5" opacity=".8"/>
+          <path d="M 66 14 L 60 4 L 70 6" stroke="#FF0054" stroke-width="1.8" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="loop-caption"><b>El bucle</b> — los resultados del Lab refinan las APIs y actualizan el roadmap y la inversión del Assessment</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÓMO FUNCIONA -->
+  <div class="how">
+    <div class="how-inner">
+      <div class="how-step anim anim-3">
+        <div class="how-num">Paso 1</div>
+        <div class="how-title">Set up de la entidad</div>
+        <div class="how-text">
+          El <a href="stages/1-discovery/assessment/index.html">Assessment</a> levanta el As-Is,
+          el stack, los GAPs y las dependencias entre tecnologías y equipos.
+          Es el <strong>mapa sobre el que se decide todo lo demás</strong>.
+        </div>
+      </div>
+      <div class="how-step anim anim-4">
+        <div class="how-num">Paso 2</div>
+        <div class="how-title">Simular y diseñar el caso de uso</div>
+        <div class="how-text">
+          Cada caso de uso —<strong>APIs de Embedded Finance / BaaS o producto completo con
+          su frontal</strong>— se simula contra el set up: qué APIs, equipo e inversión necesita.
+          Los <a href="stages/2-api-design/api-designer.html">agentes de IA</a> diseñan las APIs
+          en estándar ISO 20022.
+        </div>
+      </div>
+      <div class="how-step anim anim-5">
+        <div class="how-num">Paso 3</div>
+        <div class="how-title">Validar y devengar</div>
+        <div class="how-text">
+          Las APIs se prueban en el <a href="stages/3-api-lab/index.html">API Lab</a>
+          (Sandbox as a Service o el del cliente, con partners y comercios reales). El resultado
+          refina los diseños y <strong>actualiza el business case ante C-Level</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div class="outcomes-bar">
+    <div class="outcomes-inner">
+      <div class="outcome-item">
+        <div class="outcome-dot"></div>
+        <div class="outcome-text"><strong>Set up vivo</strong>GAPs, dependencias e inversión por caso de uso</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-dot"></div>
+        <div class="outcome-text"><strong>Partners prueban</strong>antes del desarrollo productivo</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-dot"></div>
+        <div class="outcome-text"><strong>Gobierno de APIs</strong>integrado desde el primer artefacto</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-dot"></div>
+        <div class="outcome-text"><strong>Time-to-market</strong>reducido en 60–70%</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-dot"></div>
+        <div class="outcome-text"><strong>ISO 20022</strong>normalización automática del diccionario</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">Open Business Accelerator · 2026</div>
+    <div class="footer-right">Versión Demo</div>
+  </footer>
+
+</body>
+</html>

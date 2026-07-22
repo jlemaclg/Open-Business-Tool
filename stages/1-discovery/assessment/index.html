@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment de la Entidad · Open Business Accelerator</title>
+<style>
+:root{
+  --morado:#4F062A; --morado-osc:#260717; --accent:#FF0054;
+  --gris:#E3E2DA; --blanco:#FFFFFF;
+  --ok:#2e7d32; --warn:#b26a00; --bad:#c62828;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:Arial,Helvetica,sans-serif; background:var(--gris); color:var(--morado); font-size:13px;}
+h1,h2,h3,.serif{font-family:Georgia,serif; font-weight:400;}
+.accent{color:var(--accent);}
+
+/* ── Top bar ── */
+#topbar{background:var(--morado); color:var(--blanco); padding:14px 40px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
+#topbar .brand{font-family:Georgia,serif; font-size:22px; letter-spacing:-0.5px;}
+#topbar .brand b{color:var(--accent); font-weight:400;}
+#topbar .tool-title{font-size:12px; opacity:.85; border-left:1px solid rgba(255,255,255,.3); padding-left:20px;}
+#topbar .spacer{flex:1;}
+#topbar input, #topbar select{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.35); color:#fff; padding:6px 10px; border-radius:3px; font-size:12px;}
+#topbar input::placeholder{color:rgba(255,255,255,.6);}
+#topbar button{background:var(--accent); color:#fff; border:none; padding:7px 14px; border-radius:3px; cursor:pointer; font-size:12px; font-weight:700;}
+#topbar button.ghost{background:transparent; border:1px solid rgba(255,255,255,.45); font-weight:400;}
+#savemsg{font-size:11px; opacity:.8;}
+
+/* ── Tabs ── */
+#tabs{background:var(--morado-osc); padding:0 40px; display:flex; flex-wrap:wrap;}
+#tabs .tab{color:rgba(255,255,255,.65); padding:11px 16px; cursor:pointer; font-size:12px; border-bottom:3px solid transparent; user-select:none;}
+#tabs .tab:hover{color:#fff;}
+#tabs .tab.active{color:#fff; border-bottom-color:var(--accent);}
+
+/* ── Layout ── */
+main{padding:26px 40px 60px;}
+section.mod{display:none;}
+section.mod.active{display:block;}
+.eyebrow{font-size:11px; letter-spacing:1.5px; text-transform:uppercase; opacity:.8; margin-bottom:6px;}
+h2.mod-title{font-size:24px; margin-bottom:4px; line-height:1.2;}
+.mod-sub{font-family:Georgia,serif; font-size:14px; opacity:.85; margin-bottom:18px;}
+.card{background:var(--blanco); border-radius:6px; padding:18px 20px; margin-bottom:18px; box-shadow:0 1px 3px rgba(38,7,23,.08);}
+.card h3{font-size:16px; margin-bottom:10px;}
+.card h3 .hint{font-family:Arial; font-size:11px; opacity:.6;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.kpis{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
+.kpi{background:var(--morado); color:#fff; border-radius:6px; padding:14px 18px; min-width:170px; flex:1;}
+.kpi.light{background:var(--blanco); color:var(--morado); border-top:3px solid var(--accent);}
+.kpi .lbl{font-size:10px; text-transform:uppercase; letter-spacing:1px; opacity:.75;}
+.kpi .val{font-family:Georgia,serif; font-size:24px; margin-top:4px;}
+.kpi .sub{font-size:10.5px; opacity:.75; margin-top:3px;}
+
+/* ── Tables ── */
+table{width:100%; border-collapse:collapse; font-size:12px;}
+th{background:var(--morado); color:#fff; text-align:left; padding:7px 8px; font-weight:400; font-size:11px; white-space:nowrap;}
+td{padding:5px 8px; border-bottom:1px solid rgba(79,6,42,.12); vertical-align:middle;}
+tr:hover td{background:rgba(79,6,42,.04);}
+td input, td select{width:100%; border:1px solid rgba(79,6,42,.2); border-radius:3px; padding:4px 6px; font-size:12px; color:var(--morado); background:#fff;}
+td input[type=number]{text-align:right;}
+td input:focus, td select:focus{outline:2px solid var(--accent);}
+.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
+.tot-row td{font-weight:700; border-top:2px solid var(--morado); background:rgba(79,6,42,.06);}
+.small{font-size:11px; opacity:.75;}
+.pill{display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; color:#fff;}
+.pill.fab{background:var(--accent);} .pill.cel{background:var(--morado);} .pill.opc{background:#8a8a7e;}
+button.mini{background:var(--morado); color:#fff; border:none; border-radius:3px; padding:4px 10px; cursor:pointer; font-size:11px;}
+button.mini.rojo{background:var(--accent);}
+button.mini.ghost{background:transparent; color:var(--morado); border:1px solid var(--morado);}
+.del{color:var(--accent); cursor:pointer; font-weight:700; padding:0 6px;}
+
+/* ── Heatmaps / Gantt ── */
+.hm-cell{width:22px; height:16px; display:inline-block; border-radius:2px; margin:1px;}
+.gantt-wrap{overflow-x:auto;}
+.gantt{border-collapse:collapse;}
+.gantt th, .gantt td{padding:2px 4px; font-size:10px; border:none;}
+.gantt .bar{height:12px; border-radius:2px;}
+.gantt td.mcell{min-width:20px; border-left:1px solid rgba(79,6,42,.07);}
+.amb-row td{font-weight:700; background:rgba(79,6,42,.08); font-size:11px;}
+
+/* ── Maturity chips ── */
+.mat{display:inline-block; min-width:86px; text-align:center; padding:3px 6px; border-radius:3px; font-size:10.5px; font-weight:700; color:#fff;}
+.m0{background:#c62828;} .m1{background:#d95f2b;} .m2{background:#b26a00;} .m3{background:#8f8f3d;} .m4{background:#5c8f3d;} .m5{background:#2e7d32;}
+
+.ticker{background:var(--morado); color:#fff; border-radius:6px; padding:12px 18px; font-family:Georgia,serif; font-size:13.5px; margin-top:6px;}
+.note{background:rgba(255,0,84,.07); border-left:3px solid var(--accent); padding:10px 14px; font-size:11.5px; margin:10px 0; border-radius:0 4px 4px 0;}
+.chart-box{background:#fff; border-radius:6px; padding:14px;}
+svg text{font-family:Arial; }
+footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5px; padding:12px 40px; display:flex; justify-content:space-between;}
+@media print{ #topbar button,#tabs{display:none;} section.mod{display:block; page-break-before:always;} }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">Open Business Accelerator<b>.</b></div>
+  <div class="tool-title">Estimación de Costos &amp; Business Case<br>Open Finance · Assessment Toolkit</div>
+  <div class="spacer"></div>
+  <input id="clienteNombre" placeholder="Cliente (p.ej. Entidad Demo)" style="width:170px" onchange="S.cliente.nombre=this.value; dirty()">
+  <select id="selCliente" onchange="cargarCliente(this.value)" title="Clientes guardados"><option value="">— guardados —</option></select>
+  <button onclick="guardar()">Guardar</button>
+  <button class="ghost" onclick="exportJSON()">Exportar</button>
+  <button class="ghost" onclick="document.getElementById('fimp').click()">Importar</button>
+  <input type="file" id="fimp" accept=".json" style="display:none" onchange="importJSON(this)">
+  <span id="savemsg"></span>
+</div>
+
+<div id="tabs">
+  <div class="tab active" data-t="t0" onclick="tab('t0')">1 · Cliente</div>
+  <div class="tab" data-t="tL" onclick="tab('tL')">2 · Levantamiento</div>
+  <div class="tab" data-t="t1" onclick="tab('t1')">3 · As-Is</div>
+  <div class="tab" data-t="tS" onclick="tab('tS')">4 · Stack &amp; GAPs</div>
+  <div class="tab" data-t="t2" onclick="tab('t2')">5 · Iniciativas</div>
+  <div class="tab" data-t="t3" onclick="tab('t3')">6 · Roadmap</div>
+  <div class="tab" data-t="t4" onclick="tab('t4')">7 · Célula</div>
+  <div class="tab" data-t="t5" onclick="tab('t5')">8 · BAU y adicionales</div>
+  <div class="tab" data-t="t6" onclick="tab('t6')">9 · Monetización</div>
+  <div class="tab" data-t="t7" onclick="tab('t7')">10 · Business case</div>
+  <div class="tab" data-t="t8" onclick="tab('t8')">11 · SaaS vs In-house</div>
+</div>
+
+<main>
+
+<!-- ════ MÓDULO 0: CLIENTE ════ -->
+<section class="mod active" id="t0">
+  <div class="eyebrow">Assessment Open Finance · Parámetros generales</div>
+  <h2 class="mod-title">Definimos el <span class="accent">contexto del cliente</span> y los parámetros que gobiernan todo el cálculo</h2>
+  <div class="mod-sub">Estos parámetros afectan el catálogo, la célula, el business case y el comparador. Todo es recalibrable en cualquier momento.</div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Identificación</h3>
+      <table>
+        <tr><td>Cliente</td><td><input id="p_nombre" onchange="S.cliente.nombre=this.value;document.getElementById('clienteNombre').value=this.value;dirty()"></td></tr>
+        <tr><td>País / jurisdicción</td><td><input id="p_pais" onchange="S.cliente.pais=this.value;dirty()"></td></tr>
+        <tr><td>Marco regulatorio</td><td><input id="p_marco" onchange="S.cliente.marco=this.value;dirty()"></td></tr>
+        <tr><td>Fecha de inicio (mes 1)</td><td><input id="p_fecha" type="month" onchange="S.cliente.fechaInicio=this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Consultor responsable</td><td><input id="p_consultor" onchange="S.cliente.consultor=this.value;dirty()"></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Parámetros financieros y de horizonte</h3>
+      <table>
+        <tr><td>Horizonte de implementación (meses)</td><td><input id="p_meses" type="number" min="6" max="48" onchange="S.cliente.mesesImpl=+this.value;dirty();renderAll()"></td>
+        </tr>
+        <tr><td>Horizonte del business case (años)</td><td><input id="p_anios" type="number" min="3" max="12" onchange="S.cliente.aniosBC=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Tasa de descuento % (WACC)</td><td><input id="p_tasa" type="number" step="0.5" onchange="S.cliente.tasaDesc=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>IVA / impuesto local %</td><td><input id="p_iva" type="number" step="1" onchange="S.cliente.iva=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Mostrar cifras</td><td><select id="p_conIva" onchange="S.cliente.conIva=this.value==='1';dirty();renderAll()"><option value="0">Netas (sin impuesto)</option><option value="1">Con impuesto incluido</option></select></td></tr>
+        <tr><td>Preset de tarifas (región)</td><td><select id="p_region" onchange="aplicarRegion(this.value)"><option value="chile">Chile (ancla alta LATAM)</option><option value="peru">Perú / LATAM nearshore</option></select></td></tr>
+        <tr><td>Factor de eficiencia IA % <span class="small">(desarrollo asistido)</span></td><td><input id="p_ia" type="number" min="0" max="40" step="5" onchange="S.cliente.ia=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Célula</td><td><select id="p_celpres" onchange="S.cliente.celulaPresupuestada=this.value==='1';dirty();renderAll()"><option value="1">Presupuestada (externa/mixta — patrón Zurich)</option><option value="0">Interna del cliente (dedicación — patrón BanBif)</option></select></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note"><b>Regla del horizonte (KB-05 §5):</b> comprimir la implementación no reduce el costo de célula — lo concentra (más FTE en paralelo). La recomendación general a clientes es <b>12 meses</b>: reduce la carga de servicios externos de acompañamiento (PMO, consultoría experta) sin disparar el paralelismo. Al cambiar los meses, la herramienta reescala la ventana de célula y el arranque del BAU y los ingresos.</div>
+  <div class="note"><b>Factor IA:</b> el desarrollo asistido por IA reduce el esfuerzo de <b>fábrica y de los perfiles técnicos de la célula</b> (columna "IA" en el módulo 7) en el % indicado. Lo que NO acelera: proceso y burocracia — aprobaciones, comités, definiciones funcionales, certificación, gestión con el regulador. Ojo: la IA también abarata a los proveedores SaaS, así que no es un argumento diferencial pro-in-house por sí solo.</div>
+  <div class="ticker" id="tick0">—</div>
+</section>
+
+<!-- ════ MÓDULO L: LEVANTAMIENTO ════ -->
+<section class="mod" id="tL">
+  <div class="eyebrow">Discovery · Sesiones de levantamiento As-Is</div>
+  <h2 class="mod-title">El <span class="accent">levantamiento estructurado</span> captura evidencia por frente y alimenta el diagnóstico</h2>
+  <div class="mod-sub">Banco de preguntas reutilizable (calibrado en deep-dives reales de banca retail LATAM). Por cada pregunta: respuesta del cliente, cumplimiento, plan de acción y compromisos/pendientes. El cumplimiento sugiere la madurez del As-Is por frente — el consultor decide si la aplica.</div>
+  <div class="kpis" id="levKpis"></div>
+  <div class="card">
+    <h3>Sugerencia de madurez por frente <span class="hint">— desde el cumplimiento de las respuestas; aplicar actualiza el heatmap As-Is</span></h3>
+    <div id="levSug"></div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <h3>Fichas de levantamiento <span class="hint">— filtrar por frente: </span><select id="levFiltro" style="width:auto;border:1px solid rgba(79,6,42,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="renderAll()"><option value="-1">Todos los frentes</option></select></h3>
+    <div id="levTabla"></div>
+    <div style="margin-top:10px"><button class="mini" onclick="addLev()">+ Añadir pregunta</button>
+    <span class="small" style="margin-left:14px">Estados: <b>Pendiente</b> (sin levantar) · <b>Cumple</b> · <b>Parcialmente</b> · <b>No cumple</b> · <b>No aplica</b>. Registrar compromisos (documentos, sesiones con proveedores, validaciones) en la última columna.</span></div>
+  </div>
+  <div class="ticker" id="tickL">—</div>
+</section>
+
+<!-- ════ MÓDULO S: STACK & GAPS ════ -->
+<section class="mod" id="tS">
+  <div class="eyebrow">Arquitectura referencial · Stack tecnológico y GAPs por capa</div>
+  <h2 class="mod-title">El <span class="accent">mapa del stack</span> muestra visualmente en qué capa está cada GAP y qué se reutiliza</h2>
+  <div class="mod-sub">Capas de la arquitectura referencial Minsait Open Finance. Cada componente se clasifica: Reutilizable (verde) · Evolucionar (ámbar) · Construir (rosa) · No aplica. Precargado con el stack de la entidad de referencia; editable por cliente.</div>
+  <div class="kpis" id="stackKpis"></div>
+  <div class="card"><h3>Mapa visual por capa</h3><div id="stackMapa"></div></div>
+  <div class="card" style="overflow-x:auto">
+    <h3>Detalle de componentes</h3>
+    <div id="stackTabla"></div>
+    <div style="margin-top:10px"><button class="mini" onclick="addStack()">+ Añadir componente</button></div>
+  </div>
+  <div class="ticker" id="tickS">—</div>
+</section>
+
+<!-- ════ MÓDULO 1: AS-IS ════ -->
+<section class="mod" id="t1">
+  <div class="eyebrow">Diagnóstico · Situación actual</div>
+  <h2 class="mod-title">El <span class="accent">As-Is consolidado</span> justifica qué iniciativas se activan y pondera la decisión SaaS vs In-house</h2>
+  <div class="mod-sub">Madurez SFA por subdimensión (escala del diagnóstico) y esfuerzo de cierre. Precargado con el diagnóstico del cliente; editable por assessment.</div>
+  <div class="kpis" id="asisKpis"></div>
+  <div class="card">
+    <h3>Heatmap de madurez por frente <span class="hint">— clic en la celda de madurez para cambiarla</span></h3>
+    <div id="asisTabla"></div>
+    <div style="margin-top:10px"><button class="mini" onclick="addAsis()">+ Añadir subdimensión</button></div>
+  </div>
+  <div class="ticker" id="tick1">—</div>
+</section>
+
+<!-- ════ MÓDULO 2: INICIATIVAS ════ -->
+<section class="mod" id="t2">
+  <div class="eyebrow">Catálogo · Iniciativas KB-01 (0.1–0.5 · 1–41)</div>
+  <h2 class="mod-title">El <span class="accent">catálogo de iniciativas</span> clasifica qué construye la fábrica y qué absorbe la célula</h2>
+  <div class="mod-sub">Formato de ejecución (KB-05 §2): las iniciativas con presupuesto van a fábrica de software; las marcadas "célula" se absorben como dedicación del equipo. Incluir/excluir según alcance del cliente.</div>
+  <div class="kpis" id="iniKpis"></div>
+  <div class="card" style="overflow-x:auto">
+    <div id="iniTabla"></div>
+    <div style="margin-top:10px"><button class="mini" onclick="addIni()">+ Añadir iniciativa</button>
+      <span class="small" style="margin-left:14px">Presupuestos netos de impuesto (calibración de referencia Chile 2026 — recalibrar por cliente). "Célula" = sin presupuesto externo, costo implícito en Módulo 5.</span></div>
+  </div>
+  <div class="ticker" id="tick2">—</div>
+</section>
+
+<!-- ════ MÓDULO 3: ROADMAP ════ -->
+<section class="mod" id="t3">
+  <div class="eyebrow">Planificación · Secuencia y paralelismo</div>
+  <h2 class="mod-title">El <span class="accent">heatmap de paralelismo</span> es el driver del tamaño de la célula, no el número de iniciativas</h2>
+  <div class="mod-sub">Gantt generado desde el mes de inicio y la duración de cada iniciativa incluida. El heatmap cuenta iniciativas activas por mes, separando célula y fábrica.</div>
+  <div class="card gantt-wrap"><h3>Roadmap de implementación</h3><div id="gantt"></div></div>
+  <div class="card"><h3>Heatmap de paralelismo por mes</h3><div id="heatmap"></div>
+    <div class="note" id="hmNota"></div></div>
+  <div class="ticker" id="tick3">—</div>
+</section>
+
+<!-- ════ MÓDULO 4: CÉLULA ════ -->
+<section class="mod" id="t4">
+  <div class="eyebrow">Capacidad · Célula Open Finance (KB-05 §3–4)</div>
+  <h2 class="mod-title">La <span class="accent">célula no es opcional</span>: es donde viven las iniciativas funcionales y el gobierno del programa</h2>
+  <div class="mod-sub">Dedicaciones fraccionales (pasos de 0,25 FTE · 172 HH/mes). Tarifario editable con presets Chile / Perú-LATAM. Si la célula es interna del cliente, el costo se reporta como dedicación y no entra al CAPEX.</div>
+  <div class="kpis" id="celKpis"></div>
+  <div class="card" style="overflow-x:auto">
+    <h3>Perfiles, tarifas y dedicaciones</h3>
+    <div id="celTabla"></div>
+    <div style="margin-top:10px"><button class="mini" onclick="addRol()">+ Añadir perfil</button>
+    <span class="small" style="margin-left:14px">Reglas KB-05: Scrum Master compartido 2–3 productos · PO ≥0,50 desde el día 1 · patrón "edificio" para técnicos · soporte 8×5 = 2 personas, 24×7 = mín. 4.</span></div>
+  </div>
+  <div class="ticker" id="tick4">—</div>
+</section>
+
+<!-- ════ MÓDULO 5: BAU + EXTRAS ════ -->
+<section class="mod" id="t5">
+  <div class="eyebrow">Operación recurrente · Costos habilitantes (KB-05 §7–9)</div>
+  <h2 class="mod-title">El BAU y los <span class="accent">costos frecuentemente omitidos</span> — donde mueren las estimaciones optimistas</h2>
+  <div class="mod-sub">BAU de plataforma desde el go-live (escala en escalones, no lineal). Checklist de omitidos: licenciamiento incremental, certificación y seguridad, capacitación, legal externo, contingencia.</div>
+  <div class="grid2">
+    <div class="card"><h3>BAU de plataforma <span class="hint">(USD/año desde go-live)</span></h3><div id="bauTabla"></div>
+      <button class="mini" style="margin-top:8px" onclick="addBau()">+ Línea BAU</button></div>
+    <div class="card"><h3>Costos habilitantes y omitidos frecuentes</h3><div id="extraTabla"></div>
+      <button class="mini" style="margin-top:8px" onclick="addExtra()">+ Línea adicional</button></div>
+  </div>
+  <div class="note"><b>Regla de no linealidad (KB-05 §7.2):</b> el consumo de APIs puede crecer ×78 en 8 años mientras la infraestructura crece ×4,2. Lo que escala con el negocio es el <b>soporte B2B</b> (por partner integrado). Comunicar siempre al cliente.</div>
+  <div class="ticker" id="tick5">—</div>
+</section>
+
+<!-- ════ MÓDULO 6: MONETIZACIÓN ════ -->
+<section class="mod" id="t6">
+  <div class="eyebrow">Ingresos · Cadena KB-02: Volumen × Tarifa × Adopción</div>
+  <h2 class="mod-title">Las <span class="accent">líneas de monetización</span> determinan en cuánto tiempo se amortiza la infraestructura</h2>
+  <div class="mod-sub">Tarifas benchmark LATAM precargadas (KB-02 §3 · Minsait Observatory). El ramp modela la adopción: los ingresos del año de entrada crecen linealmente hasta plena adopción. El negocio no está solo en las APIs reguladas: mix típico 30% reguladas · 40% premium/BaaS · 30% partnerships.</div>
+  <div class="kpis" id="monKpis"></div>
+  <div class="card" style="overflow-x:auto"><h3>Líneas de ingreso</h3><div id="monTabla"></div>
+    <button class="mini" style="margin-top:8px" onclick="addMon()">+ Línea de ingreso</button>
+    <span class="small" style="margin-left:14px">Tarifas de referencia LATAM: AISP 0,05–0,20 · PISP 0,10–0,25 · Premium 0,05–1,50 USD/consumo · Directorio 20–40 k USD/año. Decrecen con volumen.</span></div>
+  <div class="ticker" id="tick6">—</div>
+</section>
+
+<!-- ════ MÓDULO 7: BUSINESS CASE ════ -->
+<section class="mod" id="t7">
+  <div class="eyebrow">Viabilidad · Flujo de caja, VAN, TIR, payback</div>
+  <h2 class="mod-title">El business case responde la pregunta de fondo: <span class="accent">¿cuándo se amortiza?</span></h2>
+  <div class="mod-sub">Consolida fábrica + célula + BAU + adicionales contra las líneas de ingreso. Umbrales KB-02 §8: TIR excelente ≥15% · payback aceptable 3–5 años · VAN excelente ≥20% de la inversión.</div>
+  <div class="kpis" id="bcKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Flujo de caja acumulado</h3><div id="chartFlujo"></div></div>
+    <div class="card"><h3>Costos vs ingresos por año</h3><div id="chartBarras"></div></div>
+  </div>
+  <div class="card" style="overflow-x:auto"><h3>Proyección consolidada (USD '000)</h3><div id="bcTabla"></div></div>
+  <div class="ticker" id="tick7">—</div>
+</section>
+
+<!-- ════ MÓDULO 8: SAAS VS IN-HOUSE ════ -->
+<section class="mod" id="t8">
+  <div class="eyebrow">Decisión estratégica · Modelo de sourcing de la plataforma</div>
+  <h2 class="mod-title"><span class="accent">In-house, Híbrido o SaaS</span>: la madurez del As-Is y el time-to-market ponderan la decisión</h2>
+  <div class="mod-sub">In-house (build) se alimenta de los módulos 5–8, ya con el factor IA aplicado. Híbrido delega la capa compleja (IdP, consentimiento, directorio) a un proveedor y construye el resto. SaaS delega la plataforma completa. En los tres sobreviven: integración con el core, célula de gobierno, certificación y cumplimiento — ante el regulador el responsable siempre es el banco.</div>
+  <div class="grid2">
+    <div class="card"><h3>Escenario SaaS / PaaS <span class="hint">— preset: </span><select id="s_preset" style="width:auto;border:1px solid rgba(79,6,42,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="aplicarPresetSaas(this.value)"><option value="">— valores propios —</option><option value="paas">Referencia PaaS regional (IPI/IPC)</option><option value="tiers">Referencia SaaS por tiers + Consent Engine</option></select></h3>
+      <table id="saasParams">
+        <tr><td>Setup / implantación inicial (USD)</td><td><input type="number" id="s_setup" onchange="S.saas.setup=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Suscripción anual (USD/año)</td><td><input type="number" id="s_susc" onchange="S.saas.susc=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Fee variable (USD por 1.000 llamadas API)</td><td><input type="number" step="0.5" id="s_fee" onchange="S.saas.fee=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Volumen llamadas API año 1 (miles)</td><td><input type="number" id="s_vol" onchange="S.saas.vol=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Crecimiento anual del volumen %</td><td><input type="number" id="s_crec" onchange="S.saas.crec=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Integración con core / adaptadores (one-off USD)</td><td><input type="number" id="s_integ" onchange="S.saas.integ=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Célula residual de gobierno (% de la célula in-house)</td><td><input type="number" id="s_res" onchange="S.saas.resPct=+this.value;dirty();renderAll()"></td></tr>
+      </table>
+      <div class="note" id="s_presetNota">Presets anclados en propuestas reales de mercado (Chile, jul-2026, USD netos, convertidos de UF/tiers). Los precios SaaS <b>escalan por volumen de llamadas</b> (tiers) y los add-ons (retención 5 años, SIEM, reportes regulatorios, SLA 99,99%) suelen NO estar incluidos — verificar en la cotización. Renombrar el preset por el proveedor real al evaluar.</div>
+    </div>
+    <div class="card"><h3>Escenario Híbrido <span class="hint">— capa compleja al proveedor, resto build propio</span></h3>
+      <table>
+        <tr><td>Setup + licencia de la capa delegada (one-off USD)</td><td><input type="number" id="h_setup" onchange="S.hib.setup=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>Recurrente de la capa delegada (USD/año)</td><td><input type="number" id="h_susc" onchange="S.hib.susc=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>% de fábrica que se sigue construyendo</td><td><input type="number" id="h_fab" min="0" max="100" onchange="S.hib.pctFab=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>% de célula que se mantiene</td><td><input type="number" id="h_cel" min="0" max="100" onchange="S.hib.pctCel=+this.value;dirty();renderAll()"></td></tr>
+        <tr><td>% del BAU propio que se mantiene</td><td><input type="number" id="h_bau" min="0" max="100" onchange="S.hib.pctBau=+this.value;dirty();renderAll()"></td></tr>
+      </table>
+      <div class="note">Default calibrado en la referencia de <b>producto licenciado desplegado in-house</b>: setup+licencia perpetua one-off (~USD 190 K) + soporte anual (~160 K); el banco construye integración con cores y APIs de datos (≈50% de la fábrica) y opera con célula casi completa. La infraestructura corre por el banco (BAU propio).</div>
+      <div class="note"><b>Riesgos a documentar en SaaS/PaaS (no aparecen en el TCO):</b> vendor lock-in (migrar consentimientos activos es lento y caro) · función regulada operada por un tercero con responsabilidad que sigue en el banco · costo por consumo a escala (tiers) · soberanía de datos · Open Finance como capacidad propia vs alquilada.</div>
+    </div>
+  </div>
+  <div class="card"><h3>Curvas de costo acumulado — 3 escenarios</h3><div id="chartSaas"></div><div id="saasVeredicto" style="margin-top:10px"></div></div>
+  <div class="card" style="overflow-x:auto"><h3>Comparativo año a año (USD '000)</h3><div id="saasTabla"></div></div>
+  <div class="ticker" id="tick8">—</div>
+</section>
+
+</main>
+<footer><span>Open Business Accelerator · Assessment de la Entidad · Calibración: entidad de referencia (Chile, Ley Fintec/CMF) · KB-01/02/05</span><span>Cifras de referencia — recalibrar por cliente. Uso interno consultores.</span></footer>
+
+<script>
+/* ═══════════════ DATA POR DEFECTO (calibración de referencia / KB) ═══════════════ */
+const AMBITOS = ["P. Preparación","1. Seguridad & IdP","2. Arquitectura","3. SLA & Observabilidad","4. Gobierno y Diseño","5. Datos","6. API Management","7. Operaciones","8. Certificación CMF","9. Certificación Seguridad"];
+const MADUREZ = ["Nula","Baja","Media-Baja","Media","Media-Alta","Alta"];
+
+// Catálogo de iniciativas de la entidad de referencia: presu = fábrica USD neto; presu=null → la absorbe la célula (formato F1)
+function defIniciativas(){ return [
+ {id:"0.1",nombre:"Alistamiento organizacional y equipo de implementación",amb:0,tipo:"Obligatoria",presu:null,dur:1,mes:1,incl:true},
+ {id:"0.2",nombre:"Aprobación de arquitectura objetivo",amb:0,tipo:"Obligatoria",presu:null,dur:1,mes:1,incl:true},
+ {id:"0.3",nombre:"Alistamiento de infraestructura y ambientes",amb:0,tipo:"Obligatoria",presu:24000,dur:1.5,mes:2,incl:true},
+ {id:"0.4",nombre:"Gestión de licencias, contratos y compras",amb:0,tipo:"Obligatoria",presu:29000,dur:1.5,mes:2,incl:true},
+ {id:"0.5",nombre:"Plan maestro de ejecución",amb:0,tipo:"Obligatoria",presu:null,dur:1,mes:3,incl:true},
+ {id:"1",nombre:"Seguridad APIs (TLS, mTLS, OWASP)",amb:1,tipo:"Obligatoria",presu:72000,dur:2.5,mes:3,incl:true},
+ {id:"2",nombre:"Identity Provider (IdP / Authorization Server)",amb:1,tipo:"Obligatoria",presu:108000,dur:2.5,mes:3,incl:true},
+ {id:"3",nombre:"Consentimiento y Grant Management",amb:1,tipo:"Obligatoria",presu:136000,dur:2.5,mes:5,incl:true},
+ {id:"4",nombre:"Directorio regulador y Dynamic Client Registration (DCR)",amb:1,tipo:"Obligatoria",presu:230000,dur:4,mes:5,incl:true},
+ {id:"5",nombre:"Firma digital, trazabilidad y JWS/JWT",amb:1,tipo:"Obligatoria",presu:24000,dur:2,mes:4,incl:true},
+ {id:"6",nombre:"Arquitectura de Integración y Exposición de APIs",amb:2,tipo:"Obligatoria",presu:null,dur:2,mes:3,incl:true},
+ {id:"7",nombre:"Enrutamiento, desacoplamiento y patrones de integración",amb:2,tipo:"Obligatoria",presu:24000,dur:2.5,mes:4,incl:true},
+ {id:"8",nombre:"Integración asíncrona y gestión de eventos",amb:2,tipo:"Obligatoria",presu:20000,dur:2,mes:5,incl:true},
+ {id:"9",nombre:"Sandbox técnico y gestión de ambientes",amb:2,tipo:"Opcional",presu:29000,dur:1.5,mes:6,incl:true},
+ {id:"10",nombre:"Versionado y ciclo de vida técnico de APIs",amb:2,tipo:"Obligatoria",presu:null,dur:1,mes:5,incl:true},
+ {id:"11",nombre:"Definición de SLA regulatorios",amb:3,tipo:"Obligatoria",presu:null,dur:0.5,mes:5,incl:true},
+ {id:"12",nombre:"Monitoreo y métricas de performance",amb:3,tipo:"Obligatoria",presu:20000,dur:1.5,mes:6,incl:true},
+ {id:"13",nombre:"Observabilidad y trazabilidad end-to-end",amb:3,tipo:"Obligatoria",presu:20000,dur:1.5,mes:6,incl:true},
+ {id:"14",nombre:"Reporting operativo y regulatorio",amb:3,tipo:"Obligatoria",presu:32000,dur:2,mes:7,incl:true},
+ {id:"15",nombre:"Modelo de gobierno de APIs",amb:4,tipo:"Obligatoria",presu:null,dur:0.5,mes:4,incl:true},
+ {id:"16",nombre:"Políticas y controles de diseño de APIs",amb:4,tipo:"Obligatoria",presu:57000,dur:1.5,mes:5,incl:true},
+ {id:"17",nombre:"Proceso de publicación y aprobación de APIs",amb:4,tipo:"Obligatoria",presu:24000,dur:1,mes:6,incl:true},
+ {id:"18",nombre:"Gestión del ciclo de vida y catálogo de APIs",amb:4,tipo:"Obligatoria",presu:24000,dur:1,mes:6,incl:true},
+ {id:"19",nombre:"Desarrollo de APIs Open Data",amb:4,tipo:"Obligatoria",presu:24000,dur:2.5,mes:7,incl:true},
+ {id:"20",nombre:"Desarrollo de APIs de Datos (con consentimiento)",amb:4,tipo:"Obligatoria",presu:72000,dur:3.5,mes:8,incl:true},
+ {id:"21",nombre:"Preparación para APIs de Iniciación de Pagos (PSIP-ready)",amb:4,tipo:"Opcional",presu:null,dur:0.5,mes:9,incl:true},
+ {id:"22",nombre:"Exposición de datos conforme a diccionario ISO 20022 local",amb:5,tipo:"Obligatoria",presu:48000,dur:2.5,mes:7,incl:true},
+ {id:"23",nombre:"Inventario de datos y mapping al diccionario del regulador",amb:5,tipo:"Obligatoria",presu:null,dur:2,mes:6,incl:true},
+ {id:"24",nombre:"Matriz DAMA y calidad del dato",amb:5,tipo:"Obligatoria",presu:null,dur:2.5,mes:7,incl:true},
+ {id:"25",nombre:"Cifrado y protección de datos en tránsito y reposo",amb:5,tipo:"Obligatoria",presu:24000,dur:2,mes:8,incl:true},
+ {id:"26",nombre:"API Gateway y políticas operativas",amb:6,tipo:"Obligatoria",presu:32000,dur:2,mes:8,incl:true},
+ {id:"27",nombre:"Developer Portal, sandbox y onboarding de terceros",amb:6,tipo:"Opcional",presu:32000,dur:2,mes:9,incl:true},
+ {id:"28",nombre:"Gestión de acceso, cuotas y uso de APIs",amb:6,tipo:"Obligatoria",presu:11000,dur:2,mes:9,incl:true},
+ {id:"29",nombre:"Registro de APIs y catálogo regulatorio",amb:6,tipo:"Obligatoria",presu:11000,dur:2,mes:10,incl:true},
+ {id:"30",nombre:"Soporte a terceros (PSBI/PSIP) y operación diaria",amb:7,tipo:"Obligatoria",presu:48000,dur:1.5,mes:9,incl:true},
+ {id:"31",nombre:"Gestión de incidentes y controversias (marco RIO)",amb:7,tipo:"Obligatoria",presu:24000,dur:1.5,mes:9,incl:true},
+ {id:"32",nombre:"Plan de Recuperación ante Desastres (DRP), RTO y RPO",amb:7,tipo:"Obligatoria",presu:null,dur:2,mes:10,incl:true},
+ {id:"33",nombre:"Gobierno Open Finance, RACI y roles regulatorios",amb:7,tipo:"Obligatoria",presu:null,dur:1,mes:8,incl:true},
+ {id:"34",nombre:"Gestión del proceso de certificación regulatoria",amb:8,tipo:"Obligatoria",presu:null,dur:1,mes:10,incl:true},
+ {id:"35",nombre:"Coordinación con certificadores y sandbox del regulador",amb:8,tipo:"Opcional",presu:null,dur:1,mes:11,incl:true},
+ {id:"36",nombre:"Gestión de evidencias regulatorias y reporting",amb:8,tipo:"Obligatoria",presu:33000,dur:1.5,mes:10,incl:true},
+ {id:"37",nombre:"Auditoría técnica, ciberseguridad y fiscalización",amb:8,tipo:"Obligatoria",presu:null,dur:1,mes:11,incl:true},
+ {id:"38",nombre:"Modelo de certificación OpenID / FAPI 2.0",amb:9,tipo:"Obligatoria",presu:24000,dur:1.5,mes:9,incl:true},
+ {id:"39",nombre:"Integración de la certificación OpenID/FAPI al pipeline DevSecOps",amb:9,tipo:"Obligatoria",presu:48000,dur:2.5,mes:10,incl:true},
+ {id:"40",nombre:"Automatización de pruebas de conformidad y seguridad",amb:9,tipo:"Obligatoria",presu:12000,dur:2.5,mes:10,incl:true},
+ {id:"41",nombre:"Gestión de evidencias, auditoría y recertificación continua",amb:9,tipo:"Obligatoria",presu:24000,dur:2,mes:11,incl:true}
+];}
+
+// As-Is de la entidad de referencia: madurez 0=Nula..5=Alta
+function defAsis(){ return [
+ {dim:"1. Seguridad, IdP y Consentimiento",sub:"Seguridad de APIs (TLS/mTLS, claves, certificados)",mad:2,esf:"Alto",nota:"TLS 1.2→1.3 en curso; API Keys sin OAuth2; rotación manual"},
+ {dim:"1. Seguridad, IdP y Consentimiento",sub:"Identity Provider y autenticación",mad:3,esf:"Alto",nota:"Entra ID + Auth0; FAPI 2.0 parcial; sin PKCE/PAR productivo"},
+ {dim:"1. Seguridad, IdP y Consentimiento",sub:"Consentimiento y Grant Management",mad:1,esf:"Alto",nota:"Base de consentimientos reutilizable pero sin panel, revocación ni trazabilidad 5 años"},
+ {dim:"1. Seguridad, IdP y Consentimiento",sub:"Directorio del regulador y DCR",mad:0,esf:"Alto",nota:"Sin integración (esperable en esta etapa); sin copia local ni DCR"},
+ {dim:"1. Seguridad, IdP y Consentimiento",sub:"Firma, trazabilidad y JWS/JWT",mad:3,esf:"Medio",nota:"Dynatrace da trazabilidad; logs sin firma JWS"},
+ {dim:"2. Integración y Arquitectura",sub:"Arquitectura de integración",mad:5,esf:"Bajo",nota:"Microservicios Spring Boot + AKS; APIM + App Gateway + Front Door"},
+ {dim:"2. Integración y Arquitectura",sub:"Mensajería y streaming",mad:4,esf:"Bajo",nota:"Kafka dual (Apache/Confluent); CDC real-time vía Kafka Connect"},
+ {dim:"2. Integración y Arquitectura",sub:"Versionamiento y ciclo DevSecOps",mad:5,esf:"Bajo",nota:"GitFlow, CI/CD maduro, SAST/DAST integrados"},
+ {dim:"2. Integración y Arquitectura",sub:"API Gateway y routing",mad:3,esf:"Medio",nota:"Infraestructura lista; falta OAuth2/FAPI nativo (hoy API Key)"},
+ {dim:"2. Integración y Arquitectura",sub:"Ambientes de pruebas y sandbox",mad:3,esf:"Medio",nota:"DEV/QA sin datos reales (positivo); sin sandbox formal CMF"},
+ {dim:"3. Operaciones, Continuidad y Gobierno",sub:"Continuidad operacional (HA, DRP, RTO/RPO)",mad:5,esf:"Bajo",nota:"Azure >99,95%; DRP formal con pruebas periódicas"},
+ {dim:"3. Operaciones, Continuidad y Gobierno",sub:"Mecanismo alternativo (Anexo 3)",mad:0,esf:"Alto",nota:"No existe aún (norma recién publicada)"},
+ {dim:"3. Operaciones, Continuidad y Gobierno",sub:"Gestión de incidentes y RIO",mad:3,esf:"Medio",nota:"Proceso N1–N4 existente; sin alineación al formato RIO"},
+ {dim:"3. Operaciones, Continuidad y Gobierno",sub:"Gobierno Open Finance (comité, RACI)",mad:1,esf:"Medio",nota:"Sin oficina/comité SFA ni RACI por rol regulatorio"},
+ {dim:"3. Operaciones, Continuidad y Gobierno",sub:"Canal de soporte a terceros",mad:3,esf:"Medio",nota:"Mesa de ayuda N1–N4; sin canal PSBI/PSIP"},
+ {dim:"4. Gestión de APIs",sub:"Gobierno del ciclo de vida de APIs",mad:1,esf:"Medio",nota:"Definición conceptual; sin proceso operativo ni aprobaciones formales"},
+ {dim:"4. Gestión de APIs",sub:"Versionado semántico y catálogo",mad:2,esf:"Medio",nota:"GitFlow sí; sin catálogo corporativo ni backward compatibility"},
+ {dim:"4. Gestión de APIs",sub:"Developer Portal y onboarding",mad:1,esf:"Alto",nota:"Documentación interna; sin portal para terceros ni DCR"},
+ {dim:"5. SLA, Performance y Observabilidad",sub:"Disponibilidad y rendimiento",mad:5,esf:"Bajo",nota:"Capacidad supera mínimos regulatorios (50–5.000 RPS)"},
+ {dim:"5. SLA, Performance y Observabilidad",sub:"Observabilidad (monitoreo, alertas, trazas)",mad:5,esf:"Bajo",nota:"Dynatrace full-stack + Kibana"},
+ {dim:"5. SLA, Performance y Observabilidad",sub:"Reportería regulatoria automática",mad:0,esf:"Medio",nota:"Sin reportes SFA (norma no vigente): disponibilidad, p95, RIO"},
+ {dim:"6. Datos",sub:"Taxonomía y diccionario (ISO 20022 local)",mad:3,esf:"Medio",nota:"PureView + estándar IBR; mapeo al diccionario CMF pendiente"},
+ {dim:"6. Datos",sub:"Calidad del dato (DQ) y matriz DAMA",mad:2,esf:"Medio",nota:"Política en implementación; sin reglas DQ por API SFA"},
+ {dim:"6. Datos",sub:"Cifrado y protección del dato",mad:4,esf:"Bajo",nota:"Cifrado Azure en tránsito/reposo; validar NIST 800-175"},
+ {dim:"8. Certificación y Auditoría",sub:"Certificación funcional ante el regulador",mad:1,esf:"Medio",nota:"Experiencia en certificaciones corporativas; sin proceso SFA"},
+ {dim:"8. Certificación y Auditoría",sub:"Certificación de seguridad FAPI/OpenID",mad:2,esf:"Medio",nota:"SAST/DAST sí; sin validación FAPI 2.0 / mTLS / JWS"},
+ {dim:"8. Certificación y Auditoría",sub:"Logs inviolables y evidencias (≥5 años)",mad:2,esf:"Medio",nota:"Logs en Azure/Dynatrace/Kibana sin firma ni retención regulatoria"}
+];}
+
+// Tarifarios KB-05 §4 (USD/h netos)
+const TARIFAS = {
+ chile:{"Product Owner":61.5,"Scrum Master":45.8,"Líder técnico":73.7,"Arquitecto de integración":73.7,"Arquitecto full stack":73.7,"Líder de seguridad":73.7,"Líder de operaciones":73.7,"Ing. de infraestructura":73.7,"Especialista DevSecOps":73.7,"Especialista de datos":58.5,"QA":51.4,"Especialista UX":48.3,"Soporte":31.0},
+ peru:{"Product Owner":50,"Scrum Master":38,"Líder técnico":55,"Arquitecto de integración":55,"Arquitecto full stack":55,"Líder de seguridad":55,"Líder de operaciones":55,"Ing. de infraestructura":55,"Especialista DevSecOps":55,"Especialista de datos":45,"QA":32,"Especialista UX":35,"Soporte":22}
+};
+function defRoles(region){ const t=TARIFAS[region||'chile']; return [
+ {rol:"Product Owner",tarifa:t["Product Owner"],fte:0.5,pctMeses:100},
+ {rol:"Scrum Master",tarifa:t["Scrum Master"],fte:0.5,pctMeses:100},
+ {rol:"Líder técnico",tarifa:t["Líder técnico"],fte:0.75,pctMeses:100},
+ {rol:"Arquitecto de integración",tarifa:t["Arquitecto de integración"],fte:0.5,pctMeses:80},
+ {rol:"Arquitecto full stack",tarifa:t["Arquitecto full stack"],fte:0.5,pctMeses:60},
+ {rol:"Líder de seguridad",tarifa:t["Líder de seguridad"],fte:0.5,pctMeses:70},
+ {rol:"Líder de operaciones",tarifa:t["Líder de operaciones"],fte:0.25,pctMeses:60},
+ {rol:"Ing. de infraestructura",tarifa:t["Ing. de infraestructura"],fte:0.5,pctMeses:60},
+ {rol:"Especialista DevSecOps",tarifa:t["Especialista DevSecOps"],fte:0.25,pctMeses:50},
+ {rol:"Especialista de datos",tarifa:t["Especialista de datos"],fte:0.5,pctMeses:70},
+ {rol:"QA",tarifa:t["QA"],fte:0.75,pctMeses:70},
+ {rol:"Especialista UX",tarifa:t["Especialista UX"],fte:0.25,pctMeses:40},
+ {rol:"Soporte",tarifa:t["Soporte"],fte:0.25,pctMeses:50}
+];}
+
+// BAU KB-05 §7.1 (USD/año netos, desde go-live)
+function defBau(){ return [
+ {nombre:"Mantenimiento de infraestructura",usd:17000},
+ {nombre:"Disponibilidad de capacidad del clúster",usd:34000},
+ {nombre:"Observabilidad (retención regulatoria ≥5 años)",usd:45000},
+ {nombre:"Consumo de bases de datos",usd:81000},
+ {nombre:"Soporte 8×5 → B2B (crece con partners)",usd:60000},
+ {nombre:"Célula evolutiva post go-live (~0,5 FTE)",usd:90000}
+];}
+// Checklist omitidos KB-05 §9: tipo oneoff | anual | pctFabrica
+function defExtras(){ return [
+ {nombre:"Licenciamiento incremental (APIM / IdP por MAU / SIEM)",tipo:"anual",usd:40000},
+ {nombre:"Certificación OpenID/FAPI 2.0 (suite + tasa)",tipo:"oneoff",usd:30000},
+ {nombre:"Pentesting / ethical hacking anual",tipo:"anual",usd:25000},
+ {nombre:"HSM y gestión de certificados",tipo:"oneoff",usd:20000},
+ {nombre:"Cuota Directorio del regulador",tipo:"anual",usd:15000},
+ {nombre:"Capacitación y gestión del cambio",tipo:"oneoff",usd:20000},
+ {nombre:"Legal / compliance externo (licencias de rol, dossiers)",tipo:"oneoff",usd:30000},
+ {nombre:"Contingencia sobre fábrica (%)",tipo:"pctFabrica",usd:12}
+];}
+// Monetización KB-02 §3 LATAM. unidad: trx | anual
+function defMon(){ return [
+ {nombre:"Agregación de cuentas (AISP)",unidad:"trx",tarifa:0.10,vol:3000000,anio:2,ramp:3},
+ {nombre:"Iniciación de pagos (PISP)",unidad:"trx",tarifa:0.15,vol:4000000,anio:2,ramp:3},
+ {nombre:"Confirmación de fondos",unidad:"trx",tarifa:0.08,vol:2000000,anio:2,ramp:3},
+ {nombre:"APIs premium (scoring / lending / datos)",unidad:"trx",tarifa:0.50,vol:1200000,anio:3,ramp:3},
+ {nombre:"Directorio / licenciamiento participantes",unidad:"anual",tarifa:30000,vol:1,anio:2,ramp:2}
+];}
+function defSaas(){ return {setup:250000,susc:300000,fee:12,vol:5000,crec:35,integ:150000,resPct:35}; }
+function defHib(){ return {setup:190000,susc:160000,pctFab:50,pctCel:85,pctBau:100}; }
+// Presets de mercado (Chile jul-2026, USD netos; convertidos de UF a USD 44,2/UF y de tiers USD/mes). Anónimos — renombrar al evaluar proveedor real.
+const PRESETS_SAAS={
+ paas:{setup:82000,susc:191000,fee:0,integ:120000,resPct:35,
+  nota:"<b>Referencia PaaS regional (IPI/IPC):</b> setup ~1.850 UF (USD 82 K) + 360 UF/mes (USD ~191 K/año) con 60M llamadas/mes incluidas (flat, sin fee variable). SLA 99,9%, latencia <300 ms, RTO<4h/RPO<1h. TTM ~20 semanas. Solo IPI/IPC — PSBI/PSIP se cotiza aparte. Brechas típicas de evidencia: DCR/SSA, conector Directorio, mecanismo alternativo, HSM/KMS. TCO 36m ≈ USD 655 K neto."},
+ tiers:{setup:5000,susc:377000,fee:0,integ:150000,resPct:35,
+  nota:"<b>Referencia SaaS por tiers + Consent Engine:</b> plataforma por tramos de volumen (USD 15,1 K/mes @250 K llamadas → 35,2 K/mes @25M) + conectividad VPN (~2,5 K/mes) + Consent Engine por consentimientos activos. Preset con tier 10M calls/mes ≈ USD 377 K/año. Cubre IPI/IPC + PSBI/PSIP, construyó el Directorio del regulador. Add-ons NO incluidos: retención 5 años, SIEM, reportes regulatorios, SLA 99,99%. TCO 36m ≈ USD 1.131 K neto. A >25M llamadas: cotización especial."}
+};
+function aplicarPresetSaas(k){ if(!k||!PRESETS_SAAS[k]) { $('s_presetNota').innerHTML='Presets anclados en propuestas reales de mercado (Chile, jul-2026, USD netos). Renombrar por el proveedor real al evaluar.'; return; }
+ const p=PRESETS_SAAS[k]; Object.assign(S.saas,{setup:p.setup,susc:p.susc,fee:p.fee,integ:p.integ,resPct:p.resPct});
+ dirty(); renderAll(); $('s_preset').value=k; $('s_presetNota').innerHTML=p.nota; }
+// Perfiles acelerables por IA (desarrollo asistido) — lo funcional/burocrático no acelera
+const TEC_DEF=["Líder técnico","Arquitecto de integración","Arquitecto full stack","Ing. de infraestructura","Especialista DevSecOps","Especialista de datos","QA","Especialista UX"];
+
+// Ruta crítica y dependencias (calibración de referencia): CRIT = habilitación de infraestructura que marca el camino
+const CRIT_DEF=["0.3","1","2","4","6","26"];
+const DEP_DEF={"0.2":"0.1","0.3":"0.2","0.4":"0.2","0.5":"0.2","1":"0.3","2":"0.4","3":"2","4":"2","5":"1","6":"0.2","7":"6","8":"1","9":"0.3","10":"15","11":"6","12":"11","13":"11","14":"12","15":"6","16":"15","17":"15","18":"15","19":"15","20":"3,1","22":"20","23":"22","24":"22","25":"1","26":"1,6","27":"18","28":"26","29":"18","30":"13,26","31":"13,30","32":"6,13","33":"15","34":"36","35":"34","36":"13","37":"36","38":"1,2","39":"38","40":"39","41":"40"};
+
+// Frentes para levantamiento
+const FRENTES=["P. Preparación y Gobierno","1. Seguridad, IdP y Consentimiento","2. Integración y Arquitectura","3. Operaciones, Continuidad y Gobierno","4. Gestión de APIs","5. SLA, Performance y Observabilidad","6. Datos","7. API Management","8. Certificación y Auditoría"];
+
+// Banco genérico de preguntas de levantamiento (calibrado en deep-dives reales, limpio de cliente)
+function defLev(){ const Q=[
+ [1,"¿Cuenta con servidor de autorización / IdP? ¿Cuál es y cómo se licencia (por MAU, bolsa de usuarios)?"],
+ [1,"¿El IdP soporta OAuth 2.0, OIDC y FAPI 2.0 de forma nativa? ¿El licenciamiento actual cubre el perfil FAPI?"],
+ [1,"¿Soporta PAR, RAR y PKCE? ¿Dispone de Grant Management?"],
+ [1,"¿Soporta CIBA (Client-Initiated Backchannel Authentication)?"],
+ [1,"¿Cómo está implementado MFA / autenticación fuerte (SCA)?"],
+ [1,"¿Existen flujos diferenciados para persona natural y jurídica (estructura de poderes)?"],
+ [1,"¿Qué versión de TLS usa y cuál es el plan de migración a TLS 1.3? ¿Realiza mTLS bidireccional con externos?"],
+ [1,"¿Existe rotación automatizada de certificados digitales con externos? ¿Con qué periodicidad?"],
+ [1,"¿Cuenta con un frontal para que el cliente gestione consentimientos (otorgar, consultar, renovar, revocar)?"],
+ [1,"¿Se firman mensajes y logs con JWS/JWT? ¿Cómo se gestionan claves y certificados (Key Vault / HSM, JWK)?"],
+ [1,"¿El servidor de autorización está expuesto externamente? ¿Cómo está protegido?"],
+ [2,"¿Cómo expone APIs hoy (REST/gRPC/SOAP)? ¿Con qué autenticación (API Key, OAuth2)? ¿Tienen expiración?"],
+ [2,"¿Existe bus de integración / service mesh / mensajería asíncrona (Kafka u otro)? ¿Integrado con el IdP?"],
+ [2,"¿Dispone de CDC / streaming near-real-time o solo ETL batch?"],
+ [2,"¿Cuál es la latencia y throughput actual de los backends de mayor carga?"],
+ [2,"¿Cuenta con sandbox / ambientes de prueba accesibles a terceros? ¿Los datos están enmascarados o no son reales?"],
+ [2,"¿Qué estrategia de versionado de APIs y backward compatibility se usa o planifica?"],
+ [2,"¿El core expone APIs o requiere capa intermedia de integración? ¿Hay migraciones o upgrades planificados en el core?"],
+ [3,"¿Cuentan con DRP con RTO/RPO definidos, aprobados y con pruebas periódicas? ¿Se reportan al regulador?"],
+ [3,"¿Existe un mecanismo alternativo de continuidad para las APIs reguladas (desacople, credenciales propias, monitoreo)?"],
+ [3,"¿Proceso de gestión de incidentes por niveles (N1–N3/N4)? ¿Alineado al marco de incidentes del regulador (RIO)?"],
+ [3,"¿Existe canal técnico único de soporte a terceros (PSBI/PSIP) documentado?"],
+ [3,"¿Se ha constituido o dimensionado un comité/oficina Open Finance con matriz RACI por rol regulatorio?"],
+ [4,"¿Existe un modelo de gobierno de APIs implementado (políticas, revisión de seguridad, aprobación formal, retiro)?"],
+ [4,"¿Existe catálogo corporativo de APIs con versionado semántico y control de vigencia?"],
+ [4,"¿Cuenta con Developer Portal con documentación, auto-registro (DCR) y gestión de suscripciones?"],
+ [5,"¿Qué plataformas de observabilidad tiene disponibles? ¿Monitoreo full-stack, alertas en tiempo real, umbrales dinámicos?"],
+ [5,"¿Se registra trazabilidad extendida (correlation-ID, usuario, token, IP de origen) por transacción?"],
+ [5,"¿Representa un reto cumplir 10 TPS / 60 TPM por API y p95 ≤ 4.000 ms?"],
+ [5,"¿Se generan hoy reportes periódicos al regulador (disponibilidad, latencia, throughput, error-rate)?"],
+ [6,"¿Utiliza un estándar de taxonomía de datos (ISO 20022 u otro)? ¿Qué herramienta de catalogación usa?"],
+ [6,"¿Existe inventario de datos con mapping al diccionario del regulador (nombres, tipos, formatos)?"],
+ [6,"¿Cuenta con matriz DAMA / política de gobierno y calidad del dato operativa (completitud, validez, unicidad)?"],
+ [6,"¿Realiza cifrado en tránsito y reposo conforme a NIST 800-175 o equivalente? ¿Enmascaramiento en ambientes bajos?"],
+ [7,"¿El API Gateway aplica mTLS, validación OAuth2/FAPI y manejo de scopes? ¿Quién gobierna los scopes?"],
+ [7,"¿Existen políticas de rate-limiting por cliente/API y mitigación DDoS habilitadas (WAF)?"],
+ [7,"¿Cómo se gestionan los logs de APIs y cuál es su retención?"],
+ [8,"¿Antecedentes de procesos de certificación técnica internos/externos? ¿Existe proceso establecido adaptable?"],
+ [8,"¿Los pipelines incluyen SAST/DAST? ¿Es automatizable la validación FAPI/OpenID en CI/CD?"],
+ [8,"¿Dispone de logs inviolables (firma JWS/hash-chain) con retención ≥ 5 años para auditoría?"]
+ ];
+ return Q.map((q,i)=>({id:"L-"+String(i+1).padStart(2,'0'),frente:q[0],preg:q[1],resp:"",cumpl:"Pendiente",plan:"",com:""}));
+}
+
+// Stack tecnológico por capa (arquitectura referencial Minsait; precarga de la entidad de referencia)
+const CAPAS=["Canales y terceros","Perímetro y seguridad de red","API Management","Seguridad, IdP y Consentimiento","Integración y microservicios","Datos","Backend / Core","Transversal · Observabilidad","Transversal · DevSecOps y Gobierno"];
+const ESTADOS_STACK=["Reutilizable","Evolucionar","Construir","No aplica"];
+function defStack(){ return [
+ {capa:0,comp:"Portal / App clientes (journeys de consentimiento)",tec:"App móvil + web actuales",estado:"Evolucionar",inis:"3",nota:"Integrar panel de consentimiento en canales existentes"},
+ {capa:0,comp:"Acceso de terceros (TPPs / PSBI / PSIP)",tec:"No existe",estado:"Construir",inis:"4, 27, 30",nota:"Onboarding, DCR y soporte a terceros"},
+ {capa:1,comp:"WAF / publicación perimetral",tec:"Application Gateway + Front Door",estado:"Evolucionar",inis:"1",nota:"Validar WAF/DDoS y TLS 1.3; no exponer APIs reguladas directo"},
+ {capa:2,comp:"API Gateway / Manager regulatorio",tec:"Azure APIM (hoy API Keys)",estado:"Evolucionar",inis:"1, 26, 28",nota:"mTLS + OAuth/FAPI, eliminar API Keys, segregar dominio regulatorio"},
+ {capa:2,comp:"Gateway interno",tec:"Kong / Kong OSS",estado:"Reutilizable",inis:"—",nota:"Solo tráfico interno; sin exposición Open Finance"},
+ {capa:2,comp:"Developer Portal + sandbox de terceros",tec:"No existe",estado:"Construir",inis:"9, 27",nota:"Documentación, auto-registro, suscripciones"},
+ {capa:3,comp:"IdP / Authorization Server FAPI 2.0",tec:"Auth0 (licencia sin FAPI completo)",estado:"Evolucionar",inis:"2",nota:"Activar perfil FAPI 2.0 (PAR, RAR, PKCE); revisar licenciamiento"},
+ {capa:3,comp:"Consentimiento y Grant Management",tec:"Base parcial (portal cautivo)",estado:"Construir",inis:"3",nota:"Panel multi-consentimiento, revocación, trazabilidad ≥5 años"},
+ {capa:3,comp:"Directorio del regulador + DCR",tec:"No existe (normal pre-vigencia)",estado:"Construir",inis:"4",nota:"Federación, copia local 8h, RFC 7591/7592 con SSA"},
+ {capa:3,comp:"Gestión de claves y certificados",tec:"Azure Key Vault + rotación manual",estado:"Evolucionar",inis:"1, 5",nota:"Automatizar rotación ≤13 meses; JWK; firma JWS"},
+ {capa:3,comp:"IdP corporativo interno",tec:"Entra ID + Active Directory",estado:"Reutilizable",inis:"—",nota:"Solo uso interno; fuera de los flujos regulatorios"},
+ {capa:4,comp:"Microservicios de exposición regulatoria",tec:"Spring Boot + AKS / Webmethod",estado:"Evolucionar",inis:"6, 7",nota:"Microservicios OF dedicados; contratos ISO 20022; errores CMF"},
+ {capa:4,comp:"Mensajería asíncrona / eventos",tec:"Kafka + Confluent (CDC activo)",estado:"Reutilizable",inis:"8",nota:"Uso interno; evaluar eventos regulatorios (consent, errores)"},
+ {capa:5,comp:"Data layer regulatorio",tec:"Data Lake + PostgreSQL",estado:"Evolucionar",inis:"22, 23",nota:"Fuente oficial de datos regulatorios; delivery zone"},
+ {capa:5,comp:"Taxonomía y catalogación",tec:"Purview + estándar IBR",estado:"Evolucionar",inis:"23, 24",nota:"Alinear al diccionario del regulador; reglas DAMA"},
+ {capa:5,comp:"Diccionario ISO 20022 localizado",tec:"No implementado",estado:"Construir",inis:"22",nota:"Mapping completo campos internos → diccionario CMF"},
+ {capa:6,comp:"Core / sistemas de negocio",tec:"Core actual en Azure",estado:"Reutilizable",inis:"—",nota:"Sin impacto directo; exposición vía capa de integración"},
+ {capa:7,comp:"Monitoreo y métricas regulatorias",tec:"Dynatrace (integrado APIM)",estado:"Evolucionar",inis:"12, 13",nota:"Segregar métricas OF; p95, uptime, TPS; evidencias"},
+ {capa:7,comp:"Análisis de logs",tec:"ELK / Kibana + Azure Logs",estado:"Reutilizable",inis:"13",nota:"Correlación y soporte forense"},
+ {capa:7,comp:"Reportería regulatoria automática",tec:"No existe",estado:"Construir",inis:"14",nota:"Reportes mensuales: disponibilidad, p95, RIO"},
+ {capa:7,comp:"Logs inviolables (JWS/hash, ≥5 años)",tec:"No existe",estado:"Construir",inis:"36, 41",nota:"Repositorio de evidencias para auditoría"},
+ {capa:8,comp:"CI/CD y seguridad en pipeline",tec:"Azure DevOps + SAST/DAST + Terraform",estado:"Evolucionar",inis:"39, 40",nota:"Integrar pruebas FAPI/OpenID; evidencias automáticas"},
+ {capa:8,comp:"Gobierno de APIs",tec:"Definición conceptual",estado:"Construir",inis:"15–18",nota:"Modelo, políticas, publicación, catálogo"},
+ {capa:8,comp:"Gobierno Open Finance (comité, RACI)",tec:"No existe",estado:"Construir",inis:"33",nota:"Oficina/comité con roles regulatorios"}
+];}
+
+function defaultState(){ const st={
+ cliente:{nombre:"Entidad Demo",pais:"Chile",marco:"Ley Fintec 21.521 · CMF · SFA",fechaInicio:"2026-04",consultor:"",mesesImpl:12,aniosBC:8,tasaDesc:12,iva:19,conIva:false,celulaPresupuestada:true,region:"chile"},
+ asis:defAsis(), inis:defIniciativas(), roles:defRoles('chile'), bau:defBau(), extras:defExtras(), mon:defMon(), saas:defSaas(),
+ lev:defLev(), stack:defStack()
+}; normalize(st); return st;}
+function normalize(st){ // compatibilidad con estados guardados de versiones anteriores
+ if(!st.lev) st.lev=defLev();
+ if(!st.stack) st.stack=defStack();
+ if(!st.hib) st.hib=defHib();
+ if(st.cliente&&st.cliente.ia===undefined) st.cliente.ia=20;
+ (st.inis||[]).forEach(i=>{ if(i.crit===undefined) i.crit=CRIT_DEF.includes(String(i.id));
+   if(i.dep===undefined) i.dep=DEP_DEF[String(i.id)]||""; });
+ (st.roles||[]).forEach(r=>{ if(r.tec===undefined) r.tec=TEC_DEF.includes(r.rol); });
+ return st;
+}
+let S = defaultState();
+
+/* ═══════════════ UTILIDADES ═══════════════ */
+const $=id=>document.getElementById(id);
+const fmt=n=>isFinite(n)?Math.round(n).toLocaleString('es-CL'):'—';
+const fmtK=n=>isFinite(n)?(Math.round(n/1000)).toLocaleString('es-CL'):'—';
+const IVAf=()=>S.cliente.conIva?(1+S.cliente.iva/100):1;
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function tab(t){document.querySelectorAll('#tabs .tab').forEach(e=>e.classList.toggle('active',e.dataset.t===t));document.querySelectorAll('section.mod').forEach(e=>e.classList.toggle('active',e.id===t));}
+function dirty(){$('savemsg').textContent='● sin guardar';}
+function mesLabel(i){ // i = 1-based
+  if(!S.cliente.fechaInicio) return 'M'+i;
+  const [y,m]=S.cliente.fechaInicio.split('-').map(Number);
+  const d=new Date(y,m-1+i-1,1);
+  return ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()]+'-'+String(d.getFullYear()).slice(2);
+}
+
+/* ═══════════════ MOTOR DE CÁLCULO ═══════════════ */
+function calc(){
+  const c=S.cliente, H=Math.max(6,c.mesesImpl||12), Y=Math.max(3,c.aniosBC||8), f=IVAf();
+  const iaF=1-Math.min(40,Math.max(0,c.ia||0))/100; // factor de eficiencia IA sobre build
+  const incl=S.inis.filter(i=>i.incl);
+  // Fábrica por mes (presupuesto repartido uniforme en su duración, ya con factor IA)
+  const fabMes=Array(H+1).fill(0);
+  let fabTotal=0;
+  incl.forEach(i=>{ if(i.presu){ const p=i.presu*iaF; fabTotal+=p;
+    const d=Math.max(0.5,i.dur||1), m0=Math.min(H,Math.max(1,Math.round(i.mes||1)));
+    const nm=Math.max(1,Math.round(d));
+    for(let k=0;k<nm;k++){ const mm=Math.min(H,m0+k); fabMes[mm]+=p/nm; }
+  }});
+  // Contingencia
+  const pctCont=(S.extras.find(e=>e.tipo==='pctFabrica')||{usd:0}).usd/100;
+  const contTotal=fabTotal*pctCont;
+  // Célula por mes: Σ roles (tarifa×172×FTE) durante pctMeses% del horizonte; IA reduce solo perfiles técnicos
+  const celMes=Array(H+1).fill(0);
+  S.roles.forEach(r=>{ const mensual=r.tarifa*172*r.fte*(r.tec?iaF:1); const mAct=Math.round(H*(r.pctMeses||100)/100);
+    for(let m=1;m<=mAct;m++) celMes[m]+=mensual; });
+  const celTotal=celMes.reduce((a,b)=>a+b,0);
+  // Heatmap paralelismo
+  const hm={cel:Array(H+1).fill(0),fab:Array(H+1).fill(0)};
+  incl.forEach(i=>{ const m0=Math.max(1,Math.round(i.mes||1)), m1=Math.min(H,Math.ceil(m0+(i.dur||1)-1));
+    for(let m=m0;m<=m1&&m<=H;m++){ (i.presu?hm.fab:hm.cel)[m]++; } });
+  // One-offs / anuales extras
+  const oneoffs=S.extras.filter(e=>e.tipo==='oneoff').reduce((a,e)=>a+e.usd,0);
+  const extAnual=S.extras.filter(e=>e.tipo==='anual').reduce((a,e)=>a+e.usd,0);
+  const bauAnual=S.bau.reduce((a,b)=>a+b.usd,0);
+  const goLiveMes=H; // BAU pleno desde fin de implementación; pro-rateo el año del go-live
+  // Series anuales (año 1 = primeros 12 meses del programa)
+  const capex=Array(Y+1).fill(0), opex=Array(Y+1).fill(0), ing=Array(Y+1).fill(0);
+  const fabY=Array(Y+1).fill(0), celY=Array(Y+1).fill(0), bauY=Array(Y+1).fill(0), extY=Array(Y+1).fill(0);
+  for(let m=1;m<=H;m++){ const y=Math.min(Y,Math.ceil(m/12));
+    capex[y]+=fabMes[m]*(1+pctCont); fabY[y]+=fabMes[m];
+    if(c.celulaPresupuestada) capex[y]+=celMes[m];
+    celY[y]+=celMes[m];
+  }
+  capex[1]+=oneoffs;
+  for(let y=1;y<=Y;y++){
+    const mesesOper=Math.max(0,Math.min(12, y*12-goLiveMes)); // meses operativos del año y
+    bauY[y]=bauAnual*(mesesOper/12); extY[y]=extAnual*(mesesOper/12);
+    opex[y]+=bauY[y]+extY[y];
+  }
+  // Ingresos: ramp lineal desde año de entrada
+  S.mon.forEach(l=>{ for(let y=1;y<=Y;y++){ if(y>=l.anio){ const r=Math.min(1,(y-l.anio+1)/Math.max(1,l.ramp));
+    ing[y]+= (l.unidad==='anual'? l.tarifa*l.vol : l.tarifa*l.vol)*r; } }});
+  // Flujos
+  const flujo=[],acum=[]; let ac=0;
+  for(let y=1;y<=Y;y++){ const fl=ing[y]-capex[y]-opex[y]; flujo[y]=fl; ac+=fl; acum[y]=ac; }
+  // VAN / TIR / payback
+  const rd=c.tasaDesc/100; let van=0;
+  for(let y=1;y<=Y;y++) van+=flujo[y]/Math.pow(1+rd,y);
+  const tir=irr(flujo.slice(1));
+  let payback=null;
+  for(let y=1;y<=Y;y++){ if(acum[y]>=0){ const prev=y>1?acum[y-1]:0;
+    payback=(y-1)+(flujo[y]!==0?(-prev/flujo[y]):0); if(y===1)payback=Math.max(0.5,payback); break; } }
+  const invTotal=capex.reduce((a,b)=>a+b,0);
+  // SaaS
+  const sa=S.saas, hb=S.hib, saas=Array(Y+1).fill(0), inh=Array(Y+1).fill(0), hib=Array(Y+1).fill(0);
+  const celImplAnual=celTotal/Math.max(1,H/12); // célula residual SaaS sobre célula de implementación anualizada
+  for(let y=1;y<=Y;y++){
+    inh[y]=capex[y]+opex[y];
+    const vol=sa.vol*Math.pow(1+sa.crec/100,y-1);
+    saas[y]=(y===1?sa.setup+sa.integ:0)+sa.susc+(sa.fee*vol)
+      + (y<=Math.ceil(H/12)? celImplAnual*(sa.resPct/100):0)
+      + S.extras.filter(e=>e.tipo==='anual').reduce((a,e)=>a+e.usd,0)*(y>=Math.ceil(H/12)?1:0.5)
+      + (y===1?S.extras.filter(e=>e.tipo==='oneoff'&&/Certificación|Legal|Capacitación/.test(e.nombre)).reduce((a,e)=>a+e.usd,0):0);
+    hib[y]= fabY[y]*(1+pctCont)*(hb.pctFab/100)
+      + (c.celulaPresupuestada? celY[y]*(hb.pctCel/100):0)
+      + (y===1? oneoffs+hb.setup:0)
+      + hb.susc
+      + bauY[y]*(hb.pctBau/100) + extY[y];
+  }
+  const madProm=S.asis.length?S.asis.reduce((a,x)=>a+x.mad,0)/S.asis.length:0;
+  return {H,Y,f,iaF,fabTotal,contTotal,celTotal,celMes,fabMes,hm,oneoffs,extAnual,bauAnual,capex,opex,ing,flujo,acum,van,tir,payback,invTotal,saas,inh,hib,madProm,incl};
+}
+function irr(cf){ // bisección sobre flujos anuales (año1..N)
+  const npv=r=>cf.reduce((a,c,i)=>a+c/Math.pow(1+r,i+1),0);
+  let lo=-0.9,hi=5; if(npv(lo)*npv(hi)>0) return null;
+  for(let i=0;i<80;i++){ const mid=(lo+hi)/2; (npv(lo)*npv(mid)<=0)?hi=mid:lo=mid; }
+  return (lo+hi)/2*100;
+}
+
+/* ═══════════════ RENDER ═══════════════ */
+function renderAll(){ const R=calc(); rCliente(R); rLev(R); rAsis(R); rStack(R); rInis(R); rRoadmap(R); rCelula(R); rBau(R); rMon(R); rBC(R); rSaas(R); }
+
+function rCliente(R){ const c=S.cliente;
+  $('p_nombre').value=c.nombre||''; $('clienteNombre').value=c.nombre||'';
+  $('p_pais').value=c.pais||''; $('p_marco').value=c.marco||''; $('p_fecha').value=c.fechaInicio||'';
+  $('p_consultor').value=c.consultor||''; $('p_meses').value=c.mesesImpl; $('p_anios').value=c.aniosBC;
+  $('p_tasa').value=c.tasaDesc; $('p_iva').value=c.iva; $('p_conIva').value=c.conIva?'1':'0'; $('p_region').value=c.region;
+  $('p_celpres').value=c.celulaPresupuestada?'1':'0'; $('p_ia').value=c.ia||0;
+  $('tick0').innerHTML=`Programa de <b>${c.mesesImpl} meses</b> de implementación · business case a <b>${c.aniosBC} años</b> · costo total de implementación estimado <b class="accent">USD ${fmtK((R.fabTotal+R.contTotal+R.celTotal+R.oneoffs)*R.f)} K</b> (${S.cliente.conIva?'con':'sin'} impuesto).`;
+}
+
+function rAsis(R){
+  const grupos={}; S.asis.forEach((x,i)=>{(grupos[x.dim]=grupos[x.dim]||[]).push(i)});
+  let h='<table><tr><th style="width:26%">Frente / subdimensión</th><th style="width:110px">Madurez SFA</th><th style="width:90px">Esfuerzo</th><th>Evidencia / nota</th><th></th></tr>';
+  Object.keys(grupos).forEach(g=>{ h+=`<tr class="amb-row"><td colspan="5">${esc(g)}</td></tr>`;
+    grupos[g].forEach(i=>{ const x=S.asis[i];
+      h+=`<tr><td style="padding-left:18px">${esc(x.sub)}</td>
+      <td><span class="mat m${x.mad}" style="cursor:pointer" onclick="cycleMad(${i})">${MADUREZ[x.mad]}</span></td>
+      <td><select onchange="S.asis[${i}].esf=this.value;dirty()"><option${x.esf==='Bajo'?' selected':''}>Bajo</option><option${x.esf==='Medio'?' selected':''}>Medio</option><option${x.esf==='Alto'?' selected':''}>Alto</option></select></td>
+      <td><input value="${esc(x.nota)}" onchange="S.asis[${i}].nota=this.value;dirty()"></td>
+      <td><span class="del" onclick="S.asis.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  });
+  h+='</table>'; $('asisTabla').innerHTML=h;
+  const prom=R.madProm, altos=S.asis.filter(x=>x.mad>=4).length, bajos=S.asis.filter(x=>x.mad<=1).length;
+  $('asisKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">Madurez promedio</div><div class="val">${prom.toFixed(1)} / 5</div><div class="sub">${MADUREZ[Math.round(prom)]}</div></div>
+   <div class="kpi light"><div class="lbl">Subdimensiones Alta/Media-Alta</div><div class="val">${altos}</div><div class="sub">capacidades reutilizables → favorece in-house</div></div>
+   <div class="kpi light"><div class="lbl">Subdimensiones Nula/Baja</div><div class="val">${bajos}</div><div class="sub">brechas de construcción → evaluar SaaS</div></div>`;
+  $('tick1').innerHTML = prom>=3.2 ? 'Madurez tecnológica <b>alta</b>: la base existente favorece la ruta <b class="accent">in-house</b> — el gap es regulatorio (FAPI, consentimiento, certificación), no de plataforma.'
+   : prom>=2 ? 'Madurez <b>media</b>: decisión SaaS vs in-house abierta — el comparador (módulo 9) y el time-to-market deben inclinar la balanza.'
+   : 'Madurez <b>baja</b>: evitar sobrearquitectura; una plataforma <b class="accent">SaaS</b> reduce riesgo de ejecución y time-to-market (KB-05: cumplimiento mínimo viable primero).';
+}
+function cycleMad(i){ S.asis[i].mad=(S.asis[i].mad+1)%6; dirty(); renderAll(); }
+function addAsis(){ S.asis.push({dim:"1. Seguridad, IdP y Consentimiento",sub:"Nueva subdimensión",mad:3,esf:"Medio",nota:""}); dirty(); renderAll(); }
+
+function rInis(R){
+  const f=R.f;
+  let h='<table><tr><th>ID</th><th style="min-width:240px">Iniciativa</th><th>Ámbito</th><th>Tipo</th><th>Ejecución</th><th class="num">Fábrica USD</th><th>Dur. (m)</th><th>Mes ini.</th><th title="Iniciativa crítica de infraestructura — marca la ruta crítica">Crítica ★</th><th title="IDs de los que depende, separados por coma">Depende de</th><th>Incluir</th><th></th></tr>';
+  S.inis.forEach((x,i)=>{
+    h+=`<tr style="${x.incl?'':'opacity:.45'}${x.crit?';background:rgba(255,0,84,.05)':''}">
+    <td>${esc(x.id)}</td>
+    <td><input value="${esc(x.nombre)}" onchange="S.inis[${i}].nombre=this.value;dirty()"></td>
+    <td><select onchange="S.inis[${i}].amb=+this.value;dirty();renderAll()">${AMBITOS.map((a,j)=>`<option value="${j}"${j===x.amb?' selected':''}>${a}</option>`).join('')}</select></td>
+    <td><select onchange="S.inis[${i}].tipo=this.value;dirty();renderAll()"><option${x.tipo==='Obligatoria'?' selected':''}>Obligatoria</option><option${x.tipo==='Opcional'?' selected':''}>Opcional</option></select></td>
+    <td>${x.presu?'<span class="pill fab">Fábrica</span>':'<span class="pill cel">Célula</span>'}</td>
+    <td class="num"><input type="number" value="${x.presu||''}" placeholder="—" style="width:90px" onchange="S.inis[${i}].presu=this.value?+this.value:null;dirty();renderAll()"></td>
+    <td><input type="number" step="0.5" value="${x.dur}" style="width:55px" onchange="S.inis[${i}].dur=+this.value;dirty();renderAll()"></td>
+    <td><input type="number" value="${x.mes}" style="width:55px" onchange="S.inis[${i}].mes=+this.value;dirty();renderAll()"></td>
+    <td style="text-align:center"><input type="checkbox" style="width:auto" ${x.crit?'checked':''} onchange="S.inis[${i}].crit=this.checked;dirty();renderAll()"></td>
+    <td><input value="${esc(x.dep||'')}" placeholder="—" style="width:70px" onchange="S.inis[${i}].dep=this.value;dirty();renderAll()"></td>
+    <td style="text-align:center"><input type="checkbox" style="width:auto" ${x.incl?'checked':''} onchange="S.inis[${i}].incl=this.checked;dirty();renderAll()"></td>
+    <td><span class="del" onclick="S.inis.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;
+  });
+  h+=`<tr class="tot-row"><td colspan="5">Total fábrica (${R.incl.filter(i=>i.presu).length} iniciativas con presupuesto · ${R.incl.filter(i=>!i.presu).length} absorbidas por célula)</td><td class="num">${fmt(R.fabTotal*f)}</td><td colspan="6"></td></tr>`;
+  h+='</table>'; $('iniTabla').innerHTML=h;
+  $('iniKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">Fábrica de software</div><div class="val">USD ${fmtK(R.fabTotal*f)} K</div><div class="sub">+ contingencia ${fmtK(R.contTotal*f)} K</div></div>
+   <div class="kpi light"><div class="lbl">Iniciativas incluidas</div><div class="val">${R.incl.length} / ${S.inis.length}</div><div class="sub">${R.incl.filter(i=>i.tipo==='Opcional').length} opcionales activas</div></div>
+   <div class="kpi light"><div class="lbl">Absorbidas por la célula</div><div class="val">${R.incl.filter(i=>!i.presu).length}</div><div class="sub">costo implícito en módulo 5 — no es gratis</div></div>`;
+  $('tick2').innerHTML=`Fábrica <b class="accent">USD ${fmtK((R.fabTotal+R.contTotal)*f)} K</b> con contingencia · las ${R.incl.filter(i=>!i.presu).length} iniciativas de célula consumen la capacidad del módulo 5 — presupuestar solo fábrica es la fuente n.º 1 de programas subestimados (KB-05 §11).`;
+}
+function addIni(){ S.inis.push({id:"N-"+(S.inis.length+1),nombre:"Nueva iniciativa",amb:1,tipo:"Obligatoria",presu:null,dur:2,mes:1,incl:true}); dirty(); renderAll(); }
+
+function finIni(i){ return Math.round(i.mes)+Math.ceil(i.dur)-1; }
+function depWarnings(R){
+  const byId={}; R.incl.forEach(i=>byId[String(i.id).trim()]=i);
+  const warns=[];
+  R.incl.forEach(i=>{ (i.dep||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(d=>{
+    const p=byId[d];
+    if(!p){ if(S.inis.some(x=>String(x.id).trim()===d&&!x.incl)) warns.push(`<b>${esc(i.id)}</b> depende de <b>${d}</b>, que está excluida del alcance`); return; }
+    if(Math.round(i.mes)<=finIni(p)-1) warns.push(`<b>${esc(i.id)}</b> (mes ${Math.round(i.mes)}) inicia antes de que termine su dependencia <b>${d}</b> (fin mes ${finIni(p)})`);
+  });});
+  return warns;
+}
+function moverIni(idx,m){ S.inis[idx].mes=m; dirty(); renderAll(); }
+function rRoadmap(R){
+  const H=R.H;
+  const crits=R.incl.filter(i=>i.crit);
+  const finRC=crits.length?Math.max(...crits.map(finIni)):0;
+  let h='<table class="gantt"><tr><th style="text-align:left">Iniciativa</th><th title="mes de inicio">Ini</th><th title="duración en meses">Dur</th>';
+  for(let m=1;m<=H;m++) h+=`<th style="${m===Math.min(finRC,H)&&finRC?'color:var(--accent)':''}">${mesLabel(m)}</th>`; h+='</tr>';
+  AMBITOS.forEach((a,j)=>{ const rows=R.incl.filter(i=>i.amb===j); if(!rows.length) return;
+    h+=`<tr class="amb-row"><td colspan="${H+3}">${a}</td></tr>`;
+    rows.forEach(i=>{ const idx=S.inis.indexOf(i);
+      const m0=Math.max(1,Math.round(i.mes)), m1=Math.min(H,Math.ceil(m0+i.dur-1));
+      const col=i.presu?'var(--accent)':'var(--morado)';
+      h+=`<tr><td style="white-space:nowrap; max-width:270px; overflow:hidden; text-overflow:ellipsis" title="${esc(i.nombre)}${i.dep?' · depende de: '+esc(i.dep):''}">${i.crit?'<span style="color:var(--accent)" title="Crítica de infraestructura — ruta crítica">★</span> ':''}${esc(i.id)} · ${esc(i.nombre)}</td>`;
+      h+=`<td><input type="number" min="1" max="${H}" value="${Math.round(i.mes)}" style="width:42px;border:1px solid rgba(79,6,42,.25);border-radius:3px;font-size:10px;padding:2px" onchange="moverIni(${idx},+this.value)"></td>`;
+      h+=`<td><input type="number" min="0.5" step="0.5" value="${i.dur}" style="width:42px;border:1px solid rgba(79,6,42,.25);border-radius:3px;font-size:10px;padding:2px" onchange="S.inis[${idx}].dur=+this.value;dirty();renderAll()"></td>`;
+      for(let m=1;m<=H;m++){
+        const activo=m>=m0&&m<=m1;
+        h+=`<td class="mcell" style="cursor:pointer${finRC&&m<=finRC?';background:rgba(255,0,84,.03)':''}" title="clic: mover inicio a ${mesLabel(m)}" onclick="moverIni(${idx},${m})">${activo?`<div class="bar" style="background:${col};${i.crit?'outline:2px solid var(--accent);outline-offset:-1px;height:14px':''}"></div>`:''}</td>`;
+      }
+      h+='</tr>';});
+  });
+  h+=`</table><div class="small" style="margin-top:8px"><span class="pill cel">Célula</span> funcional/gobierno &nbsp; <span class="pill fab">Fábrica</span> construcción &nbsp; <span style="color:var(--accent);font-weight:700">★ / borde</span> crítica de infraestructura &nbsp;·&nbsp; <b>Edición:</b> ajusta Ini/Dur en línea o haz clic en un mes para mover el inicio.</div>`;
+  $('gantt').innerHTML=h;
+  // Avisos de dependencias
+  const warns=depWarnings(R);
+  const rcInfo = finRC? `<b>Ruta crítica de infraestructura:</b> ${crits.length} iniciativas ★ (${crits.map(c=>c.id).join(', ')}) — termina en <b>${mesLabel(Math.min(finRC,H))}</b>. Nada que dependa de la habilitación debería comprometerse antes.` : 'Sin iniciativas marcadas como críticas — marca ★ en el catálogo las de habilitación de infraestructura.';
+  $('hmNota').innerHTML = rcInfo + (warns.length? `<br><br><b style="color:var(--accent)">⚠ ${warns.length} conflicto(s) de dependencia:</b><br>· `+warns.join('<br>· ') : '<br><br>✓ Sin conflictos de dependencia en la secuencia actual.');
+  // heatmap
+  const max=Math.max(1,...R.hm.cel.map((v,m)=>v+R.hm.fab[m]));
+  let hm='<table class="gantt"><tr><th style="text-align:left">Mes</th>';
+  for(let m=1;m<=H;m++) hm+=`<th>${mesLabel(m)}</th>`; hm+='</tr>';
+  [['Célula (funcionales)','cel','79,6,42'],['Fábrica (desarrollos)','fab','255,0,84'],['Total','tot','38,7,23']].forEach(([lbl,k,rgb])=>{
+    hm+=`<tr><td style="white-space:nowrap">${lbl}</td>`;
+    for(let m=1;m<=H;m++){ const v=k==='tot'?R.hm.cel[m]+R.hm.fab[m]:R.hm[k][m];
+      hm+=`<td class="mcell"><div class="hm-cell" style="background:rgba(${rgb},${v?0.15+0.85*v/max:0.04}); text-align:center; font-size:9px; color:${v/max>0.55?'#fff':'var(--morado)'}; line-height:16px">${v||''}</div></td>`; }
+    hm+='</tr>';});
+  hm+='</table>'; $('heatmap').innerHTML=hm;
+  const peak=Math.max(...Array.from({length:H},(_,m)=>R.hm.cel[m+1]+R.hm.fab[m+1]));
+  const peakM=Array.from({length:H},(_,m)=>m+1).find(m=>R.hm.cel[m]+R.hm.fab[m]===peak);
+  $('hmNota').innerHTML+=`<br><br><b>Pico de paralelismo:</b> ${peak} iniciativas simultáneas en ${mesLabel(peakM)}. Regla KB-05: comprimir el roadmap concentra el costo de célula, no lo reduce. Evitar bloques pesados en periodos vacacionales del cliente (Chile: ene–feb, jul, ~2 semanas de sep).`;
+  $('tick3').innerHTML=`Horizonte de <b>${H} meses</b> · ruta crítica ★ hasta ${finRC?mesLabel(Math.min(finRC,H)):'—'} · pico de <b class="accent">${peak} iniciativas en paralelo</b>${depWarnings(R).length?` · <b class="accent">⚠ ${depWarnings(R).length} conflictos de dependencia</b>`:' · sin conflictos de dependencia'}.`;
+}
+
+function rCelula(R){
+  const f=R.f, H=R.H;
+  let h=`<table><tr><th>Perfil</th><th class="num">USD/h</th><th class="num">USD/mes FTE (172 HH)</th><th>Dedicación (FTE)</th><th>% del horizonte activo</th><th class="num">Meses</th><th title="El desarrollo asistido por IA reduce el esfuerzo de este perfil (factor del módulo 1: ${Math.round((1-R.iaF)*100)}%)">IA ⚡</th><th class="num">Costo total USD</th><th></th></tr>`;
+  let tot=0;
+  S.roles.forEach((r,i)=>{ const meses=Math.round(H*(r.pctMeses||100)/100), cost=r.tarifa*172*r.fte*meses*(r.tec?R.iaF:1); tot+=cost;
+    h+=`<tr><td><input value="${esc(r.rol)}" onchange="S.roles[${i}].rol=this.value;dirty()"></td>
+    <td class="num"><input type="number" step="0.1" value="${r.tarifa}" style="width:70px" onchange="S.roles[${i}].tarifa=+this.value;dirty();renderAll()"></td>
+    <td class="num">${fmt(r.tarifa*172*f)}</td>
+    <td><select onchange="S.roles[${i}].fte=+this.value;dirty();renderAll()">${[0.25,0.5,0.75,1].map(v=>`<option value="${v}"${v===r.fte?' selected':''}>${v.toFixed(2)}</option>`).join('')}</select></td>
+    <td><input type="number" value="${r.pctMeses}" min="0" max="100" style="width:65px" onchange="S.roles[${i}].pctMeses=+this.value;dirty();renderAll()"> %</td>
+    <td class="num">${meses}</td>
+    <td style="text-align:center"><input type="checkbox" style="width:auto" ${r.tec?'checked':''} onchange="S.roles[${i}].tec=this.checked;dirty();renderAll()"></td>
+    <td class="num">${fmt(cost*f)}${r.tec&&R.iaF<1?` <span class="small" style="color:var(--accent)">−${Math.round((1-R.iaF)*100)}%</span>`:''}</td>
+    <td><span class="del" onclick="S.roles.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  const fteProm=S.roles.reduce((a,r)=>a+r.fte*(r.pctMeses||100)/100,0);
+  h+=`<tr class="tot-row"><td>Total célula (${S.cliente.celulaPresupuestada?'presupuestada — entra al CAPEX':'interna — se reporta como dedicación'})</td><td></td><td></td><td>${fteProm.toFixed(2)} FTE prom.</td><td></td><td></td><td></td><td class="num">${fmt(tot*f)}</td><td></td></tr></table>`;
+  $('celTabla').innerHTML=h;
+  $('celKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">Costo célula (${R.H} meses)</div><div class="val">USD ${fmtK(R.celTotal*f)} K</div><div class="sub">${S.cliente.celulaPresupuestada?'incluida en CAPEX':'NO presupuestada (dedicación)'}</div></div>
+   <div class="kpi light"><div class="lbl">FTE promedio</div><div class="val">${fteProm.toFixed(1)}</div><div class="sub">célula mínima viable ≈ 2,75 FTE</div></div>
+   <div class="kpi light"><div class="lbl">Costo mensual pico</div><div class="val">USD ${fmtK(Math.max(...R.celMes)*f)} K</div><div class="sub">meses iniciales del horizonte</div></div>`;
+  $('tick4').innerHTML=`Célula de <b>${fteProm.toFixed(1)} FTE promedio</b> durante ${R.H} meses = <b class="accent">USD ${fmtK(R.celTotal*f)} K</b>. Alargar el programa baja el pico pero alarga los cuasi-fijos (PO, SM, líder técnico).`;
+}
+function addRol(){ S.roles.push({rol:"Nuevo perfil",tarifa:50,fte:0.25,pctMeses:50}); dirty(); renderAll(); }
+function aplicarRegion(reg){ S.cliente.region=reg; const t=TARIFAS[reg];
+  S.roles.forEach(r=>{ if(t[r.rol]!==undefined) r.tarifa=t[r.rol]; }); dirty(); renderAll(); }
+
+function rBau(R){ const f=R.f;
+  let h='<table><tr><th>Concepto</th><th class="num">USD/año</th><th></th></tr>';
+  S.bau.forEach((b,i)=>{ h+=`<tr><td><input value="${esc(b.nombre)}" onchange="S.bau[${i}].nombre=this.value;dirty()"></td>
+   <td class="num"><input type="number" value="${b.usd}" style="width:90px" onchange="S.bau[${i}].usd=+this.value;dirty();renderAll()"></td>
+   <td><span class="del" onclick="S.bau.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  h+=`<tr class="tot-row"><td>Total BAU anual (desde go-live)</td><td class="num">${fmt(R.bauAnual*f)}</td><td></td></tr></table>`;
+  $('bauTabla').innerHTML=h;
+  let e='<table><tr><th>Concepto</th><th>Tipo</th><th class="num">USD / %</th><th></th></tr>';
+  S.extras.forEach((x,i)=>{ e+=`<tr><td><input value="${esc(x.nombre)}" onchange="S.extras[${i}].nombre=this.value;dirty()"></td>
+   <td><select onchange="S.extras[${i}].tipo=this.value;dirty();renderAll()"><option value="oneoff"${x.tipo==='oneoff'?' selected':''}>One-off (CAPEX)</option><option value="anual"${x.tipo==='anual'?' selected':''}>Anual (OPEX)</option><option value="pctFabrica"${x.tipo==='pctFabrica'?' selected':''}>% sobre fábrica</option></select></td>
+   <td class="num"><input type="number" value="${x.usd}" style="width:85px" onchange="S.extras[${i}].usd=+this.value;dirty();renderAll()"></td>
+   <td><span class="del" onclick="S.extras.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  e+=`<tr class="tot-row"><td>One-off ${fmt(R.oneoffs*f)} · Anuales ${fmt(R.extAnual*f)} · Contingencia ${fmt(R.contTotal*f)}</td><td colspan="3"></td></tr></table>`;
+  $('extraTabla').innerHTML=e;
+  $('tick5').innerHTML=`OPEX recurrente en régimen: <b class="accent">USD ${fmtK((R.bauAnual+R.extAnual)*f)} K/año</b> — si la estimación total parece baja, lo que suele faltar es esto (KB-05 §10.7).`;
+}
+function addBau(){ S.bau.push({nombre:"Nueva línea BAU",usd:20000}); dirty(); renderAll(); }
+function addExtra(){ S.extras.push({nombre:"Nuevo costo",tipo:"oneoff",usd:10000}); dirty(); renderAll(); }
+
+function rMon(R){ const f=R.f,Y=R.Y;
+  let h=`<table><tr><th>Línea de ingreso</th><th>Unidad</th><th class="num">Tarifa USD</th><th class="num">Volumen anual pleno</th><th>Año entrada</th><th>Años ramp</th><th class="num">Ingreso pleno USD/año</th><th></th></tr>`;
+  let tot=0;
+  S.mon.forEach((l,i)=>{ const pleno=l.tarifa*l.vol; tot+=pleno;
+    h+=`<tr><td><input value="${esc(l.nombre)}" onchange="S.mon[${i}].nombre=this.value;dirty()"></td>
+    <td><select onchange="S.mon[${i}].unidad=this.value;dirty();renderAll()"><option value="trx"${l.unidad==='trx'?' selected':''}>por transacción</option><option value="anual"${l.unidad==='anual'?' selected':''}>licencia anual</option></select></td>
+    <td class="num"><input type="number" step="0.01" value="${l.tarifa}" style="width:80px" onchange="S.mon[${i}].tarifa=+this.value;dirty();renderAll()"></td>
+    <td class="num"><input type="number" value="${l.vol}" style="width:110px" onchange="S.mon[${i}].vol=+this.value;dirty();renderAll()"></td>
+    <td><input type="number" min="1" value="${l.anio}" style="width:50px" onchange="S.mon[${i}].anio=+this.value;dirty();renderAll()"></td>
+    <td><input type="number" min="1" value="${l.ramp}" style="width:50px" onchange="S.mon[${i}].ramp=+this.value;dirty();renderAll()"></td>
+    <td class="num">${fmt(pleno)}</td>
+    <td><span class="del" onclick="S.mon.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  h+=`<tr class="tot-row"><td colspan="6">Total a plena adopción</td><td class="num">${fmt(tot)}</td><td></td></tr></table>`;
+  $('monTabla').innerHTML=h;
+  $('monKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">Ingreso pleno anual</div><div class="val">USD ${fmtK(tot)} K</div><div class="sub">a plena adopción</div></div>
+   <div class="kpi light"><div class="lbl">Ingreso año ${Math.min(3,Y)}</div><div class="val">USD ${fmtK(R.ing[Math.min(3,Y)])} K</div><div class="sub">con ramp de adopción</div></div>
+   <div class="kpi light"><div class="lbl">Ingreso acumulado ${Y} años</div><div class="val">USD ${fmtK(R.ing.reduce((a,b)=>a+b,0))} K</div><div class="sub">cadena volumen × tarifa × adopción</div></div>`;
+  $('tick6').innerHTML=`Sin líneas no reguladas el modelo no se sostiene (KB-02): verificar que el mix incluya <b class="accent">APIs premium</b> — hoy representan ${tot?Math.round((S.mon.filter(l=>/premium|scoring|lending/i.test(l.nombre)).reduce((a,l)=>a+l.tarifa*l.vol,0)/tot)*100):0}% del ingreso pleno.`;
+}
+function addMon(){ S.mon.push({nombre:"Nueva línea",unidad:"trx",tarifa:0.10,vol:500000,anio:2,ramp:3}); dirty(); renderAll(); }
+
+function rBC(R){ const f=R.f,Y=R.Y;
+  const semTIR=R.tir==null?'—':R.tir>=15?'Excelente':R.tir>=10?'Aceptable':'Crítico';
+  const semPB=R.payback==null?'No amortiza en el horizonte':R.payback<=3?'Excelente':R.payback<=5?'Aceptable':'Crítico';
+  $('bcKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">VAN @${S.cliente.tasaDesc}%</div><div class="val">USD ${fmtK(R.van*f)} K</div><div class="sub">${R.van>0?'creación de valor':'no crea valor en el horizonte'}</div></div>
+   <div class="kpi ${R.tir!=null&&R.tir>=15?'':'light'}"><div class="lbl">TIR</div><div class="val">${R.tir==null?'—':R.tir.toFixed(1)+'%'}</div><div class="sub">${semTIR} · umbral 15%</div></div>
+   <div class="kpi light"><div class="lbl">Payback / amortización</div><div class="val">${R.payback==null?'> '+Y+' años':'~'+R.payback.toFixed(1)+' años'}</div><div class="sub">${semPB}</div></div>
+   <div class="kpi light"><div class="lbl">Inversión total (CAPEX)</div><div class="val">USD ${fmtK(R.invTotal*f)} K</div><div class="sub">fábrica + célula${S.cliente.celulaPresupuestada?'':' (no presup.)'} + one-offs</div></div>`;
+  // tabla
+  let h='<table><tr><th></th>'; for(let y=1;y<=Y;y++) h+=`<th class="num">A${y}</th>`; h+='<th class="num">Total</th></tr>';
+  const rows=[['Ingresos',R.ing],['CAPEX',R.capex],['OPEX',R.opex],['Flujo neto',R.flujo],['Flujo acumulado',R.acum]];
+  rows.forEach(([lbl,arr])=>{ h+=`<tr${lbl==='Flujo acumulado'?' class="tot-row"':''}><td>${lbl}</td>`;
+    let t=0; for(let y=1;y<=Y;y++){ const v=(arr[y]||0)*f; if(lbl!=='Flujo acumulado')t+=v;
+      h+=`<td class="num" style="${v<0?'color:var(--accent)':''}">${fmtK(v)}</td>`; }
+    h+=`<td class="num">${lbl==='Flujo acumulado'?fmtK((R.acum[Y]||0)*f):fmtK(t)}</td></tr>`;});
+  h+='</table>'; $('bcTabla').innerHTML=h;
+  $('chartFlujo').innerHTML=lineChart([{name:'Acumulado',color:'#FF0054',data:R.acum.slice(1).map(v=>v*f)},{name:'Flujo anual',color:'#4F062A',data:R.flujo.slice(1).map(v=>v*f)}],Y);
+  $('chartBarras').innerHTML=barChart(R,f,Y);
+  $('tick7').innerHTML= R.payback==null
+   ? `Con los parámetros actuales el programa <b>no amortiza en ${Y} años</b> — palancas: líneas premium, ritmo de adopción, alcance de iniciativas opcionales, horizonte de célula.`
+   : `La infraestructura se amortiza en <b class="accent">~${R.payback.toFixed(1)} años</b> con VAN ${R.van>0?'positivo':'negativo'} de USD ${fmtK(R.van*f)} K — ${R.tir!=null&&R.tir>=15?'programa viable y atractivo':'revisar palancas de ingreso antes de presentar'}.`;
+}
+
+function rSaas(R){ const f=R.f,Y=R.Y,sa=S.saas,hb=S.hib;
+  ['s_setup','s_susc','s_fee','s_vol','s_crec','s_integ','s_res'].forEach((id,j)=>{ $(id).value=[sa.setup,sa.susc,sa.fee,sa.vol,sa.crec,sa.integ,sa.resPct][j]; });
+  ['h_setup','h_susc','h_fab','h_cel','h_bau'].forEach((id,j)=>{ $(id).value=[hb.setup,hb.susc,hb.pctFab,hb.pctCel,hb.pctBau][j]; });
+  let accS=0,accI=0,accH=0; const cS=[],cI=[],cH=[];
+  for(let y=1;y<=Y;y++){ accS+=R.saas[y]; accI+=R.inh[y]; accH+=R.hib[y];
+    cS.push(accS*f); cI.push(accI*f); cH.push(accH*f); }
+  const row=(lbl,arr,acc)=>`<tr><td>${lbl}</td>${Array.from({length:Y},(_,i)=>`<td class="num">${fmtK(arr[i+1]*f)}</td>`).join('')}<td class="num"><b>${fmtK(acc*f)}</b></td></tr>`;
+  let h='<table><tr><th>Escenario</th>'; for(let y=1;y<=Y;y++) h+=`<th class="num">A${y}</th>`; h+='<th class="num">Acum.</th></tr>';
+  h+=row('In-house — build propio (CAPEX+OPEX, con factor IA)',R.inh,accI);
+  h+=row('Híbrido — capa compleja delegada + build parcial',R.hib,accH);
+  h+=row('SaaS / PaaS — plataforma completa delegada',R.saas,accS);
+  const best=Math.min(accI,accH,accS);
+  const bestN= best===accI?'In-house':best===accH?'Híbrido':'SaaS';
+  h+=`<tr class="tot-row"><td>Δ vs mejor escenario (${bestN})</td>${Array.from({length:Y},(_,i)=>'<td></td>').join('')}<td class="num">In-h +${fmtK((accI-best)*f)} · Híb +${fmtK((accH-best)*f)} · SaaS +${fmtK((accS-best)*f)}</td></tr>`;
+  h+='</table>'; $('saasTabla').innerHTML=h;
+  $('chartSaas').innerHTML=lineChart([{name:'In-house acum.',color:'#4F062A',data:cI},{name:'Híbrido acum.',color:'#9c5c78',data:cH},{name:'SaaS acum.',color:'#FF0054',data:cS}],Y);
+  const mad=R.madProm;
+  const lean= mad>=3.2 ? 'in' : mad<=1.8 ? 'saas' : 'neutro';
+  $('saasVeredicto').innerHTML=`<div class="note"><b>Lectura a ${Y} años:</b> el acumulado favorece a <b>${bestN}</b> (In-house USD ${fmtK(accI*f)} K · Híbrido ${fmtK(accH*f)} K · SaaS ${fmtK(accS*f)} K). Madurez As-Is ${mad.toFixed(1)}/5 → ${lean==='in'?'la base tecnológica existente favorece <b>in-house o híbrido</b>: el cliente ya opera plataforma, el gap es regulatorio, y el factor IA abarata el build.':lean==='saas'?'la baja madurez favorece <b>SaaS</b> (o híbrido como paso intermedio): menor riesgo de ejecución y time-to-market en semanas, aunque el acumulado a largo plazo sea mayor.':'madurez media: el <b>híbrido</b> suele ser el punto de partida — delega el corazón regulatorio (IdP/consentimiento/directorio) y construye la capa de datos e integración donde ya hay capacidades.'} Recordar: TCO no captura lock-in, soberanía de datos ni escalamiento por tiers; y ante el regulador la responsabilidad no se delega.</div>`;
+  $('tick8').innerHTML=`A ${Y} años: In-house ${fmtK(accI*f)} K · Híbrido ${fmtK(accH*f)} K · SaaS ${fmtK(accS*f)} K — <b class="accent">${bestN}</b> lidera el TCO, con factor IA de ${Math.round((1-R.iaF)*100)}% aplicado al build.`;
+}
+
+/* ═══════════════ LEVANTAMIENTO ═══════════════ */
+const CUMPL=["Pendiente","Cumple","Parcialmente","No cumple","No aplica"];
+const CUMPL_COL={"Pendiente":"#8a8a7e","Cumple":"#2e7d32","Parcialmente":"#b26a00","No cumple":"#c62828","No aplica":"#bbb"};
+function madSugerida(frente){ // desde cumplimiento: Cumple=5, Parcial=2.5, No cumple=0.5
+  const rs=S.lev.filter(q=>q.frente===frente&&["Cumple","Parcialmente","No cumple"].includes(q.cumpl));
+  if(!rs.length) return null;
+  const v=rs.reduce((a,q)=>a+(q.cumpl==="Cumple"?5:q.cumpl==="Parcialmente"?2.5:0.5),0)/rs.length;
+  return Math.max(0,Math.min(5,Math.round(v)));
+}
+function aplicarMadurez(frente){
+  const sug=madSugerida(frente); if(sug==null) return;
+  const dim=FRENTES[frente];
+  let n=0; S.asis.forEach(x=>{ if(x.dim===dim){ x.mad=sug; n++; } });
+  if(!n) S.asis.push({dim:dim,sub:"(desde levantamiento)",mad:sug,esf:"Medio",nota:"Madurez sugerida por cumplimiento del levantamiento"});
+  dirty(); renderAll();
+}
+function rLev(R){
+  const filtro=+($('levFiltro').value||-1);
+  // poblar filtro (una vez por render, preservando selección)
+  $('levFiltro').innerHTML='<option value="-1">Todos los frentes</option>'+FRENTES.map((f,j)=>`<option value="${j}"${j===filtro?' selected':''}>${f}</option>`).join('');
+  const tot=S.lev.length, resp=S.lev.filter(q=>q.cumpl!=="Pendiente").length;
+  const dist=c=>S.lev.filter(q=>q.cumpl===c).length;
+  $('levKpis').innerHTML=`
+   <div class="kpi"><div class="lbl">Avance del levantamiento</div><div class="val">${tot?Math.round(resp/tot*100):0}%</div><div class="sub">${resp} de ${tot} preguntas levantadas</div></div>
+   <div class="kpi light"><div class="lbl">Cumple</div><div class="val" style="color:#2e7d32">${dist("Cumple")}</div><div class="sub">capacidades existentes</div></div>
+   <div class="kpi light"><div class="lbl">Parcialmente</div><div class="val" style="color:#b26a00">${dist("Parcialmente")}</div><div class="sub">evolucionar</div></div>
+   <div class="kpi light"><div class="lbl">No cumple</div><div class="val" style="color:#c62828">${dist("No cumple")}</div><div class="sub">brechas de construcción</div></div>`;
+  // sugerencias por frente
+  let sg='<table><tr><th>Frente</th><th>Respondidas</th><th>Madurez sugerida</th><th>As-Is actual</th><th></th></tr>';
+  FRENTES.forEach((fr,j)=>{ const n=S.lev.filter(q=>q.frente===j&&q.cumpl!=="Pendiente"&&q.cumpl!=="No aplica").length;
+    if(!S.lev.some(q=>q.frente===j)) return;
+    const sug=madSugerida(j);
+    const cur=S.asis.filter(x=>x.dim===fr); const curM=cur.length?Math.round(cur.reduce((a,x)=>a+x.mad,0)/cur.length):null;
+    sg+=`<tr><td>${fr}</td><td>${n}</td>
+    <td>${sug==null?'<span class="small">sin datos</span>':`<span class="mat m${sug}">${MADUREZ[sug]}</span>`}</td>
+    <td>${curM==null?'<span class="small">no evaluado</span>':`<span class="mat m${curM}">${MADUREZ[curM]}</span>`}</td>
+    <td>${sug!=null?`<button class="mini" onclick="aplicarMadurez(${j})">Aplicar al As-Is</button>`:''}</td></tr>`;});
+  sg+='</table>'; $('levSug').innerHTML=sg;
+  // tabla de fichas
+  let h='<table><tr><th>ID</th><th style="min-width:110px">Frente</th><th style="min-width:240px">Pregunta</th><th style="min-width:220px">Respuesta</th><th>Cumplimiento</th><th style="min-width:180px">Plan de acción</th><th style="min-width:160px">Compromisos / pendientes</th><th></th></tr>';
+  S.lev.forEach((q,i)=>{ if(filtro>=0&&q.frente!==filtro) return;
+    h+=`<tr><td>${esc(q.id)}</td>
+    <td><select onchange="S.lev[${i}].frente=+this.value;dirty();renderAll()">${FRENTES.map((f,j)=>`<option value="${j}"${j===q.frente?' selected':''}>${f}</option>`).join('')}</select></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" onchange="S.lev[${i}].preg=this.value;dirty()">${esc(q.preg)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Respuesta del cliente…" onchange="S.lev[${i}].resp=this.value;dirty()">${esc(q.resp)}</textarea></td>
+    <td><select style="color:#fff;font-weight:700;background:${CUMPL_COL[q.cumpl]}" onchange="S.lev[${i}].cumpl=this.value;dirty();renderAll()">${CUMPL.map(c=>`<option${c===q.cumpl?' selected':''}>${c}</option>`).join('')}</select></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Acción · Responsable · Resultado esperado" onchange="S.lev[${i}].plan=this.value;dirty()">${esc(q.plan)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Docs, sesiones proveedor, validaciones…" onchange="S.lev[${i}].com=this.value;dirty()">${esc(q.com)}</textarea></td>
+    <td><span class="del" onclick="S.lev.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  h+='</table>'; $('levTabla').innerHTML=h;
+  $('tickL').innerHTML=`Levantamiento al <b class="accent">${tot?Math.round(resp/tot*100):0}%</b> · las respuestas "No cumple" y "Parcialmente" anticipan las iniciativas a activar en el catálogo (módulo 5).`;
+}
+function addLev(){ S.lev.push({id:"L-"+String(S.lev.length+1).padStart(2,'0'),frente:1,preg:"Nueva pregunta",resp:"",cumpl:"Pendiente",plan:"",com:""}); dirty(); renderAll(); }
+
+/* ═══════════════ STACK & GAPS ═══════════════ */
+const EST_COL={"Reutilizable":"#2e7d32","Evolucionar":"#b26a00","Construir":"#FF0054","No aplica":"#8a8a7e"};
+function rStack(R){
+  const cnt=e=>S.stack.filter(x=>x.estado===e).length;
+  $('stackKpis').innerHTML=`
+   <div class="kpi light"><div class="lbl">Reutilizable</div><div class="val" style="color:#2e7d32">${cnt("Reutilizable")}</div><div class="sub">la base que favorece in-house</div></div>
+   <div class="kpi light"><div class="lbl">Evolucionar</div><div class="val" style="color:#b26a00">${cnt("Evolucionar")}</div><div class="sub">componentes existentes con gap</div></div>
+   <div class="kpi"><div class="lbl">Construir</div><div class="val">${cnt("Construir")}</div><div class="sub">no existe — concentra el CAPEX</div></div>
+   <div class="kpi light"><div class="lbl">Total componentes</div><div class="val">${S.stack.length}</div><div class="sub">${CAPAS.length} capas de la arquitectura referencial</div></div>`;
+  // mapa visual por capas
+  let m='';
+  CAPAS.forEach((capa,ci)=>{ const comps=S.stack.filter(x=>x.capa===ci); if(!comps.length) return;
+    m+=`<div style="display:flex; margin-bottom:6px; border-radius:5px; overflow:hidden; box-shadow:0 1px 2px rgba(38,7,23,.1)">
+    <div style="background:var(--morado); color:#fff; width:190px; min-width:190px; padding:10px 12px; font-size:11px; display:flex; align-items:center">${esc(capa)}</div>
+    <div style="background:rgba(79,6,42,.05); flex:1; padding:8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center">`;
+    comps.forEach(x=>{ const c=EST_COL[x.estado]||'#888';
+      m+=`<div title="${esc(x.tec)} — ${esc(x.nota)}${x.inis&&x.inis!=='—'?' · Iniciativas: '+esc(x.inis):''}" style="background:#fff; border-left:4px solid ${c}; border-radius:3px; padding:5px 9px; font-size:10.5px; cursor:default">
+      <b>${esc(x.comp)}</b><br><span style="opacity:.7">${esc(x.tec)}</span> <span style="color:${c}; font-weight:700; font-size:9.5px">● ${x.estado.toUpperCase()}</span>${x.inis&&x.inis!=='—'?`<span style="opacity:.6; font-size:9.5px"> · Ini ${esc(x.inis)}</span>`:''}</div>`;});
+    m+='</div></div>';});
+  m+=`<div class="small" style="margin-top:6px"><span style="color:#2e7d32;font-weight:700">●</span> Reutilizable &nbsp; <span style="color:#b26a00;font-weight:700">●</span> Evolucionar &nbsp; <span style="color:#FF0054;font-weight:700">●</span> Construir &nbsp; <span style="color:#8a8a7e;font-weight:700">●</span> No aplica — pasa el cursor sobre un componente para ver el detalle.</div>`;
+  $('stackMapa').innerHTML=m;
+  // tabla detalle
+  let h='<table><tr><th>Capa</th><th style="min-width:180px">Componente / capacidad</th><th style="min-width:150px">Tecnología actual</th><th>Estado GAP</th><th>Iniciativas</th><th style="min-width:200px">Actividades / nota</th><th></th></tr>';
+  S.stack.forEach((x,i)=>{ h+=`<tr>
+   <td><select onchange="S.stack[${i}].capa=+this.value;dirty();renderAll()">${CAPAS.map((c,j)=>`<option value="${j}"${j===x.capa?' selected':''}>${c}</option>`).join('')}</select></td>
+   <td><input value="${esc(x.comp)}" onchange="S.stack[${i}].comp=this.value;dirty();renderAll()"></td>
+   <td><input value="${esc(x.tec)}" onchange="S.stack[${i}].tec=this.value;dirty();renderAll()"></td>
+   <td><select style="color:#fff;font-weight:700;background:${EST_COL[x.estado]}" onchange="S.stack[${i}].estado=this.value;dirty();renderAll()">${ESTADOS_STACK.map(e=>`<option${e===x.estado?' selected':''}>${e}</option>`).join('')}</select></td>
+   <td><input value="${esc(x.inis)}" style="width:80px" onchange="S.stack[${i}].inis=this.value;dirty();renderAll()"></td>
+   <td><input value="${esc(x.nota)}" onchange="S.stack[${i}].nota=this.value;dirty()"></td>
+   <td><span class="del" onclick="S.stack.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
+  h+='</table>'; $('stackTabla').innerHTML=h;
+  const constr=S.stack.filter(x=>x.estado==='Construir');
+  const capasConstr=[...new Set(constr.map(x=>CAPAS[x.capa]))];
+  $('tickS').innerHTML=`Los GAPs de construcción se concentran en: <b class="accent">${capasConstr.length?capasConstr.join(' · '):'—'}</b> — contrastar con el presupuesto de fábrica del módulo 5.`;
+}
+function addStack(){ S.stack.push({capa:2,comp:"Nuevo componente",tec:"",estado:"Construir",inis:"",nota:""}); dirty(); renderAll(); }
+
+/* ═══════════════ CHARTS SVG ═══════════════ */
+function lineChart(series,Y){
+  const W=520,Hh=230,p=42;
+  const all=series.flatMap(s=>s.data); const mx=Math.max(...all,0), mn=Math.min(...all,0), rg=(mx-mn)||1;
+  const X=i=>p+i*(W-p-14)/Math.max(1,Y-1), Yc=v=>Hh-26-((v-mn)/rg)*(Hh-52);
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" style="width:100%">`;
+  s+=`<line x1="${p}" y1="${Yc(0)}" x2="${W-10}" y2="${Yc(0)}" stroke="#4F062A" stroke-width="1" opacity=".4"/>`;
+  for(let i=0;i<Y;i++) s+=`<text x="${X(i)}" y="${Hh-8}" font-size="9" fill="#4F062A" text-anchor="middle">A${i+1}</text>`;
+  [mx,mn].forEach(v=>{ if(v!==0) s+=`<text x="${p-4}" y="${Yc(v)+3}" font-size="9" fill="#4F062A" text-anchor="end">${fmtK(v)}K</text>`;});
+  series.forEach(se=>{ let d=''; se.data.forEach((v,i)=>{ d+=(i?'L':'M')+X(i)+' '+Yc(v)+' '; });
+    s+=`<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2.5"/>`;
+    se.data.forEach((v,i)=>{ s+=`<circle cx="${X(i)}" cy="${Yc(v)}" r="3" fill="${se.color}"/>`; }); });
+  series.forEach((se,j)=>{ s+=`<rect x="${p+j*150}" y="6" width="10" height="10" fill="${se.color}"/><text x="${p+j*150+14}" y="15" font-size="10" fill="#4F062A">${se.name}</text>`; });
+  return s+'</svg>';
+}
+function barChart(R,f,Y){
+  const W=520,Hh=230,p=42;
+  const mx=Math.max(...Array.from({length:Y},(_,i)=>Math.max(R.ing[i+1],R.capex[i+1]+R.opex[i+1])))*f||1;
+  const bw=(W-p-20)/Y;
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" style="width:100%">`;
+  for(let y=1;y<=Y;y++){ const x=p+(y-1)*bw;
+    const hC=(R.capex[y]*f/mx)*(Hh-60), hO=(R.opex[y]*f/mx)*(Hh-60), hI=(R.ing[y]*f/mx)*(Hh-60);
+    s+=`<rect x="${x+4}" y="${Hh-30-hC-hO}" width="${bw*0.32}" height="${hC}" fill="#4F062A"/>`;
+    s+=`<rect x="${x+4}" y="${Hh-30-hO}" width="${bw*0.32}" height="${hO}" fill="#9c5c78"/>`;
+    s+=`<rect x="${x+8+bw*0.32}" y="${Hh-30-hI}" width="${bw*0.32}" height="${hI}" fill="#FF0054"/>`;
+    s+=`<text x="${x+bw/2}" y="${Hh-14}" font-size="9" fill="#4F062A" text-anchor="middle">A${y}</text>`; }
+  s+=`<rect x="${p}" y="6" width="10" height="10" fill="#4F062A"/><text x="${p+14}" y="15" font-size="10" fill="#4F062A">CAPEX</text>`;
+  s+=`<rect x="${p+80}" y="6" width="10" height="10" fill="#9c5c78"/><text x="${p+94}" y="15" font-size="10" fill="#4F062A">OPEX</text>`;
+  s+=`<rect x="${p+160}" y="6" width="10" height="10" fill="#FF0054"/><text x="${p+174}" y="15" font-size="10" fill="#4F062A">Ingresos</text>`;
+  return s+'</svg>';
+}
+
+/* ═══════════════ PERSISTENCIA ═══════════════ */
+const LSKEY='minsait_of_toolkit';
+function store(){ try{return JSON.parse(localStorage.getItem(LSKEY)||'{}')}catch(e){return{}} }
+function guardar(){ const n=(S.cliente.nombre||'sin_nombre').trim(); const st=store(); st[n]=S;
+  try{ localStorage.setItem(LSKEY,JSON.stringify(st)); $('savemsg').textContent='✓ guardado'; refreshClientes(); }
+  catch(e){ $('savemsg').textContent='⚠ no se pudo guardar — usa Exportar'; } }
+function refreshClientes(){ const st=store(); const sel=$('selCliente');
+  sel.innerHTML='<option value="">— guardados —</option>'+Object.keys(st).map(k=>`<option${k===S.cliente.nombre?' selected':''}>${esc(k)}</option>`).join(''); }
+function cargarCliente(n){ if(!n)return; const st=store(); if(st[n]){ S=normalize(Object.assign(defaultState(),st[n])); renderAll(); $('savemsg').textContent='✓ cargado'; } }
+function exportJSON(){ const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='OF_estimacion_'+(S.cliente.nombre||'cliente').replace(/[^\w]+/g,'_')+'.json'; a.click(); }
+function importJSON(inp){ const fr=new FileReader(); fr.onload=()=>{ try{ S=normalize(Object.assign(defaultState(),JSON.parse(fr.result))); renderAll(); $('savemsg').textContent='✓ importado'; }catch(e){ alert('JSON inválido'); } }; fr.readAsText(inp.files[0]); inp.value=''; }
+
+refreshClientes(); renderAll();
+</script>
+<script src="../../../assets/nav.js" data-current="assessment"></script>
+</body>
+</html>
