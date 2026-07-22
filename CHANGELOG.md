@@ -7,6 +7,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- Assessment (pestaña 12 · Casos de Uso): alta, listado y borrado de casos simulados sobre la entidad activa, distinguiendo naturaleza (Embedded Finance/BaaS = solo APIs · caso completo = APIs + frontal). Colección aparte por `entidadId` vía `Storage.listCasos/saveCaso/removeCaso`. La pestaña se inyecta dinámicamente y, si el módulo no carga (`file://`), simplemente no aparece.
 - Assessment (pestaña 13): botón "Actualizar roadmap de la entidad" tras el análisis del delta — el agente genera iniciativas etiquetadas por caso (slot y devengo) que se agregan al roadmap del dominio, y panel "Roadmap de casos de uso" con CAPEX/OPEX agregados por entidad (recalculados al añadir o quitar casos, sin duplicados).
 - `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
 
