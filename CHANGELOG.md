@@ -6,6 +6,10 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-23
+
+El recorrido crece a 6 módulos e integra el dominio: el Assessment persiste vía `core/storage`, los casos de uso escriben el roadmap y la inversión de la entidad, entra el Inventario de APIs, el API Designer toma contexto por URL, y aparece el espacio de Políticas de Gobierno que Enrichment evalúa en una segunda fase.
+
 ### Added
 - Espacio de **Políticas de Gobierno de APIs** (`stages/2-api-design/governance-policies.html`): la base de conocimiento que gobierna cualquier diseño, versionada y citable. Accesible desde un enlace lateral en `assets/nav.js` (fuera del recorrido numerado) y referenciada desde el Inventario y desde la pestaña de Gobierno de Enrichment.
 - API Designer con contexto de entrada (`designer-context.js`): `?caso=` muestra el caso y sus APIs del delta y permite guardar el diseño en `caso.ecosistema.apis` (estado "diseñada"); `?from=` precarga la API del inventario a extender; `?usecase=` muestra el contexto de Market Discovery. `assets/inventory-data.js` como fuente única del inventario demo.
