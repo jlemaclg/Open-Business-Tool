@@ -16,6 +16,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 - `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
 
 ### Changed
+- Enrichment: pipeline en dos fases — Fase 1 diccionario ISO 20022 (4 capas) y nueva Fase 2 "Mejora de la especificación" que evalúa en vivo las 8 reglas del espacio de Políticas de Gobierno (GOV-*) con conformidad puntuada; la pestaña "Gobierno de APIs" del resultado pasa a ser la salida de esa fase.
 - Assessment (pestaña 13): enlace "Diseñar →" por cada API del delta hacia el Designer.
 - El recorrido pasa de 5 a **6 módulos**: el Inventario entra como 03 y renumera API Designer (04), Enrichment (05) y API Lab (06) en `assets/nav.js` y en el portal.
 - Documentación del recorrido actualizada a 6 módulos + Políticas transversales: `README.md` (diagrama, fichas y estructura) y `agents/demo-orchestrator.agent.md` (árbol, numeración y `data-current`).
