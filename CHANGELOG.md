@@ -7,6 +7,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- API Designer con contexto de entrada (`designer-context.js`): `?caso=` muestra el caso y sus APIs del delta y permite guardar el diseño en `caso.ecosistema.apis` (estado "diseñada"); `?from=` precarga la API del inventario a extender; `?usecase=` muestra el contexto de Market Discovery. `assets/inventory-data.js` como fuente única del inventario demo.
 - Assessment (pestaña 12 · Casos de Uso): alta, listado y borrado de casos simulados sobre la entidad activa, distinguiendo naturaleza (Embedded Finance/BaaS = solo APIs · caso completo = APIs + frontal). Colección aparte por `entidadId` vía `Storage.listCasos/saveCaso/removeCaso`. La pestaña se inyecta dinámicamente y, si el módulo no carga (`file://`), simplemente no aparece.
 - Assessment (pestaña 13): botón "Actualizar roadmap de la entidad" tras el análisis del delta — el agente genera iniciativas etiquetadas por caso (slot y devengo) que se agregan al roadmap del dominio, y panel "Roadmap de casos de uso" con CAPEX/OPEX agregados por entidad (recalculados al añadir o quitar casos, sin duplicados).
 - Módulo 03 · **Inventario de APIs** (`stages/2-api-design/api-inventory.html`): catálogo del estate existente con el mapeo endpoint → sistema backend → servicio interno, y acción "Extender esta API" que precarga el API Designer con el conocimiento ya generado en vez de partir de cero. Sirve tanto para APIs externas como internas.
@@ -14,6 +15,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 - `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
 
 ### Changed
+- Assessment (pestaña 13): enlace "Diseñar →" por cada API del delta hacia el Designer.
 - El recorrido pasa de 5 a **6 módulos**: el Inventario entra como 03 y renumera API Designer (04), Enrichment (05) y API Lab (06) en `assets/nav.js` y en el portal.
 - Assessment (`index.html`): gancho `window.__oba` e inclusión del módulo `storage-bridge.js`. Sin cambios en cálculos ni en export/import.
 - Assessment: subtítulos de las 11 pestañas en lenguaje de acción (qué haces aquí y qué alimenta), sin referencias internas en superficie; las 6 recomendaciones de consultoría pasan a bloques plegables "Apunte experto · <tema>" con título formal. API Lab: eliminado emoji decorativo (norma de estilo: SVG inline).

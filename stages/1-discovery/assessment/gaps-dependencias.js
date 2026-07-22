@@ -292,8 +292,8 @@ H.$('gdAnalizar').onclick = async () => {
   H.$('gdResultado').innerHTML = `
     ${d._mock ? '<span class="gd-mock">Datos simulados — agente mock</span>' : ''}
     <h4>APIs necesarias</h4>
-    <table class="gd-t"><thead><tr><th>API</th><th>Estado</th><th>Razón</th></tr></thead><tbody>
-      ${d.apisNecesarias.map((a) => `<tr><td>${esc(a.nombre)}</td><td class="${a.estado === 'existente' ? 'gd-ok' : 'gd-warn'}">${a.estado}</td><td>${esc(a.razon)}</td></tr>`).join('')}
+    <table class="gd-t"><thead><tr><th>API</th><th>Estado</th><th>Razón</th><th></th></tr></thead><tbody>
+      ${d.apisNecesarias.map((a) => `<tr><td>${esc(a.nombre)}</td><td class="${a.estado === 'existente' ? 'gd-ok' : 'gd-warn'}">${a.estado}</td><td>${esc(a.razon)}</td><td><a href="../../2-api-design/api-designer.html?caso=${caso.id}&api=${encodeURIComponent(a.nombre)}" style="color:#FF0054;font-weight:bold;font-size:11px;">Diseñar →</a></td></tr>`).join('')}
     </tbody></table>
     <h4>Necesidades tecnológicas</h4>
     ${d.necesidadesTecnologicas.length ? `<table class="gd-t"><thead><tr><th>Pieza</th><th>Capa</th><th>Esfuerzo estimado</th></tr></thead><tbody>
