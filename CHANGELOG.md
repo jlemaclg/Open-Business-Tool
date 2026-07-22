@@ -18,6 +18,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ### Changed
 - Assessment (pestaña 13): enlace "Diseñar →" por cada API del delta hacia el Designer.
 - El recorrido pasa de 5 a **6 módulos**: el Inventario entra como 03 y renumera API Designer (04), Enrichment (05) y API Lab (06) en `assets/nav.js` y en el portal.
+- Documentación del recorrido actualizada a 6 módulos + Políticas transversales: `README.md` (diagrama, fichas y estructura) y `agents/demo-orchestrator.agent.md` (árbol, numeración y `data-current`).
 - Assessment (`index.html`): gancho `window.__oba` e inclusión del módulo `storage-bridge.js`. Sin cambios en cálculos ni en export/import.
 - Assessment: subtítulos de las 11 pestañas en lenguaje de acción (qué haces aquí y qué alimenta), sin referencias internas en superficie; las 6 recomendaciones de consultoría pasan a bloques plegables "Apunte experto · <tema>" con título formal. API Lab: eliminado emoji decorativo (norma de estilo: SVG inline).
 

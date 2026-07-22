@@ -8,20 +8,24 @@ Plataforma de **casos de uso y APIs de negocio** para **Open Finance, Embedded F
 ## El recorrido
 
 ```
-Etapa 1 · Discovery & Assessment      Etapa 2 · Diseño de APIs        Etapa 3 · Validación
-┌──────────────┐  ┌──────────────┐   ┌──────────────┐ ┌────────────┐  ┌──────────────┐
-│ 01 Assessment │→│ 02 Discovery │ → │ 03 API Design │→│ 04 Enrich. │→ │ 05 API Lab   │
-└──────────────┘  └──────────────┘   └──────────────┘ └────────────┘  └──────────────┘
-        ▲                                                                     │
-        └── el bucle: los resultados del Lab refinan las APIs y actualizan ───┘
-            el roadmap y la inversión del Assessment
+Etapa 1 · Discovery & Assessment          Etapa 2 · Diseño de APIs                Etapa 3 · Validación
+┌──────────────┐ ┌──────────────┐  ┌──────────────┐ ┌──────────────┐ ┌──────────┐  ┌──────────┐
+│01 Assessment │→│ 02 Discovery │ →│03 Inventario │→│04 API Design │→│05 Enrich.│→ │06 API Lab│
+└──────────────┘ └──────────────┘  └──────────────┘ └──────────────┘ └──────────┘  └──────────┘
+       ▲                                                                                 │
+       └──── el bucle: los resultados del Lab refinan las APIs y actualizan el ──────────┘
+             roadmap y la inversión del Assessment
+
+             Transversal · Políticas de Gobierno de APIs — las reglas que cita cualquier diseño
 ```
 
-- **01 · Assessment de la Entidad** — el *set up*: As-Is, stack, GAPs y dependencias, iniciativas, roadmap, monetización y business case. Es la columna vertebral: los casos de uso se simulan contra él.
+- **01 · Assessment de la Entidad** — el *set up*: As-Is, stack, GAPs y dependencias, casos de uso, iniciativas, roadmap, monetización y business case. Es la columna vertebral: los casos de uso se simulan contra él.
 - **02 · Discovery de Casos de Uso** *(beta)* — propensión por segmento, audiencias sintéticas, TAM/SAM/SOM.
-- **03 · Diseño de APIs con Agentes IA** — de la descripción en lenguaje natural al artefacto OpenAPI 3.1 con diccionario ISO 20022.
-- **04 · Enriquecimiento de APIs** — normaliza YAMLs existentes contra ISO 20022 (pipeline de 4 capas + RAG).
-- **05 · API Lab** *(beta)* — sandbox para probar con partners y comercios reales (Sandbox as a Service o el del cliente).
+- **03 · Inventario de APIs** — el catálogo del estate existente, con el mapeo endpoint → sistema backend → servicio interno. Desde cualquier API se lanza "Extender esta API" y el diseño parte del conocimiento ya generado.
+- **04 · Diseño de APIs con Agentes IA** — de la descripción en lenguaje natural al artefacto OpenAPI 3.1 con diccionario ISO 20022. Toma contexto por URL: caso de uso, API del inventario o discovery.
+- **05 · Enriquecimiento de APIs** — normaliza YAMLs existentes contra ISO 20022 (pipeline de 4 capas + RAG) y los revisa contra las políticas de gobierno.
+- **06 · API Lab** *(beta)* — sandbox para probar con partners y comercios reales (Sandbox as a Service o el del cliente).
+- **Políticas de Gobierno de APIs** *(transversal, fuera del recorrido numerado)* — la base de conocimiento versionada que gobierna cualquier diseño.
 
 ## Ejecutar en local
 
@@ -38,7 +42,7 @@ core/                 Dominio y adaptadores
   agents.js           Adaptador de agentes IA (hoy mocks realistas; mañana Azure OpenAI)
 stages/               Las herramientas, por etapa del recorrido
   1-discovery/        assessment/ · market-discovery/
-  2-api-design/       api-designer.html · enrichment.html
+  2-api-design/       api-inventory.html · api-designer.html · enrichment.html · governance-policies.html
   3-api-lab/          index.html
 agents/               Definiciones de agentes y skills
 docs/                 DECISIONES_Y_ARQUITECTURA.md (fuente de verdad) · contratos-agentes.md · plan-de-trabajo.md
