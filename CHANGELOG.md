@@ -6,7 +6,11 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+### Added
+- `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
+
 ### Changed
+- Assessment (`index.html`): gancho `window.__oba` e inclusión del módulo `storage-bridge.js`. Sin cambios en cálculos ni en export/import.
 - Assessment: subtítulos de las 11 pestañas en lenguaje de acción (qué haces aquí y qué alimenta), sin referencias internas en superficie; las 6 recomendaciones de consultoría pasan a bloques plegables "Apunte experto · <tema>" con título formal. API Lab: eliminado emoji decorativo (norma de estilo: SVG inline).
 
 ## [0.1.0] - 2026-07-22
