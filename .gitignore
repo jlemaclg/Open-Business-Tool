@@ -5,6 +5,10 @@ _to_delete/
 # Metodología propietaria — excluida mientras el repo sea público
 kb/
 
+# Material comercial con cliente identificado — nunca en el repo público
+docs/respuestas-cliente-*.md
+docs/argumentario-*.md
+
 # Salidas generadas del pipeline
 io/output/**/*
 !io/output/**/
