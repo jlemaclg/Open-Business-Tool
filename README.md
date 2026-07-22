@@ -2,7 +2,7 @@
 
 Plataforma de **casos de uso y APIs de negocio** para **Open Finance, Embedded Finance y BaaS**: acompaña un caso de uso desde el discovery hasta el despliegue, con el business case y la inversión actualizándose en cada paso.
 
-> **Demo:** `https://<org>.github.io/open-business-accelerator/` *(completar tras activar GitHub Pages)*
+> **Demo:** https://jlemaclg.github.io/Open-Business-Tool/
 > Abre la URL y funciona — sin instalación, sin build, sin backend. Solo datos demo/ficticios.
 
 ## El recorrido
