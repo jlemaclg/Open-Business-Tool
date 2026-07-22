@@ -7,6 +7,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- Assessment (pestaña 12 · Casos de Uso): alta, listado y borrado de casos simulados sobre la entidad activa, distinguiendo naturaleza (Embedded Finance/BaaS = solo APIs · caso completo = APIs + frontal). Colección aparte por `entidadId` vía `Storage.listCasos/saveCaso/removeCaso`. La pestaña se inyecta dinámicamente y, si el módulo no carga (`file://`), simplemente no aparece.
 - `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
 
 ### Changed
