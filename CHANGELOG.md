@@ -7,9 +7,12 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- Módulo 03 · **Inventario de APIs** (`stages/2-api-design/api-inventory.html`): catálogo del estate existente con el mapeo endpoint → sistema backend → servicio interno, y acción "Extender esta API" que precarga el API Designer con el conocimiento ya generado en vez de partir de cero. Sirve tanto para APIs externas como internas.
+- Enrichment: pestaña **Gobierno de APIs** con revisión del YAML contra las buenas prácticas de gobierno (versionado, errores, FAPI, paginación, idempotencia, metadatos de catálogo) y modo de búsqueda simple de campo ISO 20022.
 - `stages/1-discovery/assessment/storage-bridge.js`: puente del Assessment al dominio (cada cliente guardado = una Entidad; la forma de `S` se conserva en `entidad.assessment`). Migración aditiva del almacén antiguo y degradación elegante si los módulos ES no cargan (`file://`).
 
 ### Changed
+- El recorrido pasa de 5 a **6 módulos**: el Inventario entra como 03 y renumera API Designer (04), Enrichment (05) y API Lab (06) en `assets/nav.js` y en el portal.
 - Assessment (`index.html`): gancho `window.__oba` e inclusión del módulo `storage-bridge.js`. Sin cambios en cálculos ni en export/import.
 - Assessment: subtítulos de las 11 pestañas en lenguaje de acción (qué haces aquí y qué alimenta), sin referencias internas en superficie; las 6 recomendaciones de consultoría pasan a bloques plegables "Apunte experto · <tema>" con título formal. API Lab: eliminado emoji decorativo (norma de estilo: SVG inline).
 

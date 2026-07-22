@@ -474,8 +474,8 @@
 
 <!-- TOGGLE -->
 <div class="mode-toggle">
-  <button class="mode-btn active" onclick="setMode('pipeline',this)">⚙ Pipeline completo — Mejorar un YAML</button>
-  <button class="mode-btn" onclick="setMode('search',this)">🔍 Búsqueda simple de campo</button>
+  <button class="mode-btn active" onclick="setMode('pipeline',this)">Pipeline completo — Mejorar un YAML</button>
+  <button class="mode-btn" onclick="setMode('search',this)">Búsqueda simple de campo</button>
 </div>
 
 <!-- ══ MODE 1: PIPELINE ══ -->
@@ -519,7 +519,7 @@
     <div id="pipeline-screen">
       <div class="pipeline-header">
         <div class="pipeline-header-left">
-          <div class="pipeline-header-title">⚙ Pipeline ISO 20022 en ejecución</div>
+          <div class="pipeline-header-title">Pipeline ISO 20022 en ejecución</div>
           <div class="pipeline-header-meta">Base vectorial: iso_completa (134.136 elementos) · ChromaDB HNSW · Modelo: bge-small-en-v1.5 · Métrica: Cosine Distance</div>
         </div>
         <div class="pipeline-progress">
@@ -582,6 +582,7 @@
         <button class="tab-btn" onclick="switchTab('yaml',this)">YAML To-Be</button>
         <button class="tab-btn" onclick="switchTab('schema',this)">JSON Schema</button>
         <button class="tab-btn" onclick="switchTab('qa',this)">Reporte QA</button>
+        <button class="tab-btn" onclick="switchTab('gov',this)">Gobierno de APIs</button>
       </div>
 
       <!-- TAB: Diff -->
@@ -624,6 +625,10 @@
         <div class="qa-report" id="qa-report-content"></div>
       </div>
 
+      <div class="tab-content" id="tab-gov">
+        <div class="qa-report" id="gov-report-content"></div>
+      </div>
+
       <!-- CTA -->
       <div class="cta-block">
         <div class="cta-text">¿Tienes el campo enriquecido? Úsalo para diseñar tu nueva API.</div>
@@ -637,7 +642,7 @@
 <div id="mode-search">
   <div class="main">
     <div class="search-card">
-      <div class="search-title">🔍 Busca el nombre estándar ISO 20022 para tu campo</div>
+      <div class="search-title">Busca el nombre estándar ISO 20022 para tu campo</div>
       <div class="search-form">
         <div class="fg">
           <label>NOMBRE DEL CAMPO</label>
@@ -658,7 +663,7 @@
         <span class="example-pill" onclick="fillSearch('status','Estado del proceso de pago')">status</span>
       </div>
       <div class="btn-row">
-        <button class="btn-primary" onclick="runSearch()">🔍 Buscar en ISO 20022</button>
+        <button class="btn-primary" onclick="runSearch()">Buscar en ISO 20022</button>
       </div>
     </div>
 
@@ -898,6 +903,7 @@ function startPipeline() {
   document.getElementById('yaml-tobe').innerHTML = YAML_TOBE;
   document.getElementById('json-schema-content').innerHTML = JSON_SCHEMA;
   document.getElementById('qa-report-content').innerHTML = QA_REPORT;
+  document.getElementById('gov-report-content').innerHTML = GOV_REPORT;
   initFieldsTable();
   initLayers();
   currentFieldIdx = 0;
@@ -1084,6 +1090,25 @@ function markFieldDone(idx, f, reviewed) {
     ? '<span class="status-rev">⚠ Revisión</span>'
     : '<span class="status-auto">✅ Auto</span>';
 }
+
+const GOV_REPORT = `
+<div style="font-size:12px;line-height:1.7;">
+  <div style="font-family:Georgia,serif;font-size:15px;color:#260717;margin-bottom:4px;">Revisión contra el gobierno de APIs de la entidad</div>
+  <div style="color:#888;font-size:11px;margin-bottom:14px;">Reglas cargadas de la línea base del set up (lineamientos propios de la organización — editables por el equipo de Gobierno). Marco: API Strategy · Governance · Lifecycle · Architecture.</div>
+  <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+    <tr style="text-align:left;color:#4F062A;border-bottom:2px solid #4F062A;"><th style="padding:6px 8px;">Regla</th><th>Dimensión</th><th>Resultado</th><th>Recomendación</th></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Versionado en URI (/v2) y política de deprecación</td><td>Lifecycle</td><td style="color:#1a7f37;font-weight:bold;">Conforme</td><td>—</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Nomenclatura de recursos (kebab-case, sustantivos en plural)</td><td>Governance</td><td style="color:#1a7f37;font-weight:bold;">Conforme</td><td>—</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Modelo de errores unificado (RFC 7807 / code-message-details)</td><td>Architecture</td><td style="color:#b58900;font-weight:bold;">Observación</td><td>Unificar 4xx con el esquema corporativo de errores</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Seguridad grado financiero (FAPI · OAuth2 con scopes por recurso)</td><td>Architecture</td><td style="color:#b58900;font-weight:bold;">Observación</td><td>Declarar scopes por operación en securitySchemes</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Paginación por cursor en colecciones</td><td>Governance</td><td style="color:#c62828;font-weight:bold;">No conforme</td><td>GET /remittances sin page[cursor] — añadir parámetros estándar</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Idempotencia en operaciones de creación (Idempotency-Key)</td><td>Architecture</td><td style="color:#c62828;font-weight:bold;">No conforme</td><td>Requerir cabecera en POST de pagos</td></tr>
+    <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 8px;">Metadatos de catálogo (x-gov-owner · x-gov-use-case · dominio)</td><td>Governance</td><td style="color:#1a7f37;font-weight:bold;">Conforme</td><td>—</td></tr>
+    <tr><td style="padding:6px 8px;">Trazabilidad regulatoria (cabeceras de consentimiento e interacción)</td><td>Lifecycle</td><td style="color:#b58900;font-weight:bold;">Observación</td><td>Propagar x-consent-id en operaciones de datos</td></tr>
+  </table>
+  <div style="margin-top:12px;padding:10px 14px;background:rgba(255,0,84,.06);border-left:3px solid #FF0054;">Puntuación de conformidad: <b>68/100</b> · 2 no conformidades bloquean la publicación en el catálogo. El To-Be corregido puede generarse desde el Diseño de APIs.</div>
+  <div style="margin-top:8px;color:#888;font-size:10.5px;">Datos simulados — la revisión productiva se ejecuta como quality gate del pipeline DevSecOps de la entidad.</div>
+</div>`;
 
 function showResults() {
   document.getElementById('main-progress').style.width = '100%';
