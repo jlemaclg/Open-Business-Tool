@@ -7,6 +7,7 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- Espacio de **Políticas de Gobierno de APIs** (`stages/2-api-design/governance-policies.html`): la base de conocimiento que gobierna cualquier diseño, versionada y citable. Accesible desde un enlace lateral en `assets/nav.js` (fuera del recorrido numerado) y referenciada desde el Inventario y desde la pestaña de Gobierno de Enrichment.
 - API Designer con contexto de entrada (`designer-context.js`): `?caso=` muestra el caso y sus APIs del delta y permite guardar el diseño en `caso.ecosistema.apis` (estado "diseñada"); `?from=` precarga la API del inventario a extender; `?usecase=` muestra el contexto de Market Discovery. `assets/inventory-data.js` como fuente única del inventario demo.
 - Assessment (pestaña 12 · Casos de Uso): alta, listado y borrado de casos simulados sobre la entidad activa, distinguiendo naturaleza (Embedded Finance/BaaS = solo APIs · caso completo = APIs + frontal). Colección aparte por `entidadId` vía `Storage.listCasos/saveCaso/removeCaso`. La pestaña se inyecta dinámicamente y, si el módulo no carga (`file://`), simplemente no aparece.
 - Assessment (pestaña 13): botón "Actualizar roadmap de la entidad" tras el análisis del delta — el agente genera iniciativas etiquetadas por caso (slot y devengo) que se agregan al roadmap del dominio, y panel "Roadmap de casos de uso" con CAPEX/OPEX agregados por entidad (recalculados al añadir o quitar casos, sin duplicados).
