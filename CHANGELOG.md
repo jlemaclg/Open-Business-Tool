@@ -9,9 +9,13 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ### Added
 - Favicon (`assets/favicon.svg`/`.png`) en las 8 páginas y metadatos Open Graph / Twitter Card en el portal (`assets/og-card.png` 1200×630) para que el enlace compartido en chats muestre tarjeta con título, descripción e imagen.
 - API Lab: panel "Validación de casos de uso" (`lab-loop.js`) — simulación de sandbox con métricas por caso, refinamiento del diseño por el agente (`labResults` persistidos, la API del caso pasa de "diseñada" a "refinada") y cierre del bucle hacia el re-análisis del Assessment.
+- Discovery: gestión de **estudios de mercado** (`estudios.js`, alta/edición/borrado) persistidos vía `Storage.listEstudios/loadEstudio/saveEstudio/removeEstudio` (`core/storage.local.js`), para reutilizarlos como contexto de entrada del Designer.
+- API Designer: **entrada dual** (`designer-entrada.js`) — arranca desde un caso de uso o desde un estudio de Discovery, precargando el contexto en vez de partir de cero.
 
 ### Changed
 - Pestaña 12: las tarjetas de caso muestran sus APIs con estado coloreado.
+- Módulo 05 renombrado de **Enrichment** a **Gestión & Versionado** (`assets/nav.js`, portal y `enrichment.html`): agrupa enriquecimiento ISO 20022, mejora de la especificación y ciclo de vida/deprecación bajo un solo espacio, con hilo Diseño → Revisión → Publicación → Gestión & Versionado → Deprecación.
+- Inventario de APIs: **acciones de ciclo de vida** por API (proponer nueva versión SemVer · GOV-VER-01, iniciar deprecación · GOV-VER-02) y enlace "Gestión & versionado". La barra de ciclo de vida del API Designer se oculta y su gestión se traslada a este espacio (feedback UX: confundía en el Designer).
 
 ## [0.2.0] - 2026-07-23
 

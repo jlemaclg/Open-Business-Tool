@@ -12,6 +12,7 @@ import { normalizeCasoDeUso } from './domain/casoDeUso.js';
 
 const K_ENT = 'ofp:entidades';
 const K_CASOS = 'ofp:casos';
+const K_EST = 'ofp:estudios';
 
 function ahora() {
   // Date disponible en el navegador (no en scripts de workflow, pero esto corre en Pages).
@@ -71,6 +72,20 @@ export const LocalStorageBackend = {
   async removeCaso(id) {
     const all = leer(K_CASOS); delete all[id]; escribir(K_CASOS, all);
   },
+
+  // ── Estudios de Discovery ──
+  async listEstudios() {
+    return Object.values(leer(K_EST)).map((e) => ({ id: e.id, nombre: e.nombre, actualizadoEn: e.actualizadoEn }));
+  },
+  async loadEstudio(id) { return (leer(K_EST))[id] || null; },
+  async saveEstudio(estudio) {
+    const all = leer(K_EST);
+    if (!estudio.id) estudio.id = 'est_' + (globalThis.crypto?.randomUUID?.() || String(Math.random()).slice(2));
+    estudio.actualizadoEn = ahora();
+    all[estudio.id] = estudio; escribir(K_EST, all);
+    return estudio;
+  },
+  async removeEstudio(id) { const all = leer(K_EST); delete all[id]; escribir(K_EST, all); },
 
   // ── Portabilidad ──
   async exportProyecto(entidadId) {

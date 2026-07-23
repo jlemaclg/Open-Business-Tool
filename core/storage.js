@@ -29,6 +29,12 @@ export const Storage = {
   saveCaso: (caso) => backend.saveCaso(caso),
   removeCaso: (id) => backend.removeCaso(id),
 
+  // ── Estudios de Discovery (se refinan allí y se cargan en el Designer) ──
+  listEstudios: () => backend.listEstudios(),
+  loadEstudio: (id) => backend.loadEstudio(id),
+  saveEstudio: (estudio) => backend.saveEstudio(estudio),
+  removeEstudio: (id) => backend.removeEstudio(id),
+
   // ── Portabilidad manual (se mantiene en todas las fases) ───
   exportProyecto: (entidadId) => backend.exportProyecto(entidadId),
   importProyecto: (json) => backend.importProyecto(json),

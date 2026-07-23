@@ -21,7 +21,7 @@
     { id: 'discovery',    num: '02', nombre: 'Discovery',    url: 'stages/1-discovery/market-discovery/index.html', etapa: 0 },
     { id: 'inventory',    num: '03', nombre: 'Inventario',   url: 'stages/2-api-design/api-inventory.html',         etapa: 1 },
     { id: 'api-designer', num: '04', nombre: 'API Designer', url: 'stages/2-api-design/api-designer.html',          etapa: 1 },
-    { id: 'enrichment',   num: '05', nombre: 'Enrichment',   url: 'stages/2-api-design/enrichment.html',            etapa: 1 },
+    { id: 'enrichment',   num: '05', nombre: 'Gestión & Versionado', url: 'stages/2-api-design/enrichment.html',    etapa: 1 },
     { id: 'api-lab',      num: '06', nombre: 'API Lab',      url: 'stages/3-api-lab/index.html',                    etapa: 2 }
   ];
 
