@@ -6,6 +6,9 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+### Added
+- Favicon (`assets/favicon.svg`/`.png`) en las 8 páginas y metadatos Open Graph / Twitter Card en el portal (`assets/og-card.png` 1200×630) para que el enlace compartido en chats muestre tarjeta con título, descripción e imagen.
+
 ## [0.2.0] - 2026-07-23
 
 El recorrido crece a 6 módulos e integra el dominio: el Assessment persiste vía `core/storage`, los casos de uso escriben el roadmap y la inversión de la entidad, entra el Inventario de APIs, el API Designer toma contexto por URL, y aparece el espacio de Políticas de Gobierno que Enrichment evalúa en una segunda fase.
