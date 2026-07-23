@@ -118,6 +118,7 @@ async function renderCasos() {
         <span class="cu-pill ${c.naturaleza === Naturaleza.CASO_COMPLETO ? 'cu-pill-full' : 'cu-pill-baas'}">${esc(NAT_LABEL[c.naturaleza] || c.naturaleza)}</span>
         <span class="cu-pill cu-pill-etapa">Etapa: ${esc(ETAPA_LABEL[c.etapa] || c.etapa)}</span>
         <div class="cu-meta">Actualizado: ${c.actualizadoEn ? new Date(c.actualizadoEn).toLocaleString('es') : '—'}</div>
+        ${(c.ecosistema?.apis || []).length ? `<div class="cu-meta">APIs: ${c.ecosistema.apis.map((a) => `${esc(a.nombre)} <b style="color:${a.estado === 'refinada' ? '#1a7f37' : a.estado === 'final' ? '#4F062A' : '#b58900'};">(${a.estado})</b>`).join(' · ')}</div>` : ''}
       </div>
       <div class="cu-actions">
         ${window.__obaGaps

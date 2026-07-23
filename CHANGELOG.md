@@ -8,6 +8,10 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ### Added
 - Favicon (`assets/favicon.svg`/`.png`) en las 8 páginas y metadatos Open Graph / Twitter Card en el portal (`assets/og-card.png` 1200×630) para que el enlace compartido en chats muestre tarjeta con título, descripción e imagen.
+- API Lab: panel "Validación de casos de uso" (`lab-loop.js`) — simulación de sandbox con métricas por caso, refinamiento del diseño por el agente (`labResults` persistidos, la API del caso pasa de "diseñada" a "refinada") y cierre del bucle hacia el re-análisis del Assessment.
+
+### Changed
+- Pestaña 12: las tarjetas de caso muestran sus APIs con estado coloreado.
 
 ## [0.2.0] - 2026-07-23
 
