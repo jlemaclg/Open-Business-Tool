@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Discovery de Casos de Uso · Open Business Accelerator</title>
 <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg"><link rel="alternate icon" type="image/png" href="../../../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/mbc-tokens.css">
   <style>
     :root {
-      --morado:    #4F062A;
-      --accent:    #FF0054;
-      --gris:      #E3E2DA;
+      --morado:    var(--mbc-navy);
+      --accent:    var(--mbc-electric);
+      --gris:      var(--bg);
       --blanco:    #FFFFFF;
-      --morado-dk: #260717;
+      --morado-dk: var(--mbc-navy-deep);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
+      font-family:var(--sans);
       background: var(--gris);
-      color: #1a1a1a;
+      color: var(--text);
       min-width: 1280px;
     }
     /* ── HEADER ── */
@@ -32,13 +35,13 @@
       z-index: 100;
     }
     .logo {
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       font-size: 20px;
       color: var(--blanco);
     }
-    .logo span { color: var(--accent); }
+    .logo span { color: rgba(255,255,255,.72); }
     .header-center {
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       font-size: 16px;
       color: var(--blanco);
     }
@@ -70,9 +73,9 @@
       color: var(--blanco);
     }
     .page-title h1 {
-      font-family: Georgia, serif;
+      font-family:var(--sans);
       font-size: 28px;
-      font-weight: normal;
+      font-weight:700;
       margin-bottom: 6px;
     }
     .page-title p {
@@ -135,7 +138,7 @@
       padding: 12px 28px;
       background: none;
       border: none;
-      font-family: Arial, sans-serif;
+      font-family:var(--sans);
       font-size: 14px;
       cursor: pointer;
       color: #666;
@@ -185,9 +188,9 @@
       border-left: 3px solid transparent;
       transition: all 0.15s;
     }
-    .catalog-item:hover { background: #fdf0f4; border-left-color: var(--accent); }
+    .catalog-item:hover { background: var(--mbc-electric-soft); border-left-color: var(--accent); }
     .catalog-item.selected {
-      background: #fff0f4;
+      background: var(--mbc-electric-soft);
       border-left-color: var(--accent);
       color: var(--morado);
       font-weight: bold;
@@ -207,7 +210,7 @@
       padding: 10px 12px;
       border: 1.5px solid #ccc;
       border-radius: 3px;
-      font-family: Arial, sans-serif;
+      font-family:var(--sans);
       font-size: 13px;
       color: #333;
       transition: border-color 0.2s;
@@ -251,9 +254,9 @@
     .toggle input:checked + .slider-toggle::before { transform: translateX(18px); }
     /* ── AUDIENCE SECTION ── */
     .section-title {
-      font-family: Georgia, serif;
+      font-family:var(--sans);
       font-size: 20px;
-      font-weight: normal;
+      font-weight:700;
       color: var(--morado-dk);
       margin-bottom: 20px;
     }
@@ -271,7 +274,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .audience-card.selected { border-color: var(--accent); background: #fff0f4; }
+    .audience-card.selected { border-color: var(--accent); background: var(--mbc-electric-soft); }
     .audience-name {
       font-size: 13px;
       font-weight: bold;
@@ -279,7 +282,7 @@
       margin-bottom: 4px;
     }
     .audience-pct {
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       font-size: 22px;
       color: var(--accent);
       margin-bottom: 2px;
@@ -304,7 +307,7 @@
       accent-color: var(--morado);
     }
     .slider-val {
-      font-family: Georgia, serif;
+      font-family:var(--sans);
       font-size: 15px;
       color: var(--accent);
       font-weight: bold;
@@ -323,7 +326,7 @@
       color: var(--blanco);
       border: none;
       padding: 12px 28px;
-      font-family: Arial, sans-serif;
+      font-family:var(--sans);
       font-size: 14px;
       cursor: pointer;
       border-radius: 3px;
@@ -370,7 +373,7 @@
       flex-direction: column;
     }
     .loading-title {
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       font-size: 22px;
       color: var(--blanco);
       margin-bottom: 40px;
@@ -416,9 +419,9 @@
       padding: 24px;
     }
     .results-card h3 {
-      font-family: Georgia, serif;
+      font-family:var(--sans);
       font-size: 17px;
-      font-weight: normal;
+      font-weight:700;
       color: var(--morado-dk);
       margin-bottom: 18px;
       padding-bottom: 12px;
@@ -454,12 +457,12 @@
     .pct-label { font-size: 13px; font-weight: bold; color: var(--accent); white-space: nowrap; }
     .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
     .var-tag {
-      background: #f5eef1;
+      background: var(--bg);
       color: var(--morado);
       font-size: 10px;
       padding: 3px 7px;
       border-radius: 2px;
-      border: 1px solid #e8d0d8;
+      border: 1px solid var(--line);
     }
     /* TAM SAM SOM */
     .tsm-funnel { text-align: center; }
@@ -470,11 +473,11 @@
       cursor: default;
     }
     .tsm-block.tam { background: var(--morado); color: var(--blanco); }
-    .tsm-block.sam { background: #7a1040; color: var(--blanco); width: 85%; margin: 0 auto 10px; }
+    .tsm-block.sam { background: var(--mbc-navy); color: var(--blanco); width: 85%; margin: 0 auto 10px; }
     .tsm-block.som { background: var(--accent); color: var(--blanco); width: 68%; margin: 0 auto; }
     .tsm-label { font-size: 11px; letter-spacing: 2px; opacity: 0.7; margin-bottom: 4px; }
     .tsm-users {
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       font-size: 22px;
     }
     .tsm-eur { font-size: 13px; opacity: 0.85; margin-top: 2px; }
@@ -498,7 +501,7 @@
       padding: 20px;
       border-top: 3px solid var(--accent);
     }
-    .insight-icon { font-size: 22px; margin-bottom: 8px; }
+    .insight-icon { color: var(--mbc-electric); margin-bottom: 8px; line-height:0; }
     .insight-title { font-size: 12px; font-weight: bold; color: var(--morado); letter-spacing: 0.5px; margin-bottom: 8px; }
     .insight-text { font-size: 13px; color: #555; line-height: 1.6; }
     /* API recommendations */
@@ -509,9 +512,9 @@
       margin-bottom: 24px;
     }
     .api-reco-block h3 {
-      font-family: Georgia, serif;
+      font-family:var(--sans);
       font-size: 18px;
-      font-weight: normal;
+      font-weight:700;
       color: var(--blanco);
       margin-bottom: 18px;
     }
@@ -524,7 +527,7 @@
       padding: 5px 12px;
       border-radius: 3px;
       margin: 4px;
-      font-family: 'Courier New', monospace;
+      font-family:var(--mono);
     }
     .api-label {
       font-size: 11px;
@@ -543,16 +546,16 @@
       font-size: 15px;
       cursor: pointer;
       border-radius: 3px;
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       letter-spacing: 0.5px;
       transition: background 0.2s;
       text-decoration: none;
       display: inline-block;
     }
-    .btn-accent:hover { background: #e0004a; }
+    .btn-accent:hover { background: var(--mbc-electric); }
     /* ── SELECTED LABEL ── */
     .selected-uc-label {
-      background: #fff0f4;
+      background: var(--mbc-electric-soft);
       border: 1.5px solid var(--accent);
       border-radius: 3px;
       padding: 10px 16px;
@@ -846,7 +849,7 @@
     </div>
 
     <div class="sliders-block">
-      <div style="font-family:Georgia,serif;font-size:16px;margin-bottom:16px;color:var(--morado-dk);">Parámetros de la cartera</div>
+      <div style="font-family:var(--sans);font-weight:700;font-size:16px;margin-bottom:16px;color:var(--morado-dk);">Parámetros de la cartera</div>
       <div class="slider-row">
         <span class="slider-name">Universo total</span>
         <input type="range" min="500000" max="5000000" step="100000" value="2100000" id="sl-total" oninput="updateSliders()">
@@ -884,7 +887,7 @@
 
     <div class="btn-row">
       <div class="tooltip-wrap">
-        <button class="btn-disabled">📤 Importar mi cartera (CSV/Excel)</button>
+        <button class="btn-disabled">Importar mi cartera (CSV/Excel)</button>
         <div class="tooltip-content" style="bottom:130%;">En la versión completa podrás importar tu propia cartera para un análisis personalizado.</div>
       </div>
       <span style="font-size:11px;background:#ffe;border:1px solid #ddd;padding:4px 8px;border-radius:2px;color:#888;">Próximamente</span>
@@ -965,24 +968,24 @@
             <div class="tsm-eur" id="som-eur">€12M estimado año 1</div>
           </div>
         </div>
-        <div class="tsm-note">* Estimaciones orientativas basadas en datos sintéticos de referencia Minsait. El análisis sobre datos reales requiere parametrización completa de la cartera.</div>
+        <div class="tsm-note">* Estimaciones orientativas basadas en datos sintéticos de referencia MBC. El análisis sobre datos reales requiere parametrización completa de la cartera.</div>
       </div>
     </div>
 
     <!-- INSIGHTS -->
     <div class="insights-grid">
       <div class="insight-card">
-        <div class="insight-icon">⚡</div>
+        <div class="insight-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
         <div class="insight-title">VELOCIDAD DE ADOPCIÓN</div>
         <div class="insight-text" id="insight1">El segmento GIG Economy muestra patrones de adopción rápida: 72% realizan su primera transacción en los primeros 30 días tras el onboarding.</div>
       </div>
       <div class="insight-card">
-        <div class="insight-icon">💰</div>
+        <div class="insight-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.5 2.5-1.5s2.5.5 2.5 1.5-1 1.5-2.5 1.5-2.5.5-2.5 1.5 1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg></div>
         <div class="insight-title">TICKET MEDIO ESPERADO</div>
         <div class="insight-text" id="insight2">El ticket medio estimado para este caso de uso en el segmento prioritario es de €340/mes, con ratio de recurrencia mensual del 78%.</div>
       </div>
       <div class="insight-card">
-        <div class="insight-icon">⚠️</div>
+        <div class="insight-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 2.5 20h19L12 4z"/><path d="M12 10v4M12 17.5v.5"/></svg></div>
         <div class="insight-title">RIESGO DE ABANDONO</div>
         <div class="insight-text" id="insight3">Los usuarios Thin File presentan mayor churn en mes 3 si no reciben un segundo producto complementario (seguro o cuenta de ahorro asociada).</div>
       </div>
@@ -1176,7 +1179,7 @@
       emp:  ['cobros_recurrentes_externos','actividad_laboral_declarada','saldo_billetera']
     };
     const segNames = { gig:'GIG Economy', inf:'Informal', thin:'Thin File', emp:'Emprendedor' };
-    const medals = ['🥇','🥈','🥉','4'];
+    const medals = ['1','2','3','4'];
     const apiMap = {
       'CRÉDITO': {
         req: ['POST /credit-applications','GET /credit-scoring/alternative','POST /disbursements','GET /repayment-schedule'],
@@ -1245,7 +1248,7 @@
           <td><div class="seg-name">${segNames[r.seg]}</div></td>
           <td>
             <div class="pct-bar-wrap">
-              <div style="width:120px;background:#f0e8ec;border-radius:4px;height:8px;overflow:hidden;">
+              <div style="width:120px;background:var(--bg);border-radius:4px;height:8px;overflow:hidden;">
                 <div class="pct-bar" data-w="${r.pct}" style="width:0%;height:8px;background:var(--accent);border-radius:4px;transition:width 0.9s ease;"></div>
               </div>
               <span class="pct-label">${r.pct}%</span>

@@ -10,27 +10,27 @@ import { Storage } from '../../../core/storage.js';
 
 const css = document.createElement('style');
 css.textContent = `
-  .es-wrap{max-width:1200px;margin:22px auto 30px;padding:0 40px;font-family:Arial,sans-serif;}
+  .es-wrap{max-width:1200px;margin:22px auto 30px;padding:0 40px;font-family:var(--sans);}
   .es-card{background:#fff;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;}
-  .es-head{background:#260717;color:#fff;padding:13px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
-  .es-title{font-family:Georgia,serif;font-size:15.5px;} .es-title span{color:#FF0054;}
+  .es-head{background:var(--mbc-navy-deep);color:#fff;padding:13px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+  .es-title{font-family:var(--sans);font-weight:700;font-size:15.5px;} .es-title span{color:var(--mbc-electric);}
   .es-toggle{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;}
   .es-body{padding:18px 20px;display:none;}
   .es-card.open .es-body{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start;}
   .es-fg{margin-bottom:10px;}
-  .es-fg label{display:block;font-size:10px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:#4F062A;margin-bottom:4px;}
-  .es-fg input,.es-fg textarea{width:100%;padding:8px 10px;border:1px solid #c9c6bb;border-radius:3px;font-size:12.5px;font-family:Arial,sans-serif;}
+  .es-fg label{display:block;font-size:10px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:var(--mbc-navy);margin-bottom:4px;}
+  .es-fg input,.es-fg textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:3px;font-size:12.5px;font-family:var(--sans);}
   .es-fg textarea{min-height:110px;resize:vertical;}
-  .es-btn{background:#4F062A;color:#fff;border:none;padding:9px 16px;border-radius:3px;font-size:12px;cursor:pointer;margin-right:6px;}
-  .es-btn:hover{background:#FF0054;}
-  .es-btn-sec{background:#fff;color:#4F062A;border:1px solid #4F062A;padding:8px 14px;border-radius:3px;font-size:11.5px;cursor:pointer;}
-  .es-btn-sec:hover{border-color:#FF0054;color:#FF0054;}
-  .es-item{border:1px solid #e6e3d8;border-radius:5px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
-  .es-item-t{font-family:Georgia,serif;font-size:14.5px;color:#260717;margin-bottom:3px;}
+  .es-btn{background:var(--mbc-navy);color:#fff;border:none;padding:9px 16px;border-radius:3px;font-size:12px;cursor:pointer;margin-right:6px;}
+  .es-btn:hover{background:var(--mbc-electric);}
+  .es-btn-sec{background:#fff;color:var(--mbc-navy);border:1px solid var(--mbc-navy);padding:8px 14px;border-radius:3px;font-size:11.5px;cursor:pointer;}
+  .es-btn-sec:hover{border-color:var(--mbc-electric);color:var(--mbc-electric);}
+  .es-item{border:1px solid var(--mbc-ceramic);border-radius:5px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .es-item-t{font-family:var(--sans);font-size:14.5px;color:var(--mbc-navy-deep);margin-bottom:3px;}
   .es-item-m{font-size:11px;color:#888;}
   .es-item-d{font-size:11.5px;color:#555;margin-top:5px;line-height:1.5;max-width:520px;}
   .es-acts{display:flex;flex-direction:column;gap:5px;align-items:flex-end;flex:0 0 auto;}
-  .es-link{font-size:11px;color:#FF0054;font-weight:bold;cursor:pointer;background:none;border:none;text-decoration:none;}
+  .es-link{font-size:11px;color:var(--mbc-electric);font-weight:bold;cursor:pointer;background:none;border:none;text-decoration:none;}
   .es-link:hover{text-decoration:underline;}
   .es-del{font-size:10.5px;color:#b33;background:none;border:none;cursor:pointer;opacity:.7;}
   .es-del:hover{opacity:1;text-decoration:underline;}
@@ -84,7 +84,7 @@ async function renderLista() {
       </div>
       <div class="es-acts">
         <a class="es-link" href="../../2-api-design/api-designer.html?estudio=${e.id}">Continuar en API Designer →</a>
-        <button class="es-link" data-edit="${e.id}" style="color:#4F062A;">editar</button>
+        <button class="es-link" data-edit="${e.id}" style="color:var(--mbc-navy);">editar</button>
         <button class="es-del" data-del="${e.id}">eliminar</button>
       </div>
     </div>`).join('');

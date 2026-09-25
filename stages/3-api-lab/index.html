@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Lab · Open Business Accelerator</title>
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg"><link rel="alternate icon" type="image/png" href="../../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/mbc-tokens.css">
   <style>
     :root {
-      --morado:    #4F062A;
-      --accent:    #FF0054;
-      --gris:      #E3E2DA;
+      --morado:    var(--mbc-navy);
+      --accent:    var(--mbc-electric);
+      --gris:      var(--bg);
       --blanco:    #FFFFFF;
-      --morado-dk: #260717;
+      --morado-dk: var(--mbc-navy-deep);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f4f2f0; min-width: 1280px; min-height: 100vh; display: flex; flex-direction: column; }
+    body { font-family:var(--sans); background: var(--bg); min-width: 1280px; min-height: 100vh; display: flex; flex-direction: column; }
     /* HEADER */
     header {
       background: var(--morado-dk);
@@ -27,8 +30,8 @@
       /* sticky retirado: el scroll de esta página es interno (.main-area) y el
          header fijado se montaba sobre la barra de navegación de la plataforma */
     }
-    .logo { font-family: Georgia, serif; font-size: 18px; color: var(--blanco); }
-    .logo span { color: var(--accent); }
+    .logo { font-family:var(--sans);font-weight:700; font-size: 18px; color: var(--blanco); }
+    .logo span { color: rgba(255,255,255,.72); }
     .header-center { display: flex; align-items: center; gap: 12px; }
     .env-badge {
       background: rgba(0,180,80,0.18);
@@ -56,7 +59,8 @@
     /* LAYOUT */
     .app-body { display: flex; flex: 1; min-height: 0; }
     /* SIDEBAR */
-    nav {
+    /* Barra lateral del Lab: selector con clase para no colisionar con la barra de la plataforma (nav.obx-nav) */
+    nav.lab-nav {
       width: 200px;
       flex-shrink: 0;
       background: var(--morado);
@@ -64,6 +68,7 @@
       flex-direction: column;
       padding-top: 20px;
     }
+    .nav-item svg { flex:0 0 auto; opacity:.85; }
     .nav-item {
       padding: 13px 20px;
       color: rgba(255,255,255,0.7);
@@ -77,11 +82,11 @@
       user-select: none;
     }
     .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
-    .nav-item.active { background: rgba(255,0,84,0.18); color: white; border-left-color: var(--accent); font-weight: bold; }
+    .nav-item.active { background: rgba(20,122,255,0.18); color: white; border-left-color: var(--accent); font-weight: bold; }
     /* MAIN */
     .main-area { flex: 1; overflow-y: auto; padding: 28px 32px; }
     /* ─── SECTION TITLE ─── */
-    .sec-title { font-family: Georgia, serif; font-size: 22px; font-weight: normal; color: var(--morado-dk); margin-bottom: 22px; }
+    .sec-title { font-family:var(--sans); font-size: 22px; font-weight:700; color: var(--morado-dk); margin-bottom: 22px; }
     /* ─── KPI CARDS ─── */
     .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 28px; }
     .kpi-card {
@@ -91,22 +96,22 @@
       border-top: 3px solid var(--morado);
     }
     .kpi-label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-    .kpi-value { font-family: Georgia, serif; font-size: 34px; color: var(--morado-dk); line-height: 1; margin-bottom: 4px; }
+    .kpi-value { font-family:var(--sans);font-weight:700; font-size: 34px; color: var(--morado-dk); line-height: 1; margin-bottom: 4px; }
     .kpi-sub { font-size: 12px; color: #888; }
     .kpi-sub.up { color: #22aa55; }
     /* ─── TABLE ─── */
     .data-card { background: white; border-radius: 4px; padding: 22px; margin-bottom: 22px; }
-    .data-card-title { font-family: Georgia, serif; font-size: 16px; font-weight: normal; color: var(--morado-dk); margin-bottom: 14px; }
+    .data-card-title { font-family:var(--sans); font-size: 16px; font-weight:700; color: var(--morado-dk); margin-bottom: 14px; }
     table.data-table { width: 100%; border-collapse: collapse; }
-    .data-table th { font-size: 11px; font-weight: bold; color: #888; letter-spacing: 1px; text-transform: uppercase; text-align: left; padding: 8px 12px; border-bottom: 2px solid #f0eeed; }
-    .data-table td { padding: 10px 12px; border-bottom: 1px solid #f8f6f5; font-size: 12.5px; color: #333; }
+    .data-table th { font-size: 11px; font-weight: bold; color: #888; letter-spacing: 1px; text-transform: uppercase; text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--bg); }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--bg); font-size: 12.5px; color: #333; }
     .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: #fdf8f9; }
+    .data-table tr:hover td { background: var(--bg); }
     .status-ok { color: #22aa55; font-weight: bold; }
     .status-warn { color: #e07000; font-weight: bold; }
     .status-err { color: var(--accent); font-weight: bold; }
     /* SPARKLINE */
-    .spark-wrap { background: #fdf5f7; border-radius: 4px; padding: 16px; margin-bottom: 22px; }
+    .spark-wrap { background: var(--mbc-electric-soft); border-radius: 4px; padding: 16px; margin-bottom: 22px; }
     .spark-title { font-size: 12px; color: #888; margin-bottom: 10px; }
     /* API CARDS */
     .api-card {
@@ -124,7 +129,7 @@
       cursor: pointer;
       transition: background 0.15s;
     }
-    .api-card-header:hover { background: #fdf8f9; }
+    .api-card-header:hover { background: var(--bg); }
     .api-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .dot-active { background: #22aa55; }
     .dot-draft { background: #e0a000; }
@@ -133,11 +138,11 @@
     .api-badge { font-size: 10px; padding: 3px 8px; border-radius: 2px; font-weight: bold; letter-spacing: 1px; }
     .api-badge.active { background: #e8f8ee; color: #22aa55; border: 1px solid #b8e8cc; }
     .api-badge.draft { background: #fff8e8; color: #c07000; border: 1px solid #f0dca0; }
-    .api-card-body { display: none; padding: 16px 18px; background: #fdf9fa; border-top: 1px solid #f0eeed; }
+    .api-card-body { display: none; padding: 16px 18px; background: var(--bg); border-top: 1px solid var(--bg); }
     .api-card-body.open { display: block; }
     .api-stats-row { display: flex; gap: 24px; margin-bottom: 12px; }
     .api-stat { text-align: center; }
-    .api-stat .v { font-family: Georgia, serif; font-size: 20px; color: var(--accent); }
+    .api-stat .v { font-family:var(--sans);font-weight:700; font-size: 20px; color: var(--accent); }
     .api-stat .l { font-size: 11px; color: #888; }
     .api-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .btn-sm {
@@ -170,19 +175,19 @@
     .pill.active { background: var(--morado); color: white; border-color: var(--morado); }
     /* PARTNERS TABLE */
     .partner-row { cursor: pointer; }
-    .partner-expand { display: none; background: #fdf9fa; }
+    .partner-expand { display: none; background: var(--bg); }
     .partner-expand.open { display: table-row; }
     .partner-detail { padding: 16px 20px; }
     .partner-detail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-    .partner-cred { font-family: 'Courier New', monospace; font-size: 12px; background: #f0eded; padding: 6px 10px; border-radius: 3px; color: var(--morado); }
+    .partner-cred { font-family:var(--mono); font-size: 12px; background: var(--bg); padding: 6px 10px; border-radius: 3px; color: var(--morado); }
     /* CHARTS */
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
     .chart-card { background: white; border-radius: 4px; padding: 20px; }
-    .chart-card h3 { font-family: Georgia, serif; font-size: 15px; font-weight: normal; color: var(--morado-dk); margin-bottom: 16px; }
+    .chart-card h3 { font-family:var(--sans); font-size: 15px; font-weight:700; color: var(--morado-dk); margin-bottom: 16px; }
     /* Bars */
     .hbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .hbar-name { font-size: 12px; color: #444; width: 160px; flex-shrink: 0; text-align: right; }
-    .hbar-wrap { flex: 1; background: #f5eef2; border-radius: 3px; height: 18px; overflow: hidden; }
+    .hbar-wrap { flex: 1; background: var(--bg); border-radius: 3px; height: 18px; overflow: hidden; }
     .hbar { height: 18px; background: var(--accent); border-radius: 3px; transition: width 1s ease; }
     .hbar-val { font-size: 12px; color: var(--morado); font-weight: bold; width: 48px; }
     /* Donut */
@@ -191,12 +196,12 @@
     .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
     /* Latency line */
     .latency-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .latency-table th { font-size: 11px; color: #888; text-align: left; padding: 6px 10px; border-bottom: 1px solid #f0eeed; letter-spacing: 1px; text-transform: uppercase; }
-    .latency-table td { padding: 9px 10px; border-bottom: 1px solid #f8f6f5; }
+    .latency-table th { font-size: 11px; color: #888; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--bg); letter-spacing: 1px; text-transform: uppercase; }
+    .latency-table td { padding: 9px 10px; border-bottom: 1px solid var(--bg); }
     /* DEPLOY */
     .deploy-step { background: white; border-radius: 4px; padding: 22px; margin-bottom: 14px; }
     .deploy-step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--morado); color: white; border-radius: 50%; font-size: 13px; font-weight: bold; margin-right: 10px; }
-    .deploy-step-title { font-family: Georgia, serif; font-size: 16px; font-weight: normal; color: var(--morado-dk); }
+    .deploy-step-title { font-family:var(--sans); font-size: 16px; font-weight:700; color: var(--morado-dk); }
     .radio-option { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1.5px solid #ddd; border-radius: 3px; margin: 8px 0; cursor: pointer; font-size: 13px; color: #444; transition: border-color 0.2s; }
     .radio-option:hover { border-color: var(--accent); }
     .radio-option input { accent-color: var(--accent); }
@@ -209,7 +214,7 @@
       border-radius: 3px;
       font-size: 13px;
       color: #333;
-      font-family: Arial, sans-serif;
+      font-family:var(--sans);
     }
     select.finput:focus, input.finput:focus { outline: none; border-color: var(--accent); }
     .check-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #444; margin: 8px 0; }
@@ -220,7 +225,7 @@
       border: none;
       padding: 14px 36px;
       font-size: 16px;
-      font-family: Georgia, serif;
+      font-family:var(--sans);font-weight:700;
       cursor: pointer;
       border-radius: 3px;
       margin-top: 18px;
@@ -233,9 +238,9 @@
     /* DEPLOY LOG */
     #deploy-log {
       display: none;
-      background: #0d0d0d;
+      background: var(--text);
       color: #a0e8a0;
-      font-family: 'Courier New', monospace;
+      font-family:var(--mono);
       font-size: 12px;
       padding: 16px 20px;
       border-radius: 4px;
@@ -275,7 +280,7 @@
       width: 480px;
       max-width: 90vw;
     }
-    .modal-title { font-family: Georgia, serif; font-size: 20px; color: var(--morado-dk); margin-bottom: 18px; }
+    .modal-title { font-family:var(--sans);font-weight:700; font-size: 20px; color: var(--morado-dk); margin-bottom: 18px; }
     .modal-text { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 22px; }
     .modal-close { background: var(--morado); color: white; border: none; padding: 10px 24px; border-radius: 3px; cursor: pointer; font-size: 14px; }
     .modal-close:hover { background: var(--accent); }
@@ -305,7 +310,7 @@
       <span class="chip ok">✓ 6 APIs activas</span>
       <span class="chip">4 partners conectados</span>
       <span class="chip">↑ 2.341 calls hoy</span>
-      <span class="chip ok">⚡ 99.2% uptime</span>
+      <span class="chip ok">99.2% uptime</span>
     </div>
   </div>
   <div class="header-right">
@@ -316,12 +321,12 @@
 
 <div class="app-body">
   <!-- SIDEBAR -->
-  <nav>
-    <div class="nav-item active" onclick="showSection('dashboard',this)">📊 Dashboard</div>
-    <div class="nav-item" onclick="showSection('apis',this)">🔌 APIs en Sandbox</div>
-    <div class="nav-item" onclick="showSection('partners',this)">👥 Partners</div>
-    <div class="nav-item" onclick="showSection('metrics',this)">📈 Métricas</div>
-    <div class="nav-item" onclick="showSection('deploy',this)">🚀 Desplegar API</div>
+  <nav class="lab-nav">
+    <div class="nav-item active" onclick="showSection('dashboard',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</div>
+    <div class="nav-item" onclick="showSection('apis',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7V4M15 7V4"/><rect x="6" y="7" width="12" height="7" rx="2"/><path d="M12 14v6"/></svg> APIs en Sandbox</div>
+    <div class="nav-item" onclick="showSection('partners',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.5a4.5 4.5 0 0 1 5 4.5"/></svg> Partners</div>
+    <div class="nav-item" onclick="showSection('metrics',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-5 3 3 5-7"/></svg> Métricas</div>
+    <div class="nav-item" onclick="showSection('deploy',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg> Desplegar API</div>
   </nav>
 
   <!-- MAIN -->
@@ -371,16 +376,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>hace 2 min</td><td>Fintech A</td><td>Remittances API</td><td><code>POST</code></td><td>/remittances</td><td class="status-ok">201 ✅</td><td>143ms</td></tr>
-            <tr><td>hace 3 min</td><td>Open Banking B</td><td>Scoring API</td><td><code>GET</code></td><td>/credit-scoring/alternative</td><td class="status-ok">200 ✅</td><td>89ms</td></tr>
-            <tr><td>hace 5 min</td><td>Integrador C</td><td>Disbursements API</td><td><code>POST</code></td><td>/disbursements</td><td class="status-ok">201 ✅</td><td>201ms</td></tr>
-            <tr><td>hace 7 min</td><td>Fintech A</td><td>KYC Lite API</td><td><code>POST</code></td><td>/kyc/lite</td><td class="status-ok">200 ✅</td><td>312ms</td></tr>
-            <tr><td>hace 12 min</td><td>Open Banking B</td><td>Remittances API</td><td><code>GET</code></td><td>/remittances/{id}</td><td class="status-warn">404 ⚠️</td><td>67ms</td></tr>
-            <tr><td>hace 15 min</td><td>Empresa D</td><td>Payments API</td><td><code>POST</code></td><td>/payments/batch</td><td class="status-ok">202 ✅</td><td>445ms</td></tr>
-            <tr><td>hace 18 min</td><td>Fintech A</td><td>Accounts API</td><td><code>GET</code></td><td>/accounts/{id}/balance</td><td class="status-ok">200 ✅</td><td>78ms</td></tr>
-            <tr><td>hace 22 min</td><td>Integrador C</td><td>Remittances API</td><td><code>DELETE</code></td><td>/remittances/{id}</td><td class="status-ok">204 ✅</td><td>55ms</td></tr>
-            <tr><td>hace 28 min</td><td>Open Banking B</td><td>Scoring API</td><td><code>POST</code></td><td>/credit-scoring/batch</td><td class="status-ok">200 ✅</td><td>567ms</td></tr>
-            <tr><td>hace 35 min</td><td>Empresa D</td><td>KYC Lite API</td><td><code>GET</code></td><td>/kyc/{id}/status</td><td class="status-ok">200 ✅</td><td>91ms</td></tr>
+            <tr><td>hace 2 min</td><td>Fintech A</td><td>Remittances API</td><td><code>POST</code></td><td>/remittances</td><td class="status-ok">201 ✓</td><td>143ms</td></tr>
+            <tr><td>hace 3 min</td><td>Open Banking B</td><td>Scoring API</td><td><code>GET</code></td><td>/credit-scoring/alternative</td><td class="status-ok">200 ✓</td><td>89ms</td></tr>
+            <tr><td>hace 5 min</td><td>Integrador C</td><td>Disbursements API</td><td><code>POST</code></td><td>/disbursements</td><td class="status-ok">201 ✓</td><td>201ms</td></tr>
+            <tr><td>hace 7 min</td><td>Fintech A</td><td>KYC Lite API</td><td><code>POST</code></td><td>/kyc/lite</td><td class="status-ok">200 ✓</td><td>312ms</td></tr>
+            <tr><td>hace 12 min</td><td>Open Banking B</td><td>Remittances API</td><td><code>GET</code></td><td>/remittances/{id}</td><td class="status-warn">404 ⚠</td><td>67ms</td></tr>
+            <tr><td>hace 15 min</td><td>Empresa D</td><td>Payments API</td><td><code>POST</code></td><td>/payments/batch</td><td class="status-ok">202 ✓</td><td>445ms</td></tr>
+            <tr><td>hace 18 min</td><td>Fintech A</td><td>Accounts API</td><td><code>GET</code></td><td>/accounts/{id}/balance</td><td class="status-ok">200 ✓</td><td>78ms</td></tr>
+            <tr><td>hace 22 min</td><td>Integrador C</td><td>Remittances API</td><td><code>DELETE</code></td><td>/remittances/{id}</td><td class="status-ok">204 ✓</td><td>55ms</td></tr>
+            <tr><td>hace 28 min</td><td>Open Banking B</td><td>Scoring API</td><td><code>POST</code></td><td>/credit-scoring/batch</td><td class="status-ok">200 ✓</td><td>567ms</td></tr>
+            <tr><td>hace 35 min</td><td>Empresa D</td><td>KYC Lite API</td><td><code>GET</code></td><td>/kyc/{id}/status</td><td class="status-ok">200 ✓</td><td>91ms</td></tr>
           </tbody>
         </table>
       </div>
@@ -578,7 +583,7 @@
           </thead>
           <tbody>
             <tr class="partner-row" onclick="togglePartner('pA')">
-              <td>🟢 Fintech Partner A</td><td>Fintech</td>
+              <td>Fintech Partner A</td><td>Fintech</td>
               <td><span style="color:#22aa55;font-weight:bold;">ACTIVO</span></td>
               <td>Remittances, KYC Lite, Accounts</td><td>486</td><td>99.8%</td><td>hace 8 días</td>
               <td>▸</td>
@@ -605,7 +610,7 @@
               </td>
             </tr>
             <tr class="partner-row" onclick="togglePartner('pB')">
-              <td>🔴 Open Banking B</td><td>Aggregador</td>
+              <td>Open Banking B</td><td>Aggregador</td>
               <td><span style="color:#e07000;font-weight:bold;">TESTING</span></td>
               <td>Scoring, Remittances</td><td>274</td><td>98.1%</td><td>hace 4 días</td>
               <td>▸</td>
@@ -622,7 +627,7 @@
               </td>
             </tr>
             <tr class="partner-row" onclick="togglePartner('pC')">
-              <td>🔴 Integrador C</td><td>SI</td>
+              <td>Integrador C</td><td>SI</td>
               <td><span style="color:#e07000;font-weight:bold;">TESTING</span></td>
               <td>Disbursements, Remittances</td><td>181</td><td>100%</td><td>hace 2 días</td>
               <td>▸</td>
@@ -639,7 +644,7 @@
               </td>
             </tr>
             <tr class="partner-row" onclick="togglePartner('pD')">
-              <td>⚫ Empresa D</td><td>Corporativo</td>
+              <td>Empresa D</td><td>Corporativo</td>
               <td><span style="color:#888;font-weight:bold;">EN ESPERA</span></td>
               <td>Batch Payments, Accounts</td><td>—</td><td>—</td><td>pendiente</td>
               <td>▸</td>
@@ -680,23 +685,23 @@
           <div class="donut-wrap">
             <svg width="140" height="140" viewBox="0 0 140 140">
               <!-- Donut segments -->
-              <circle cx="70" cy="70" r="50" fill="none" stroke="#f0eeed" stroke-width="26"/>
-              <circle cx="70" cy="70" r="50" fill="none" stroke="#FF0054" stroke-width="26"
+              <circle cx="70" cy="70" r="50" fill="none" stroke="var(--bg)" stroke-width="26"/>
+              <circle cx="70" cy="70" r="50" fill="none" stroke="var(--mbc-electric)" stroke-width="26"
                 stroke-dasharray="65.4 314.2" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
-              <circle cx="70" cy="70" r="50" fill="none" stroke="#7a1040" stroke-width="26"
+              <circle cx="70" cy="70" r="50" fill="none" stroke="var(--mbc-navy)" stroke-width="26"
                 stroke-dasharray="36.8 314.2" stroke-dashoffset="-65.4" transform="rotate(-90 70 70)"/>
-              <circle cx="70" cy="70" r="50" fill="none" stroke="#b04060" stroke-width="26"
+              <circle cx="70" cy="70" r="50" fill="none" stroke="var(--mbc-navy)" stroke-width="26"
                 stroke-dasharray="24.6 314.2" stroke-dashoffset="-102.2" transform="rotate(-90 70 70)"/>
-              <circle cx="70" cy="70" r="50" fill="none" stroke="#e3d0d8" stroke-width="26"
+              <circle cx="70" cy="70" r="50" fill="none" stroke="var(--line)" stroke-width="26"
                 stroke-dasharray="187.4 314.2" stroke-dashoffset="-126.8" transform="rotate(-90 70 70)"/>
-              <text x="70" y="67" text-anchor="middle" font-family="Georgia" font-size="18" fill="#260717">2.341</text>
+              <text x="70" y="67" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="18" fill="var(--mbc-navy-deep)">2.341</text>
               <text x="70" y="82" text-anchor="middle" font-family="Arial" font-size="10" fill="#888">calls</text>
             </svg>
             <div class="donut-legend">
-              <div><span class="legend-dot" style="background:#FF0054;"></span>Fintech A: 486 (20.8%)</div>
-              <div><span class="legend-dot" style="background:#7a1040;"></span>Open Banking B: 274 (11.7%)</div>
-              <div><span class="legend-dot" style="background:#b04060;"></span>Integrador C: 181 (7.8%)</div>
-              <div><span class="legend-dot" style="background:#e3d0d8;"></span>Resto: 1.400 (59.8%)</div>
+              <div><span class="legend-dot" style="background:var(--mbc-electric);"></span>Fintech A: 486 (20.8%)</div>
+              <div><span class="legend-dot" style="background:var(--mbc-navy);"></span>Open Banking B: 274 (11.7%)</div>
+              <div><span class="legend-dot" style="background:var(--mbc-navy);"></span>Integrador C: 181 (7.8%)</div>
+              <div><span class="legend-dot" style="background:var(--line);"></span>Resto: 1.400 (59.8%)</div>
             </div>
           </div>
         </div>
@@ -709,12 +714,12 @@
             <tr><th>API</th><th>p50</th><th>p95</th><th>p99</th><th>SLA objetivo</th><th>Estado</th></tr>
           </thead>
           <tbody>
-            <tr><td>Remittances API</td><td>89ms</td><td>143ms</td><td>312ms</td><td>500ms</td><td class="status-ok">✅ OK</td></tr>
-            <tr><td>Alternative Scoring API</td><td>198ms</td><td>312ms</td><td>634ms</td><td>500ms</td><td class="status-ok">✅ OK</td></tr>
-            <tr><td>KYC Lite API</td><td>145ms</td><td>267ms</td><td>489ms</td><td>500ms</td><td class="status-ok">✅ OK</td></tr>
-            <tr><td>Disbursements API</td><td>112ms</td><td>198ms</td><td>401ms</td><td>500ms</td><td class="status-ok">✅ OK</td></tr>
-            <tr><td>Accounts Embedded API</td><td>45ms</td><td>89ms</td><td>198ms</td><td>500ms</td><td class="status-ok">✅ OK</td></tr>
-            <tr><td>Batch Payments API</td><td>287ms</td><td>445ms</td><td>891ms</td><td>500ms</td><td class="status-warn">⚠️ REVISAR</td></tr>
+            <tr><td>Remittances API</td><td>89ms</td><td>143ms</td><td>312ms</td><td>500ms</td><td class="status-ok">✓ OK</td></tr>
+            <tr><td>Alternative Scoring API</td><td>198ms</td><td>312ms</td><td>634ms</td><td>500ms</td><td class="status-ok">✓ OK</td></tr>
+            <tr><td>KYC Lite API</td><td>145ms</td><td>267ms</td><td>489ms</td><td>500ms</td><td class="status-ok">✓ OK</td></tr>
+            <tr><td>Disbursements API</td><td>112ms</td><td>198ms</td><td>401ms</td><td>500ms</td><td class="status-ok">✓ OK</td></tr>
+            <tr><td>Accounts Embedded API</td><td>45ms</td><td>89ms</td><td>198ms</td><td>500ms</td><td class="status-ok">✓ OK</td></tr>
+            <tr><td>Batch Payments API</td><td>287ms</td><td>445ms</td><td>891ms</td><td>500ms</td><td class="status-warn">⚠ REVISAR</td></tr>
           </tbody>
         </table>
       </div>
@@ -787,7 +792,7 @@
           <span class="deploy-step-title">Confirmación</span>
         </div>
         <button class="btn-deploy" id="btn-deploy" onclick="runDeploy()">
-          🚀 Desplegar en Sandbox
+          Desplegar en Sandbox
         </button>
         <div id="deploy-log"></div>
       </div>
@@ -834,7 +839,7 @@
         <select class="finput"><option>Standard</option><option>Premium</option><option>Custom</option></select>
       </div>
       <div style="display:flex;gap:12px;margin-top:8px;">
-        <button class="btn-deploy" style="padding:11px 22px;font-size:14px;font-family:Arial;" onclick="sendInvite()">Enviar invitación</button>
+        <button class="btn-deploy" style="padding:11px 22px;font-size:14px;font-family:var(--sans);" onclick="sendInvite()">Enviar invitación</button>
         <button class="modal-close" style="background:#888;" onclick="document.getElementById('invite-modal').classList.remove('open')">Cancelar</button>
       </div>
     </div>
@@ -882,7 +887,7 @@
       rect.setAttribute('width', bw);
       rect.setAttribute('height', h);
       rect.setAttribute('rx', '2');
-      rect.setAttribute('fill', '#FF0054');
+      rect.setAttribute('fill', 'var(--mbc-electric)');
       rect.setAttribute('opacity', '0.7');
       svg.appendChild(rect);
     });
@@ -935,7 +940,7 @@
     '[✓] Configurando rate limits: 100 req/min',
     '[✓] Registrando en API Registry...',
     '[✓] Endpoint disponible en sandbox',
-    '[✅] Despliegue completado en 3.2 segundos'
+    '[✓] Despliegue completado en 3.2 segundos'
   ];
 
   function runDeploy() {
@@ -958,7 +963,7 @@
         i++;
         setTimeout(addLine, 400);
       } else {
-        btn.innerHTML = '🚀 Desplegar en Sandbox';
+        btn.innerHTML = 'Desplegar en Sandbox';
         btn.disabled = false;
         showToast('✓ API desplegada correctamente en sandbox');
       }

@@ -14,10 +14,17 @@ versionado según [SemVer](https://semver.org/lang/es/).
 - API Designer: **entrada dual** (`designer-entrada.js`) — arranca desde un caso de uso o desde un estudio de Discovery, precargando el contexto en vez de partir de cero.
 
 ### Changed
+- **Identidad visual MBC en todo el hub (D12, F14).** Nueva hoja de tokens `assets/mbc-tokens.css` (azul oscuro `#003478`, azul eléctrico `#147AFF`, gris cerámica, neutros fríos, Montserrat, radios, chips de la convención agente/determinista) cargada antes que cualquier estilo en las 9 páginas; los `:root` de cada página pasan a ser alias de los tokens y ningún color de marca queda en hex fuera de ellos. Montserrat (Google Fonts) en títulos y cuerpo, con pesos 700/800 donde antes había Georgia. Logo MBC vectorial en la barra de navegación, en la cabecera y en el pie del portal. `assets/favicon.svg/.png` y `assets/og-card.png` regenerados en MBC. Retirados los emojis pictográficos restantes (Designer, Versionado, Lab, Discovery) y sustituidos por SVG inline donde eran iconos (barra lateral del Lab, tarjetas de insight del Discovery, zona de subida de Versionado).
+- `assets/nav.js`: estilos a tokens (con valor de reserva), numeración en eléctrico, entrada **Gobierno** con icono en lugar del texto secundario "Políticas", logo MBC a la derecha. El selector pasa a `nav.obx-nav` y fija dirección, padding y anchura para que ninguna regla de página sobre `nav{}` la deforme.
+- Portal `index.html`: mismo recorrido y estructura, retintado en MBC (cabecera y pie azul oscuro con logo, hero con degradado y destacado en eléctrico, enlaces del bloque "Cómo funciona" en azul oscuro subrayado por contraste).
 - `docs/DECISIONES_Y_ARQUITECTURA.md`: decisiones D12 (identidad MBC en todo el repo), D13 (biblioteca de demos en el repo y excepción a D4 solo con cifrado), D14 (repositorio de agentes inventariado como APIs), D15 (chips Agente / Método MBC / Híbrido) y D16 (gobierno transversal de APIs y agentes; exportación de requerimientos de negocio). `docs/plan-de-trabajo.md`: tramo F (F14–F24); F10 absorbida por F20 y F11 sustituida por F15.
 - Pestaña 12: las tarjetas de caso muestran sus APIs con estado coloreado.
 - Módulo 05 renombrado de **Enrichment** a **Gestión & Versionado** (`assets/nav.js`, portal y `enrichment.html`): agrupa enriquecimiento ISO 20022, mejora de la especificación y ciclo de vida/deprecación bajo un solo espacio, con hilo Diseño → Revisión → Publicación → Gestión & Versionado → Deprecación.
 - Inventario de APIs: **acciones de ciclo de vida** por API (proponer nueva versión SemVer · GOV-VER-01, iniciar deprecación · GOV-VER-02) y enlace "Gestión & versionado". La barra de ciclo de vida del API Designer se oculta y su gestión se traslada a este espacio (feedback UX: confundía en el Designer).
+
+### Fixed
+- API Lab: la barra de navegación de la plataforma se deformaba y quedaba bajo la cabecera del Lab al navegar. Causa: la regla `nav{…}` de la barra lateral del Lab (ancho 200 px, columna, padding) se aplicaba también al `<nav class="obx-nav">` inyectado. La barra lateral pasa a `nav.lab-nav`, la cabecera del Lab deja de ser `sticky` (el scroll es interno) y `lab-loop.js` se inyecta dentro de `.main-area`.
+- `.gitattributes` (`* text=auto eol=lf`): el working tree en Windows mostraba 36 ficheros modificados solo por finales de línea.
 
 ## [0.2.0] - 2026-07-23
 

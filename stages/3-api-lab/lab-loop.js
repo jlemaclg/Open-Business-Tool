@@ -15,36 +15,36 @@ import { EstadoAPI, Naturaleza } from '../../core/domain/casoDeUso.js';
 
 const css = document.createElement('style');
 css.textContent = `
-  .ll-wrap{max-width:1200px;margin:26px auto 40px;padding:0 8px;font-family:Arial,sans-serif;}
+  .ll-wrap{max-width:1200px;margin:26px auto 40px;padding:0 8px;font-family:var(--sans);}
   .ll-card{background:#fff;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;}
-  .ll-head{background:#260717;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-  .ll-title{font-family:Georgia,serif;font-size:18px;} .ll-title span{color:#FF0054;}
+  .ll-head{background:var(--mbc-navy-deep);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  .ll-title{font-family:var(--sans);font-weight:700;font-size:18px;} .ll-title span{color:var(--mbc-electric);}
   .ll-sub{font-size:11px;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;}
   .ll-body{padding:20px 22px;}
   .ll-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;}
   .ll-fg{display:flex;flex-direction:column;gap:4px;min-width:220px;}
-  .ll-fg label{font-size:10px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:#4F062A;}
-  .ll-fg select{padding:8px 10px;border:1px solid #c9c6bb;border-radius:3px;font-size:12.5px;background:#fff;}
-  .ll-btn{background:#4F062A;color:#fff;border:none;padding:10px 18px;border-radius:3px;font-size:12.5px;cursor:pointer;letter-spacing:.4px;}
-  .ll-btn:hover{background:#FF0054;} .ll-btn:disabled{background:#999;cursor:default;}
-  .ll-btn-sec{background:#fff;color:#4F062A;border:1px solid #4F062A;padding:9px 16px;border-radius:3px;font-size:12px;cursor:pointer;}
-  .ll-btn-sec:hover{border-color:#FF0054;color:#FF0054;}
+  .ll-fg label{font-size:10px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:var(--mbc-navy);}
+  .ll-fg select{padding:8px 10px;border:1px solid var(--line);border-radius:3px;font-size:12.5px;background:#fff;}
+  .ll-btn{background:var(--mbc-navy);color:#fff;border:none;padding:10px 18px;border-radius:3px;font-size:12.5px;cursor:pointer;letter-spacing:.4px;}
+  .ll-btn:hover{background:var(--mbc-electric);} .ll-btn:disabled{background:#999;cursor:default;}
+  .ll-btn-sec{background:#fff;color:var(--mbc-navy);border:1px solid var(--mbc-navy);padding:9px 16px;border-radius:3px;font-size:12px;cursor:pointer;}
+  .ll-btn-sec:hover{border-color:var(--mbc-electric);color:var(--mbc-electric);}
   .ll-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:14px 0;}
-  .ll-m{background:#f7f6f2;border:1px solid #e6e3d8;border-radius:5px;padding:12px 14px;text-align:center;}
-  .ll-m b{font-family:Georgia,serif;font-size:20px;color:#260717;display:block;}
+  .ll-m{background:var(--bg);border:1px solid var(--mbc-ceramic);border-radius:5px;padding:12px 14px;text-align:center;}
+  .ll-m b{font-family:var(--sans);font-size:20px;color:var(--mbc-navy-deep);display:block;}
   .ll-m small{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:#999;}
   .ll-m.bad b{color:#c62828;}
   table.ll-t{width:100%;border-collapse:collapse;font-size:11.5px;margin:8px 0 4px;}
-  .ll-t th{text-align:left;color:#4F062A;border-bottom:2px solid #4F062A;padding:5px 8px;font-size:10px;letter-spacing:.6px;text-transform:uppercase;}
-  .ll-t td{padding:6px 8px;border-bottom:1px solid #efede6;}
+  .ll-t th{text-align:left;color:var(--mbc-navy);border-bottom:2px solid var(--mbc-navy);padding:5px 8px;font-size:10px;letter-spacing:.6px;text-transform:uppercase;}
+  .ll-t td{padding:6px 8px;border-bottom:1px solid var(--bg);}
   .ll-estado{display:inline-block;font-size:10px;padding:2px 9px;border-radius:12px;letter-spacing:.4px;}
   .ll-e-dis{background:rgba(181,137,0,.12);color:#b58900;border:1px solid rgba(181,137,0,.35);}
   .ll-e-ref{background:rgba(26,127,55,.12);color:#1a7f37;border:1px solid rgba(26,127,55,.35);}
-  .ll-mock{background:rgba(255,0,84,.08);border:1px solid rgba(255,0,84,.3);color:#FF0054;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;padding:3px 9px;border-radius:2px;}
+  .ll-mock{background:rgba(20,122,255,.08);border:1px solid rgba(20,122,255,.3);color:var(--mbc-electric);font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;padding:3px 9px;border-radius:2px;}
   .ll-empty{font-size:12.5px;color:#777;font-style:italic;padding:10px 0;}
-  .ll-loop{margin-top:12px;background:rgba(79,6,42,.05);border-left:3px solid #FF0054;padding:11px 15px;font-size:12px;line-height:1.6;}
-  .ll-loop b{color:#4F062A;} .ll-loop a{color:#FF0054;font-weight:bold;text-decoration:none;}
-  .ll-spin{font-size:12px;color:#FF0054;font-style:italic;padding:8px 0;}
+  .ll-loop{margin-top:12px;background:rgba(0,52,120,.05);border-left:3px solid var(--mbc-electric);padding:11px 15px;font-size:12px;line-height:1.6;}
+  .ll-loop b{color:var(--mbc-navy);} .ll-loop a{color:var(--mbc-electric);font-weight:bold;text-decoration:none;}
+  .ll-spin{font-size:12px;color:var(--mbc-electric);font-style:italic;padding:8px 0;}
 `;
 document.head.appendChild(css);
 
@@ -146,7 +146,7 @@ async function refinar(casoId, apiNombre) {
   $('llRefino').innerHTML = `
     ${r._mock ? '<div style="margin-top:12px;"><span class="ll-mock">Datos simulados — agente mock</span></div>' : ''}
     <table class="ll-t"><thead><tr><th>Campo</th><th>Refinamiento propuesto</th><th>Motivo (observado en sandbox)</th></tr></thead><tbody>
-      ${r.refinamientos.map((f) => `<tr><td style="font-family:Consolas,monospace;font-size:11px;">${esc(f.campo)}</td><td>${esc(f.cambio)}</td><td>${esc(f.motivo)}</td></tr>`).join('')}
+      ${r.refinamientos.map((f) => `<tr><td style="font-family:var(--mono);font-size:11px;">${esc(f.campo)}</td><td>${esc(f.cambio)}</td><td>${esc(f.motivo)}</td></tr>`).join('')}
     </tbody></table>
     <div style="margin-top:10px;">La API <b>${esc(apiNombre)}</b> pasa a <span class="ll-estado ll-e-ref">refinada</span> en el caso de uso.</div>
     <div class="ll-loop"><b>El bucle se cierra:</b> con el diseño refinado y los resultados del sandbox, vuelve al

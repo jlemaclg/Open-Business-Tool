@@ -1,0 +1,73 @@
+/* assets/mbc-tokens.css — Identidad MBC · Open Business Accelerator (D12)
+   ─────────────────────────────────────────────────────────────────────────
+   Se carga ANTES que cualquier otra hoja de estilo de cada página:
+     <link rel="stylesheet" href="<ruta-relativa>/assets/mbc-tokens.css">
+   Regla: ningún color en hex fuera de este :root; el resto del hub va por var(--…).
+   Fuente: Libro de estilo transitorio MBC V2.2 + línea visual de demos/.
+   ───────────────────────────────────────────────────────────────────────── */
+:root{
+  /* Marca (manual V2.2) */
+  --mbc-navy:#003478;          /* color principal: cabeceras, títulos, botón primario */
+  --mbc-navy-deep:#001F4D;     /* degradado de cabecera, hover del primario */
+  --mbc-electric:#147AFF;      /* acento: estados activos, iconos, foco, destacados */
+  --mbc-electric-soft:#E7F1FF; /* fondo de elementos activos y chips */
+  --mbc-ceramic:#E3E2DA;       /* gris cerámica: bandas y superficies secundarias (no lienzo) */
+  --mbc-white:#FFFFFF;
+  --mbc-black:#000000;
+
+  /* Neutros de interfaz (línea de las demos) */
+  --bg:#F3F5F9;                /* lienzo de página */
+  --panel:#FFFFFF;             /* tarjetas */
+  --text:#101B33;              /* texto principal */
+  --text-dim:rgba(16,27,51,.62);
+  --text-faint:rgba(16,27,51,.42);
+  --line:rgba(16,27,51,.12);   /* bordes finos */
+
+  /* Estados (solo estado, no marca) */
+  --ok:#0F9D58;   --ok-soft:#E6F6EC;
+  --bad:#D93025;  --bad-soft:#FCE8E6;
+  --warn:#E8A400; --warn-soft:#FFF4D6; --warn-text:#9A6B00;
+
+  /* Secundaria del manual: gráficos y categorías de datos */
+  --data-1:#147AFF; --data-2:#44B757; --data-3:#8661F5; --data-4:#E56813; --data-5:#00B0BD;
+
+  /* Panel técnico oscuro (bloques de código) */
+  --code-bg:#0B1B3A; --code-key:#7CB8FF; --code-str:#DDE8F7; --code-cm:#7F92B3; --code-hl:#FFD166;
+
+  /* Tipografía y forma */
+  --sans:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif;
+  --mono:Consolas,'SFMono-Regular',Menlo,monospace;
+  --radius-lg:20px; --radius:14px; --radius-sm:10px; --pill:20px;
+  --shadow:0 2px 6px rgba(0,52,120,.14);
+  --maxw:1240px;
+}
+
+/* Logo MBC: SVG inline con fill="currentColor"; blanco sobre azul, azul sobre claro */
+.mbc-logo{height:26px;width:auto;display:inline-block;vertical-align:middle;color:var(--mbc-white);}
+.mbc-logo.on-light{color:var(--mbc-navy);height:16px;}
+
+/* Destacado dentro de un título (manual §"Destacar"): eléctrico sobre claro, blanco sobre oscuro */
+.hl{color:var(--mbc-electric);}
+.on-dark .hl{color:var(--mbc-white);}
+
+/* ── Convención agente / determinista (D15) ──
+   Se usa en cada paso de cada módulo para señalar quién produce el resultado:
+     <span class="chip-agente">Agente · marketDiscovery</span>
+     <span class="chip-metodo">Método MBC</span>
+     <span class="chip-hibrido">Híbrido</span>
+   Icono SVG inline opcional dentro del chip (14 px, hereda color). */
+.chip-agente,.chip-metodo,.chip-hibrido{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.04em;
+  border-radius:var(--pill);padding:3px 9px;line-height:1.4;white-space:nowrap;vertical-align:middle;
+}
+.chip-agente{background:var(--mbc-electric-soft);color:var(--mbc-navy);border:1px solid rgba(20,122,255,.35);}
+.chip-metodo{background:var(--mbc-ceramic);color:var(--text);border:1px solid rgba(16,27,51,.15);}
+.chip-hibrido{background:var(--panel);color:var(--mbc-navy);border:1px dashed var(--mbc-electric);}
+.chip-agente svg,.chip-metodo svg,.chip-hibrido svg{width:12px;height:12px;flex:0 0 auto;}
+.chip-agente::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mbc-electric);}
+.chip-metodo::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--text-dim);}
+.chip-hibrido::before{content:"";width:6px;height:6px;border-radius:50%;border:1.5px solid var(--mbc-electric);box-sizing:border-box;}
+
+/* Foco accesible común */
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--mbc-electric);outline-offset:2px;}
