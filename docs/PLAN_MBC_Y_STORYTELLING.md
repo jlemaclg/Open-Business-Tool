@@ -140,7 +140,7 @@ Reglas que acompañan la excepción:
 Referencia visual: el catálogo del cliente (capturas): filtros por etapa con contador, tarjetas con icono, tipo (copilot / gems / notebooks), nombre, descripción, "Ver ficha"; y la sección "Dónde entra un agente" con línea de tiempo por etapa. Se adapta a MBC y a nuestro dominio:
 
 - **Página** `stages/agentes/index.html` (o `agents/index.html`; se decide en la feature) con `data-current="agentes"` en la barra.
-- **Datos** en `assets/agents-data.js` (misma idea que `inventory-data.js`): una entrada por agente con `id`, `nombre`, `etapa` (Entender · Descubrir · Diseñar y gobernar · Probar), `tipo` (`agente` · `determinista` · `híbrido`), `plataforma` (Azure OpenAI vía Function · Copilot · mock), `servicio` (método de `core/agents.js`), `contrato` (input/output de `docs/contratos-agentes.md`), `politicas` (IDs GOV-AG-*), `owner`, `version`, `estado`.
+- **Datos** en `assets/agents-data.js` (misma idea que `inventory-data.js`): una entrada por agente con `id`, `nombre`, `etapa` (Entender · Descubrir · Diseñar y gobernar · Probar), `tipo` (`agente` · `determinista` · `híbrido`), `plataforma` (Azure OpenAI vía Function · Copilot · mock), `servicio` (método de `core/agents.js`), `contrato` (input/output de `docs/contratos-agentes.md`), `politicas` (IDs AGT-*), `owner`, `version`, `estado`.
 - **Ficha** de cada agente = **como una API del inventario**: endpoint lógico (`Agents.gapsYDependencias`), contrato request/response, versión SemVer, owner, ciclo de vida, políticas aplicadas, y enlace al módulo donde actúa. Con eso se cumple "también está inventariado como un API y tiene un gobierno".
 - **Filtros** por etapa y por tipo (Agente / Método / Híbrido) reutilizando los chips de D15.
 - Absorbe **F10**: una única fuente de definiciones en `agents/` (los `.agent.md` de `.github/agents` se referencian, no se duplican).
@@ -149,7 +149,7 @@ Referencia visual: el catálogo del cliente (capturas): filtros por etapa con co
 
 ## 6. Gobierno transversal (F21)
 
-- `governance-policies.html` pasa a tener **dos pestañas**: *Políticas de APIs* (las 8 GOV-* actuales) y *Políticas de agentes* (nuevas GOV-AG-*: trazabilidad de la respuesta, datos que un agente no puede recibir, revisión humana obligatoria antes de publicar, versionado del prompt/contrato, banner de simulación, límites de coste).
+- `governance-policies.html` pasa a tener **dos pestañas**: *Políticas de APIs* (las 8 GOV-* actuales) y *Políticas de agentes* (los guardrails AGT-* que ya existían en el espacio: fuentes, citación obligatoria, prohibido inventar, human-in-the-loop, auditoría, datos y gobierno del cambio).
 - **Protagonismo**: nodo propio en el home (§3.6), entrada "Gobierno" con icono en la barra (no un texto secundario), y en cada módulo un bloque "Políticas aplicadas en este paso" con chips que enlazan a la regla.
 - El Designer y Gestión & Versionado ya evalúan GOV-*; el Discovery y el repositorio de agentes pasan a citar las suyas.
 

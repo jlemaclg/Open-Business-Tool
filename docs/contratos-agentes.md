@@ -9,6 +9,8 @@ import { AzureAgents } from './agents.azure.js';
 const impl = AzureAgents;
 ```
 
+> **Repositorio de agentes:** todos los servicios de este adaptador están inventariados, con su contrato, versión, owner y guardrails, en `stages/agentes/index.html` (datos en `assets/agents-data.js`; índice de familias en `agents/README.md`).
+
 Todos los métodos son `async` y devuelven objetos JSON. Los mocks incluyen `_mock: true` para poder detectarlos en UI (banner "datos simulados").
 
 ---

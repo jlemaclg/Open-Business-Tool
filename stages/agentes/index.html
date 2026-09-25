@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repositorio de agentes · Open Business Accelerator</title>
+<meta name="description" content="Agentes y métodos de la práctica Open Business, inventariados y gobernados como APIs: contrato, versión, owner, ciclo de vida y guardrails.">
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg"><link rel="alternate icon" type="image/png" href="../../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/mbc-tokens.css">
+<style>
+  /* Repositorio de agentes (F20 · D14). Colores por tokens de assets/mbc-tokens.css. */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:22px 24px 64px;}
+  svg.i{width:18px;height:18px;flex:0 0 auto;}
+
+  /* Hero */
+  header.hero{background:linear-gradient(135deg,var(--mbc-navy) 0%,var(--mbc-navy-deep) 100%);border-radius:var(--radius-lg);color:#fff;padding:28px 32px;position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end;}
+  header.hero::after{content:"";position:absolute;right:-70px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(20,122,255,.5),transparent 70%);}
+  header.hero>*{position:relative;z-index:1;}
+  .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:10px;}
+  header.hero h1{font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.01em;max-width:720px;margin-bottom:10px;}
+  header.hero h1 .hl{color:var(--mbc-electric);}
+  header.hero p{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.84);max-width:740px;}
+  .kpis{display:grid;grid-template-columns:repeat(2,auto);gap:10px;}
+  .kpi{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px 14px;min-width:132px;}
+  .kpi b{display:block;font-size:22px;font-weight:800;line-height:1.1;}
+  .kpi span{font-size:11px;color:rgba(255,255,255,.75);}
+
+  /* Leyenda del tipo */
+  .leyenda{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--text-dim);margin:18px 0 0;}
+
+  /* Ciclo */
+  .ciclo{margin-top:34px;}
+  .kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mbc-electric);margin-bottom:8px;}
+  h2{font-size:26px;font-weight:800;color:var(--mbc-navy);letter-spacing:-.01em;line-height:1.2;}
+  .lead{font-size:14px;line-height:1.6;color:var(--text-dim);max-width:780px;margin-top:8px;}
+  .timeline{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px 24px;margin-top:22px;}
+  .timeline::before{content:"";position:absolute;left:36px;right:36px;top:41px;height:2px;background:linear-gradient(90deg,var(--line),var(--mbc-electric) 55%,var(--line));}
+  .et{position:relative;padding-top:30px;cursor:pointer;}
+  .et .dot{position:absolute;top:2px;left:0;width:20px;height:20px;border-radius:50%;background:var(--mbc-navy);box-shadow:0 0 0 4px var(--panel);}
+  .et .dot::after{content:"";position:absolute;inset:6px;border-radius:50%;background:#fff;}
+  .et .lab{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);display:flex;align-items:center;gap:8px;}
+  .et .lab i{font-style:normal;letter-spacing:0;border-radius:var(--pill);padding:1px 8px;font-size:11px;}
+  .et h3{font-size:16px;font-weight:800;color:var(--mbc-navy);margin:6px 0;}
+  .et p{font-size:12.5px;line-height:1.5;color:var(--text-dim);min-height:57px;}
+  .et ul{list-style:none;border-top:1px solid var(--line);margin-top:12px;padding-top:10px;display:grid;gap:6px;}
+  .et li{font-size:12.5px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .et li.more{color:var(--text-faint);}
+  .et:hover h3{color:var(--mbc-electric);}
+
+  /* Filtros */
+  .filtros{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 12px;margin-top:30px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line);}
+  .f{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:var(--pill);padding:8px 14px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;}
+  .f small{font-size:11px;font-weight:600;color:var(--text-faint);}
+  .f:hover{border-color:var(--mbc-electric);}
+  .f.on{background:var(--mbc-navy);border-color:var(--mbc-navy);color:#fff;} .f.on small{color:rgba(255,255,255,.75);}
+  .sep{width:1px;height:24px;background:var(--line);margin:0 4px;}
+  .ft{font-size:12px;font-weight:700;color:var(--text-dim);background:transparent;border:1px dashed var(--line);border-radius:var(--pill);padding:6px 11px;cursor:pointer;font-family:var(--sans);}
+  .ft.on{border-style:solid;border-color:var(--mbc-navy);color:var(--mbc-navy);background:var(--mbc-electric-soft);}
+  .cuenta{margin-left:auto;font-size:12.5px;color:var(--text-faint);}
+
+  /* Secciones y tarjetas */
+  .sec{margin-top:30px;}
+  .sec-h{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .sec-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+  .sec-h h3{font-size:22px;font-weight:800;color:var(--mbc-navy);}
+  .sec-h .n{font-family:var(--mono);font-size:13px;color:var(--text-faint);}
+  .sec-h .rule{flex:1;height:1px;background:var(--line);}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 22px 16px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:.18s;text-align:left;font-family:var(--sans);}
+  .card:hover{border-color:var(--mbc-electric);box-shadow:var(--shadow);transform:translateY(-2px);}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .card .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;}
+  .card .ic svg{width:24px;height:24px;}
+  .tagp{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text-dim);background:var(--bg);border-radius:8px;padding:4px 9px;}
+  .card h4{font-size:17px;font-weight:800;color:var(--text);margin-top:6px;line-height:1.3;}
+  .card p{font-size:13.5px;line-height:1.6;color:var(--text-dim);}
+  .card .foot{margin-top:auto;border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .card .foot .meta{font-size:12px;color:var(--text-faint);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .card .foot .go{font-size:13.5px;font-weight:700;color:var(--mbc-navy);display:flex;align-items:center;gap:4px;white-space:nowrap;}
+  .card:hover .foot .go{color:var(--mbc-electric);}
+  .vacio{background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--text-dim);font-size:13px;}
+
+  /* Colores por etapa */
+  .e-entender{--c:var(--data-5);} .e-descubrir{--c:var(--warn);} .e-disenar{--c:var(--data-3);} .e-probar{--c:var(--mbc-electric);} .e-ingenieria{--c:var(--mbc-navy);}
+  .tint{background:color-mix(in srgb,var(--c) 13%,white);color:color-mix(in srgb,var(--c) 80%,black);}
+
+  /* Ficha */
+  .scrim{position:fixed;inset:0;background:rgba(0,31,77,.35);opacity:0;pointer-events:none;transition:.2s;z-index:4000;}
+  .scrim.on{opacity:1;pointer-events:auto;}
+  .ficha{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:var(--panel);z-index:4001;transform:translateX(102%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,31,77,.2);}
+  .ficha.on{transform:none;}
+  .fh{padding:22px 26px 18px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:flex-start;}
+  .fh .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .fh .ic svg{width:24px;height:24px;}
+  .fh h3{font-size:20px;font-weight:800;color:var(--mbc-navy);line-height:1.25;}
+  .fh .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+  .x{margin-left:auto;background:none;border:1px solid var(--line);border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--text-dim);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .x:hover{border-color:var(--mbc-electric);color:var(--mbc-navy);}
+  .fb{padding:20px 26px 30px;overflow:auto;display:grid;gap:20px;}
+  .fb .desc{font-size:14px;line-height:1.6;color:var(--text);}
+  .blk .t{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+  .blk .t a{letter-spacing:0;text-transform:none;font-size:11.5px;color:var(--mbc-navy);text-decoration:underline;text-decoration-color:rgba(20,122,255,.5);text-underline-offset:2px;}
+  .ep{font-family:var(--mono);font-size:13px;color:var(--mbc-navy);background:var(--mbc-electric-soft);border:1px solid rgba(20,122,255,.25);border-radius:10px;padding:10px 12px;word-break:break-all;}
+  .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .kv div{background:var(--bg);border-radius:10px;padding:10px 12px;}
+  .kv small{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:3px;}
+  .kv b{font-size:13px;color:var(--text);font-weight:700;}
+  .kv a{color:var(--mbc-navy);text-decoration:underline;text-decoration-color:rgba(20,122,255,.5);text-underline-offset:2px;font-weight:700;font-size:13px;word-break:break-all;}
+  .lc{display:flex;gap:4px;}
+  .lc span{flex:1;text-align:center;font-size:10.5px;font-weight:700;color:var(--text-faint);background:var(--bg);border-radius:8px;padding:7px 4px;}
+  .lc span.on{background:var(--mbc-navy);color:#fff;}
+  .lc span.past{color:var(--mbc-navy);background:var(--mbc-electric-soft);}
+  .code{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .code div{background:var(--code-bg);border-radius:12px;padding:12px 14px;min-width:0;}
+  .code small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--code-key);margin-bottom:6px;}
+  .code pre{font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--code-str);white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;}
+  .pol{list-style:none;display:grid;gap:8px;}
+  .pol li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--text);}
+  .pol code{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--mbc-navy);background:var(--mbc-electric-soft);border-radius:6px;padding:2px 6px;white-space:nowrap;}
+  .aviso{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);color:var(--warn-text);border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.5;}
+  .aviso.ok{background:var(--ok-soft);color:var(--ok);}
+  .pill-e{font-size:10.5px;font-weight:800;border-radius:var(--pill);padding:3px 9px;}
+  .pill-e.Simulado{background:var(--warn-soft);color:var(--warn-text);} .pill-e.Operativo{background:var(--ok-soft);color:var(--ok);} .pill-e.Piloto,.pill-e.Diseño{background:var(--mbc-electric-soft);color:var(--mbc-navy);}
+
+  footer{margin-top:40px;text-align:center;font-size:11px;color:var(--text-faint);line-height:1.6;}
+  footer .mbc-logo{height:16px;color:var(--mbc-navy);display:block;margin:0 auto 8px;}
+
+  @media (max-width:1100px){.timeline{grid-template-columns:repeat(3,minmax(0,1fr));}.timeline::before{display:none;}.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media (max-width:760px){header.hero{grid-template-columns:1fr;}.timeline,.grid,.code,.kv{grid-template-columns:1fr;}.et p{min-height:0;}.cuenta{margin-left:0;width:100%;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Open Business · Repositorio de agentes</div>
+      <h1>Cada agente, inventariado y gobernado <span class="hl">como una API</span></h1>
+      <p>Así tenemos montada la IA de la práctica: qué hace cada agente, en qué etapa del proyecto entra, con qué contrato de entrada y salida, qué versión está en uso y qué guardrails cumple. Junto a ellos, los pasos de método que resolvemos sin IA.</p>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </header>
+
+  <div class="leyenda">
+    <span class="chip-agente">Agente</span><span>servicio de IA</span>
+    <span class="chip-hibrido">Híbrido</span><span>el agente propone, una regla valida</span>
+    <span class="chip-metodo">Método MBC</span><span>regla determinista o skill versionada, sin IA</span>
+  </div>
+
+  <section class="ciclo">
+    <div class="kicker">El ciclo completo</div>
+    <h2>Dónde entra un agente</h2>
+    <p class="lead">No están todos en el mismo sitio: unos ayudan a entender la entidad, otros aceleran el descubrimiento, la mayoría trabaja donde más tarea manual había (el diseño de APIs) y otros cierran el bucle con el sandbox. La última columna son los que construyen la propia plataforma.</p>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <div class="filtros" id="filtros"></div>
+  <div id="secciones"></div>
+
+  <footer>
+    <svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>
+    Entorno de demo. Los servicios de la plataforma responden hoy con datos simulados; los agentes Copilot y las skills son los que usamos en proyecto.
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="ficha" id="ficha" aria-hidden="true" role="dialog" aria-label="Ficha del agente"></aside>
+
+<script src="../../assets/agents-data.js"></script>
+<script>
+(function () {
+  var A = window.OBA_AGENTS || [], E = window.OBA_AGENT_STAGES || [], P = window.OBA_AGENT_PLATFORMS || {},
+      POL = window.OBA_AGENT_POLICIES || {}, LC = window.OBA_AGENT_LIFECYCLE || [], REPO = window.OBA_AGENT_REPO || '';
+  var ROOT = '../../';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+  var sv = function (d, c) { return '<svg class="i ' + (c || '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; };
+  var ICON = {
+    grafo: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7.5 10.5 16M16 7.5 13.5 16M8.5 6h7"/>',
+    tabla: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/>',
+    personas: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.5a4.5 4.5 0 0 1 5 4.5"/>',
+    lista: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/>',
+    semaforo: '<rect x="7" y="2.5" width="10" height="19" rx="3"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="17" r="1.6"/>',
+    libro: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/>',
+    orquesta: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+    codigo: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+    capas: '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+    escudo: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6L12 3z"/><path d="m9 12 2 2 4-4"/>',
+    bucle: '<path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/>',
+    grafica: '<path d="M4 19V5M4 19h16"/><path d="m7 15 4-5 3 3 5-7"/>',
+    etapa: { entender: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>', descubrir: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/>', disenar: '<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/>', probar: '<path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/>', ingenieria: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4"/>' }
+  };
+  var TIPO = { agente: ['chip-agente', 'Agente'], hibrido: ['chip-hibrido', 'Híbrido'], metodo: ['chip-metodo', 'Método MBC'] };
+  var sel = { etapa: null, tipo: null };
+
+  // KPIs
+  var n = function (f) { return A.filter(f).length; };
+  $('kpis').innerHTML = [
+    [n(function (a) { return a.tipo !== 'metodo'; }), 'agentes de IA'],
+    [n(function (a) { return a.tipo === 'metodo'; }), 'métodos y skills sin IA'],
+    [n(function (a) { return a.plataforma === 'copilot' && a.ciclo === 'Operativo'; }), 'operativos en Copilot'],
+    [Object.keys(POL).length, 'guardrails de agentes']
+  ].map(function (k) { return '<div class="kpi"><b>' + k[0] + '</b><span>' + k[1] + '</span></div>'; }).join('');
+
+  // Línea de tiempo
+  $('timeline').innerHTML = E.map(function (e) {
+    var items = A.filter(function (a) { return a.etapa === e.id; });
+    var ias = items.filter(function (a) { return a.tipo !== 'metodo'; });
+    var lista = ias.concat(items.filter(function (a) { return a.tipo === 'metodo'; }));
+    return '<div class="et e-' + e.id + '" data-et="' + e.id + '"><span class="dot"></span>'
+      + '<div class="lab">' + (e.id === 'ingenieria' ? 'Transversal' : 'Etapa ' + e.n) + ' <i class="tint">' + items.length + '</i></div>'
+      + '<h3>' + esc(e.nombre) + '</h3><p>' + esc(e.lema) + '</p><ul>'
+      + lista.slice(0, 3).map(function (a) { return '<li>' + esc(a.nombre) + '</li>'; }).join('')
+      + (lista.length > 3 ? '<li class="more">+' + (lista.length - 3) + '</li>' : '') + '</ul></div>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('.et'), function (el) {
+    el.onclick = function () { sel.etapa = el.dataset.et; pintar(); document.getElementById('filtros').scrollIntoView({ behavior: 'smooth' }); };
+  });
+
+  function filtrar() { return A.filter(function (a) { return (!sel.etapa || a.etapa === sel.etapa) && (!sel.tipo || a.tipo === sel.tipo); }); }
+
+  function pintarFiltros() {
+    var base = A.filter(function (a) { return !sel.tipo || a.tipo === sel.tipo; });
+    var h = '<button class="f' + (!sel.etapa ? ' on' : '') + '" data-e="">Todos <small>' + base.length + '</small></button>';
+    E.forEach(function (e) {
+      var c = base.filter(function (a) { return a.etapa === e.id; }).length;
+      h += '<button class="f' + (sel.etapa === e.id ? ' on' : '') + '" data-e="' + e.id + '">' + esc(e.corto || e.nombre) + ' <small>' + c + '</small></button>';
+    });
+    h += '<span class="sep"></span>';
+    ['agente', 'hibrido', 'metodo'].forEach(function (t) { h += '<button class="ft' + (sel.tipo === t ? ' on' : '') + '" data-t="' + t + '">' + TIPO[t][1] + '</button>'; });
+    var vis = filtrar().length;
+    h += '<span class="cuenta">Mostrando ' + (vis === A.length ? 'los ' + vis : vis + ' de ' + A.length) + '</span>';
+    $('filtros').innerHTML = h;
+    Array.prototype.forEach.call($('filtros').querySelectorAll('[data-e]'), function (b) { b.onclick = function () { sel.etapa = b.dataset.e || null; pintar(); }; });
+    Array.prototype.forEach.call($('filtros').querySelectorAll('[data-t]'), function (b) { b.onclick = function () { sel.tipo = sel.tipo === b.dataset.t ? null : b.dataset.t; pintar(); }; });
+  }
+
+  function tarjeta(a) {
+    var p = P[a.plataforma] || {};
+    return '<button class="card e-' + a.etapa + '" data-id="' + a.id + '">'
+      + '<div class="top"><div class="ic tint">' + sv(ICON[a.icono] || ICON.codigo) + '</div><span class="tagp">' + esc(p.etiqueta) + '</span></div>'
+      + '<h4>' + esc(a.nombre) + '</h4><p>' + esc(a.desc) + '</p>'
+      + '<div class="foot"><span class="meta"><span class="' + TIPO[a.tipo][0] + '">' + TIPO[a.tipo][1] + '</span>v' + esc(a.version) + '</span>'
+      + '<span class="go">Ver ficha ' + sv('<path d="m9 6 6 6-6 6"/>') + '</span></div></button>';
+  }
+
+  function pintar() {
+    pintarFiltros();
+    var vis = filtrar();
+    if (!vis.length) { $('secciones').innerHTML = '<div class="sec"><div class="vacio">No hay entradas con este filtro.</div></div>'; return; }
+    $('secciones').innerHTML = E.filter(function (e) { return vis.some(function (a) { return a.etapa === e.id; }); }).map(function (e) {
+      var items = vis.filter(function (a) { return a.etapa === e.id; });
+      items.sort(function (x, y) { var o = { agente: 0, hibrido: 1, metodo: 2 }; return o[x.tipo] - o[y.tipo]; });
+      return '<section class="sec e-' + e.id + '"><div class="sec-h"><span class="sec-ic tint">' + sv(ICON.etapa[e.id]) + '</span><h3>' + esc(e.nombre) + '</h3><span class="n">'
+        + items.length + ' ' + (items.length === 1 ? 'entrada' : 'entradas') + '</span><span class="rule"></span></div><div class="grid">' + items.map(tarjeta).join('') + '</div></section>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('.card'), function (c) { c.onclick = function () { abrir(c.dataset.id); }; });
+  }
+
+  // ── Ficha: el agente como una API ──
+  function abrir(id, sinHistorial) {
+    var a = A.filter(function (x) { return x.id === id; })[0]; if (!a) return;
+    var p = P[a.plataforma] || {}, idx = LC.indexOf(a.ciclo);
+    var defUrl = REPO + a.definicion;
+    var pol = (a.politicas || []).map(function (k) {
+      var txt = POL[k] || 'Regla de diseño de APIs del espacio de Gobierno.';
+      return '<li><code>' + esc(k) + '</code><span>' + esc(txt) + '</span></li>';
+    }).join('');
+    var aviso = a.ciclo === 'Simulado'
+      ? '<div class="aviso">' + sv('<path d="M12 4 2.5 20h19L12 4z"/><path d="M12 10v4M12 17.5v.5"/>') + '<span>Hoy responde con datos simulados para la demo. En producción se sirve desde una Azure Function con Azure OpenAI, <b>con la misma firma</b>: los módulos no cambian.</span></div>'
+      : (a.tipo === 'metodo' ? '<div class="aviso ok">' + sv('<path d="m5 12 5 5L20 7"/>') + '<span>Paso determinista: no usa IA y da siempre la misma respuesta con las mismas entradas.</span></div>' : '');
+    $('ficha').innerHTML =
+      '<div class="fh e-' + a.etapa + '"><div class="ic tint">' + sv(ICON[a.icono] || ICON.codigo) + '</div><div><h3>' + esc(a.nombre) + '</h3>'
+      + '<div class="chips"><span class="' + TIPO[a.tipo][0] + '">' + TIPO[a.tipo][1] + '</span><span class="tagp">' + esc(p.etiqueta) + '</span><span class="pill-e ' + esc(a.ciclo) + '">' + esc(a.ciclo) + '</span></div></div>'
+      + '<button class="x" id="fx" aria-label="Cerrar">' + sv('<path d="M6 6l12 12M18 6 6 18"/>') + '</button></div>'
+      + '<div class="fb">'
+      + '<div class="desc">' + esc(a.desc) + '</div>' + aviso
+      + '<div class="blk"><div class="t">Endpoint lógico</div><div class="ep">' + esc(a.servicio) + '</div></div>'
+      + '<div class="kv">'
+      + '<div><small>Versión</small><b>v' + esc(a.version) + '</b></div>'
+      + '<div><small>Owner</small><b>' + esc(a.owner) + '</b></div>'
+      + '<div><small>Plataforma</small><b>' + esc(p.titulo) + '</b></div>'
+      + '<div><small>Etapa</small><b>' + esc((E.filter(function (e) { return e.id === a.etapa; })[0] || {}).nombre) + '</b></div>'
+      + '<div><small>Dónde actúa</small><a href="' + ROOT + esc(a.modulo.url) + '">' + esc(a.modulo.nombre) + ' →</a></div>'
+      + '<div><small>Definición</small><a href="' + esc(defUrl) + '" target="_blank" rel="noopener">' + esc(a.definicion) + '</a></div>'
+      + '</div>'
+      + '<div class="blk"><div class="t">Ciclo de vida</div><div class="lc">' + LC.map(function (s, i) { return '<span class="' + (i === idx ? 'on' : (i < idx ? 'past' : '')) + '">' + s + '</span>'; }).join('') + '</div></div>'
+      + '<div class="blk"><div class="t">Contrato</div><div class="code"><div><small>Entrada</small><pre>' + esc(JSON.stringify(a.entrada, null, 2)) + '</pre></div><div><small>Salida</small><pre>' + esc(JSON.stringify(a.salida, null, 2)) + '</pre></div></div></div>'
+      + '<div class="blk"><div class="t">Políticas que cumple <a href="' + ROOT + 'stages/2-api-design/governance-policies.html#agentes">Guardrails en Gobierno →</a></div>'
+      + (pol ? '<ul class="pol">' + pol + '</ul>' : '<div style="font-size:12.5px;color:var(--text-dim)">Paso de método: se rige por el procedimiento de la práctica, sin guardrails de IA.</div>') + '</div>'
+      + '</div>';
+    $('ficha').classList.add('on'); $('scrim').classList.add('on'); $('ficha').setAttribute('aria-hidden', 'false');
+    $('fx').onclick = cerrar; $('fx').focus();
+    if (!sinHistorial) history.replaceState(null, '', '?agente=' + encodeURIComponent(id));
+  }
+  function cerrar() { $('ficha').classList.remove('on'); $('scrim').classList.remove('on'); $('ficha').setAttribute('aria-hidden', 'true'); history.replaceState(null, '', location.pathname); }
+  $('scrim').onclick = cerrar;
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrar(); });
+
+  var q = new URLSearchParams(location.search);
+  if (q.get('etapa')) sel.etapa = q.get('etapa');
+  pintar();
+  if (q.get('agente')) abrir(q.get('agente'), true);
+})();
+</script>
+<script src="../../assets/nav.js" data-current="agentes"></script>
+</body>
+</html>

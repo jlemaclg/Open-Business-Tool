@@ -130,13 +130,13 @@ Estructura de `PLAN_MBC_Y_STORYTELLING.md` §3: cabecera compacta · hero corto 
 Con `?caso=` o `?estudio=`, cada API del inventario se etiqueta (reutilizable / a extender / no aplica) y aparece la lista de APIs nuevas; misma función `core/viabilidad.js`; acción "Diseñar nueva" hacia el Designer.
 **DoD:** la clasificación coincide con la de Discovery para el mismo caso.
 
-### 🔜 F20 · Repositorio de agentes — `feat/repositorio-agentes` (absorbe F10)
+### ✅ F20 · Repositorio de agentes — `feat/repositorio-agentes` (absorbe F10)
 `stages/agentes/index.html` + `assets/agents-data.js`: filtros por etapa y tipo con contador, tarjetas (icono, tipo, nombre, descripción, "Ver ficha"), sección "Dónde entra un agente" (4 etapas), ficha por agente como una API del inventario (contrato, versión, owner, ciclo de vida, políticas). Una sola fuente de definiciones en `agents/`.
 **DoD:** los 7 servicios de `core/agents.js` (más los pasos deterministas relevantes) aparecen inventariados y cada ficha enlaza al módulo donde actúa.
 
-### ⬜ F21 · Gobierno transversal — `feat/gobierno-transversal`
-`governance-policies.html` con pestañas *APIs* (GOV-*) y *Agentes* (GOV-AG-*: trazabilidad, datos prohibidos, revisión humana, versionado de prompt/contrato, banner de simulación, coste); nodo en el home; entrada "Gobierno" en la barra; bloque "Políticas aplicadas" en cada módulo.
-**DoD:** desde cualquier módulo se llega en un clic a la regla concreta que aplica; el repositorio de agentes cita GOV-AG-*.
+### 🔜 F21 · Gobierno transversal — `feat/gobierno-transversal`
+`governance-policies.html` con pestañas *APIs* (GOV-*) y *Agentes* (guardrails AGT-* ya existentes: fuentes, citación, no inventar, human-in-the-loop, auditoría, datos, gobierno del cambio; valorar añadir versionado de prompt/contrato y banner de simulación); nodo en el home; entrada "Gobierno" en la barra; bloque "Políticas aplicadas" en cada módulo.
+**DoD:** desde cualquier módulo se llega en un clic a la regla concreta que aplica; el repositorio de agentes cita AGT-* (hecho en F20).
 
 ### ⬜ F22 · Designer: flujo y artefactos — `refactor/designer-flujos`
 Patrón de la demo (pantalla protagonista + paneles Backend / Secuencia): 4 pasos visibles, artefactos en pestañas de una única tarjeta, diagrama del modelo en SVG, modelos ISO 20022 nuevos (lista de Jonathan), CSS extraído a `assets/` sin build. Sin emojis.

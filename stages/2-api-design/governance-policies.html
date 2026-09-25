@@ -311,7 +311,7 @@ function ir(id){
   renderTree();
   window.scrollTo({top:0});
 }
-ir('inicio');
+ir(PAGINAS[location.hash.slice(1)] ? location.hash.slice(1) : 'inicio'); // #agentes abre los guardrails (enlace desde el repositorio de agentes)
 </script>
 <script src="../../assets/nav.js" data-current="policies"></script>
 </body>
