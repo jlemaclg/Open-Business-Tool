@@ -7,7 +7,37 @@ versionado según [SemVer](https://semver.org/lang/es/).
 ## [Unreleased]
 
 ### Added
+- **Biblioteca de demos** (F17 · D13): `demos/index.html` (filtros por tipo, dominio, geografía y acceso; buscador; tarjetas con candado para las protegidas) y `demos/catalog.js` como registro único (`window.DEMO_CATALOG`). Cada demo es un HTML autocontenido bajo `demos/<slug>/` que vuelve al hub desde su hero; no carga `nav.js`. El portal ya la lee para la sección "Casos que ya hemos probado".
+- **Demos protegidas por contraseña**: `tools/proteger-demo.py` cifra el HTML (PBKDF2-HMAC-SHA256 · AES-256-GCM) y genera una página de desbloqueo en identidad MBC que descifra en el navegador con WebCrypto; sin backend ni build. La versión en claro vive en `_private/` (ignorado por git) y nunca se commitea. Primera demo protegida: `demos/uy-mandato-debito-precargado-push/` (activación de mandatos de débito, solicitud precargada y push bancario, 14 pasos; `acceso: 'protegida'`, `estado: 'revision'`).
+- `tools/check_demo.py`: comprobaciones previas a publicar una demo (placeholders, Montserrat, logo MBC, nota de datos ficticios, recursos externos permitidos, tamaño, registro en `catalog.js`).
+- `assets/nav.js`: entrada **Demos** con icono junto a **Gobierno**; `data-current="demos"` para la biblioteca.
+
+### Changed
+- Portal `index.html` rehecho como pieza de venta (F16): hero con el posicionamiento de la práctica ("Abrimos la entidad financiera a terceros con visión de startup y experiencia de gran banca") y panel "Nuestra diferencia"; **cuatro enfoques de proyecto** (Diagnóstico y hoja de ruta · Descubrimiento y monetización · Diseño y gobierno de APIs · Validación con el ecosistema) con la pregunta de la entidad, el impacto y el módulo que lo soporta; sección **Consultoría 4.0** (consultores con la IA generativa en el ADN, velocidad de startup con experiencia de gran banca, sin deuda técnica, alineados con la regulación) y tabla "Dónde acelera la IA en cada enfoque" (antes / con consultoría 4.0); "Casos que ya hemos probado" desde `demos/catalog.js`; banda de Gobierno; la plataforma se presenta como la herramienta con la que ejecutamos, no como producto. Responsive hasta 390 px.
+
+## [0.3.0] - 2026-09-25
+
+La plataforma cambia a la identidad visual **MBC** (tokens compartidos, Montserrat, logo) en portal, barra de navegación y los seis módulos; entra el plan de evolución hacia herramienta de venta (decisiones D12–D16, features F14–F24), el Designer arranca desde un caso o un estudio de Discovery y el API Lab cierra el bucle de refinamiento.
+
+### Added
+- Documentación: `docs/PLAN_MBC_Y_STORYTELLING.md` (diagnóstico, storytelling de venta en cuatro tipologías de proyecto, convención agente/determinista, biblioteca de demos con demos protegidas por cifrado, repositorio de agentes inventariado, plan F14–F24) y `docs/guia-identidad-MBC.md` (tokens, tipografía, logo, componentes y mapa de migración a la identidad MBC).
 - Favicon (`assets/favicon.svg`/`.png`) en las 8 páginas y metadatos Open Graph / Twitter Card en el portal (`assets/og-card.png` 1200×630) para que el enlace compartido en chats muestre tarjeta con título, descripción e imagen.
+- API Lab: panel "Validación de casos de uso" (`lab-loop.js`) — simulación de sandbox con métricas por caso, refinamiento del diseño por el agente (`labResults` persistidos, la API del caso pasa de "diseñada" a "refinada") y cierre del bucle hacia el re-análisis del Assessment.
+- Discovery: gestión de **estudios de mercado** (`estudios.js`, alta/edición/borrado) persistidos vía `Storage.listEstudios/loadEstudio/saveEstudio/removeEstudio` (`core/storage.local.js`), para reutilizarlos como contexto de entrada del Designer.
+- API Designer: **entrada dual** (`designer-entrada.js`) — arranca desde un caso de uso o desde un estudio de Discovery, precargando el contexto en vez de partir de cero.
+
+### Changed
+- **Identidad visual MBC en todo el hub (D12, F14).** Nueva hoja de tokens `assets/mbc-tokens.css` (azul oscuro `#003478`, azul eléctrico `#147AFF`, gris cerámica, neutros fríos, Montserrat, radios, chips de la convención agente/determinista) cargada antes que cualquier estilo en las 9 páginas; los `:root` de cada página pasan a ser alias de los tokens y ningún color de marca queda en hex fuera de ellos. Montserrat (Google Fonts) en títulos y cuerpo, con pesos 700/800 donde antes había Georgia. Logo MBC vectorial en la barra de navegación, en la cabecera y en el pie del portal. `assets/favicon.svg/.png` y `assets/og-card.png` regenerados en MBC. Retirados los emojis pictográficos restantes (Designer, Versionado, Lab, Discovery) y sustituidos por SVG inline donde eran iconos (barra lateral del Lab, tarjetas de insight del Discovery, zona de subida de Versionado).
+- `assets/nav.js`: estilos a tokens (con valor de reserva), numeración en eléctrico, entrada **Gobierno** con icono en lugar del texto secundario "Políticas", logo MBC a la derecha. El selector pasa a `nav.obx-nav` y fija dirección, padding y anchura para que ninguna regla de página sobre `nav{}` la deforme.
+- Portal `index.html`: mismo recorrido y estructura, retintado en MBC (cabecera y pie azul oscuro con logo, hero con degradado y destacado en eléctrico, enlaces del bloque "Cómo funciona" en azul oscuro subrayado por contraste).
+- `docs/DECISIONES_Y_ARQUITECTURA.md`: decisiones D12 (identidad MBC en todo el repo), D13 (biblioteca de demos en el repo y excepción a D4 solo con cifrado), D14 (repositorio de agentes inventariado como APIs), D15 (chips Agente / Método MBC / Híbrido) y D16 (gobierno transversal de APIs y agentes; exportación de requerimientos de negocio). `docs/plan-de-trabajo.md`: tramo F (F14–F24); F10 absorbida por F20 y F11 sustituida por F15.
+- Pestaña 12: las tarjetas de caso muestran sus APIs con estado coloreado.
+- Módulo 05 renombrado de **Enrichment** a **Gestión & Versionado** (`assets/nav.js`, portal y `enrichment.html`): agrupa enriquecimiento ISO 20022, mejora de la especificación y ciclo de vida/deprecación bajo un solo espacio, con hilo Diseño → Revisión → Publicación → Gestión & Versionado → Deprecación.
+- Inventario de APIs: **acciones de ciclo de vida** por API (proponer nueva versión SemVer · GOV-VER-01, iniciar deprecación · GOV-VER-02) y enlace "Gestión & versionado". La barra de ciclo de vida del API Designer se oculta y su gestión se traslada a este espacio (feedback UX: confundía en el Designer).
+
+### Fixed
+- API Lab: la barra de navegación de la plataforma se deformaba y quedaba bajo la cabecera del Lab al navegar. Causa: la regla `nav{…}` de la barra lateral del Lab (ancho 200 px, columna, padding) se aplicaba también al `<nav class="obx-nav">` inyectado. La barra lateral pasa a `nav.lab-nav`, la cabecera del Lab deja de ser `sticky` (el scroll es interno) y `lab-loop.js` se inyecta dentro de `.main-area`.
+- `.gitattributes` (`* text=auto eol=lf`): el working tree en Windows mostraba 36 ficheros modificados solo por finales de línea.
 
 ## [0.2.0] - 2026-07-23
 

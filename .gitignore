@@ -18,3 +18,11 @@ io/output/**/*
 .DS_Store
 Thumbs.db
 node_modules/
+__pycache__/
+*.pyc
+
+# Carpeta de salidas de la app de escritorio de Claude (no forma parte del repo)
+Claude outputs/
+
+# Demos de cliente en claro (D13): se cifran con tools/proteger-demo.py y solo el resultado entra en demos/
+_private/

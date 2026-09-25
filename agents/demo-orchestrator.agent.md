@@ -11,22 +11,28 @@ El portal es un fichero HTML autocontenido en la raíz (`index.html`) que actúa
 
 ---
 
-## Identidad visual Open Business Accelerator (obligatoria en todos los ficheros)
+## Identidad visual MBC (obligatoria en todos los ficheros · D12)
+
+Los tokens viven en **`assets/mbc-tokens.css`** y se cargan antes que cualquier otro estilo
+(`<link rel="stylesheet" href="<ruta>/assets/mbc-tokens.css">`, tras Montserrat de Google Fonts).
+Ningún color de marca se escribe en hex fuera de ese fichero: todo va por `var(--…)`.
 
 ```css
---morado:   #4F062A   /* burgundy principal */
---accent:   #FF0054   /* rosa accent */
---gris:     #E3E2DA   /* fondo gris cerámico */
---blanco:   #FFFFFF
---morado-dk:#260717   /* dark backgrounds */
+--mbc-navy:#003478          /* principal: cabeceras, títulos, botón primario */
+--mbc-navy-deep:#001F4D     /* degradados y hover del primario */
+--mbc-electric:#147AFF      /* acento: activos, iconos, foco, destacados (no texto pequeño) */
+--mbc-electric-soft:#E7F1FF /* fondo de activos y chips */
+--mbc-ceramic:#E3E2DA       /* bandas y superficies secundarias, no lienzo */
+--bg:#F3F5F9 --panel:#FFFFFF --text:#101B33 --text-dim --text-faint --line
 ```
 
-Fuentes: **Georgia** para títulos y números grandes · **Arial** para cuerpo y etiquetas.
-Siempre mostrar el logotipo "Open Business Accelerator" en Georgia serif en la esquina
-superior izquierda. La marca de producto es **Open Business Accelerator**; no usar
-"Minsait" en títulos, logotipos ni pies de página. Sí es legítimo citarla en el cuerpo
-del texto cuando se atribuye una fuente (p. ej. "arquitectura referencial Minsait",
-"Minsait Observatory").
+Fuente única: **Montserrat** (`var(--sans)`), 800/700 en títulos, 400/500 en cuerpo; `var(--mono)` para código.
+Logo **MBC** vectorial (`.mbc-logo`, `currentColor`) en su propio hueco: blanco sobre azul, azul sobre claro.
+Convención agente/determinista (D15): chips `.chip-agente`, `.chip-metodo`, `.chip-hibrido` de los tokens.
+Prohibidos: la paleta anterior (`#4F062A`, `#FF0054`, `#260717`), Georgia y los emojis como iconos.
+La marca de producto es **Open Business Accelerator**; no usar "Minsait" en títulos, logotipos ni
+pies de página. Sí es legítimo citarla en el cuerpo del texto cuando se atribuye una fuente
+(p. ej. "arquitectura referencial Minsait", "Minsait Observatory"). Guía completa: `docs/guia-identidad-MBC.md`.
 
 ---
 
@@ -64,7 +70,7 @@ bloque de tarjetas.
 
 Etiqueta del hero: `Open Business · Open Finance · Embedded Finance · BaaS`
 
-Título central en Georgia:
+Título central en Montserrat 800:
 ```
 Del discovery al despliegue de
 casos de uso y APIs de negocio
@@ -176,6 +182,6 @@ complementario. Si existe, debe apuntar al portal con ruta relativa:
 2. **Sin llamadas a APIs reales** salvo los stubs marcados explícitamente como `// ANTHROPIC_CALL`.
 3. **Un único fichero HTML** por herramienta, con CSS y JS inline. La única excepción es `assets/nav.js`, compartido por todas para no duplicar la barra de navegación.
 4. **Responsive mínimo:** funciona a 1280px de ancho sin scroll horizontal.
-5. **Fuentes:** solo Georgia y Arial. No cargar Google Fonts ni CDNs de fuentes.
-6. **Colores:** usar exclusivamente la paleta definida arriba.
+5. **Fuentes:** solo Montserrat vía Google Fonts (único recurso externo permitido) y `var(--mono)` para código.
+6. **Colores:** usar exclusivamente los tokens de `assets/mbc-tokens.css`.
 7. **Imágenes:** no usar imágenes externas. Todo el arte es SVG inline o CSS puro.

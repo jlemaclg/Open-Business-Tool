@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Business Accelerator</title>
-  <meta name="description" content="Plataforma de casos de uso y APIs de negocio para Open Finance, Embedded Finance y BaaS — del discovery al despliegue, con agentes de IA y validación en sandbox.">
+  <meta name="description" content="MBC · Práctica Open Business. Abrimos la entidad financiera a terceros por APIs con visión de startup y experiencia de gran banca: cuatro enfoques de proyecto en Open Finance, Embedded Finance y BaaS.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mbc-tokens.css">
   <!-- Open Graph: la tarjeta que pintan Teams/WhatsApp/LinkedIn al pegar el link -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Open Business Accelerator">
   <meta property="og:title" content="Open Business Accelerator">
-  <meta property="og:description" content="Plataforma de casos de uso y APIs de negocio para Open Finance, Embedded Finance y BaaS — del discovery al despliegue.">
+  <meta property="og:description" content="Abrimos la entidad financiera a terceros por APIs, con visión de startup y experiencia de gran banca. Open Finance, Embedded Finance y BaaS.">
   <meta property="og:url" content="https://jlemaclg.github.io/Open-Business-Tool/">
   <meta property="og:image" content="https://jlemaclg.github.io/Open-Business-Tool/assets/og-card.png">
   <meta property="og:image:width" content="1200">
@@ -19,293 +22,447 @@
   <meta property="og:locale" content="es_ES">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Open Business Accelerator">
-  <meta name="twitter:description" content="Casos de uso y APIs de negocio: del discovery al despliegue.">
+  <meta name="twitter:description" content="Abrimos la entidad financiera a terceros por APIs, con visión de startup y experiencia de gran banca.">
   <meta name="twitter:image" content="https://jlemaclg.github.io/Open-Business-Tool/assets/og-card.png">
   <style>
-    :root {
-      --morado:    #4F062A;
-      --accent:    #FF0054;
-      --gris:      #E3E2DA;
-      --blanco:    #FFFFFF;
-      --morado-dk: #260717;
-    }
+    /* Portal comercial (F16). Todos los colores por tokens de assets/mbc-tokens.css (D12). */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--gris);
-      color: #1a1a1a;
-      min-width: 1280px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a { text-decoration: none; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; width: 100%; }
+    svg.ic { width: 18px; height: 18px; flex: 0 0 auto; }
 
-    /* ── Animaciones de entrada ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-    .anim   { animation: fadeUp .6s ease both; }
-    .anim-1 { animation-delay: .05s; } .anim-2 { animation-delay: .15s; }
-    .anim-3 { animation-delay: .25s; } .anim-4 { animation-delay: .35s; }
-    .anim-5 { animation-delay: .45s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .anim { animation: fadeUp .55s ease both; }
+    .anim-1 { animation-delay: .05s; } .anim-2 { animation-delay: .15s; } .anim-3 { animation-delay: .25s; }
 
-    /* ── HEADER ── */
-    header {
-      background: var(--morado-dk);
-      padding: 16px 48px;
-      display: flex; align-items: center; justify-content: space-between;
+    /* ── Cabecera ── */
+    header.top {
+      background: var(--mbc-navy-deep); border-bottom: 2px solid var(--mbc-electric);
       position: sticky; top: 0; z-index: 100;
     }
-    .logo { font-family: Georgia, serif; font-size: 22px; color: var(--blanco); letter-spacing: .5px; }
-    .logo span { color: var(--accent); }
-    .header-tagline { font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
-    .header-right { font-size: 12px; color: rgba(255,255,255,.5); letter-spacing: 1px; }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 62px; }
+    .brand { display: flex; flex-direction: column; }
+    .brand .logo { font-weight: 800; font-size: 19px; color: var(--mbc-white); letter-spacing: .1px; line-height: 1.1; }
+    .brand .logo span { font-weight: 600; color: rgba(255,255,255,.72); }
+    .brand .tag { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .topnav { display: flex; align-items: center; gap: 22px; }
+    .topnav a { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.78); }
+    .topnav a:hover { color: var(--mbc-white); }
+    .topnav .mbc-logo { height: 24px; margin-left: 6px; }
 
-    /* ── HERO ── */
-    .hero {
-      background: linear-gradient(160deg, var(--morado-dk) 0%, var(--morado) 78%, #6a0f3d 100%);
-      padding: 60px 48px 0;
-      text-align: center;
-      color: var(--blanco);
-      overflow: hidden;
-    }
-    .hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-    .hero h1 { font-family: Georgia, serif; font-size: 44px; font-weight: normal; line-height: 1.22; margin-bottom: 18px; }
-    .hero h1 em { font-style: italic; color: var(--accent); }
-    .hero-sub {
-      font-size: 15.5px; color: rgba(255,255,255,.8); line-height: 1.65;
-      max-width: 820px; margin: 0 auto 8px;
-    }
-    .hero-sub strong { color: var(--blanco); font-weight: bold; }
+    /* ── Hero ── */
+    .hero { background: linear-gradient(135deg, var(--mbc-navy) 0%, var(--mbc-navy-deep) 100%); color: var(--mbc-white); position: relative; overflow: hidden; }
+    .hero::after { content: ""; position: absolute; right: -120px; top: -160px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(20,122,255,.5), transparent 68%); pointer-events: none; }
+    .hero .wrap { position: relative; z-index: 1; padding-top: 64px; padding-bottom: 60px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; }
+    .hero-label { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 18px; }
+    .hero h1 { font-size: 36px; font-weight: 800; line-height: 1.16; letter-spacing: -.01em; margin-bottom: 18px; }
+    .hero h1 .hl { color: var(--mbc-electric); }
+    .hero p { font-size: 15.5px; line-height: 1.65; color: rgba(255,255,255,.84); max-width: 620px; margin-bottom: 28px; }
+    .hero p strong { color: var(--mbc-white); font-weight: 700; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; padding: 11px 18px; border-radius: var(--radius-sm); border: 1.5px solid transparent; cursor: pointer; transition: .15s; }
+    .btn-white { background: var(--mbc-white); color: var(--mbc-navy); }
+    .btn-white:hover { background: var(--mbc-electric-soft); }
+    .btn-outline { background: transparent; color: var(--mbc-white); border-color: rgba(255,255,255,.45); }
+    .btn-outline:hover { border-color: var(--mbc-white); background: rgba(255,255,255,.08); }
+    .btn-primary { background: var(--mbc-navy); color: var(--mbc-white); }
+    .btn-primary:hover { background: var(--mbc-navy-deep); }
+    .btn-ghost { background: var(--panel); color: var(--mbc-navy); border-color: var(--line); }
+    .btn-ghost:hover { border-color: var(--mbc-electric); background: var(--mbc-electric-soft); }
 
-    /* ── RECORRIDO (nodos clicables) ── */
-    .journey { position: relative; max-width: 1080px; margin: 48px auto 0; padding-bottom: 100px; }
-    .journey-stages {
-      display: flex; justify-content: space-between; max-width: 1000px; margin: 0 auto 14px;
-    }
-    .journey-stage {
-      font-size: 10px; letter-spacing: 2.2px; text-transform: uppercase; color: rgba(255,255,255,.45);
-    }
-    .journey-track { position: relative; max-width: 1000px; margin: 0 auto; }
-    .journey-line {
-      position: absolute; top: 30px; left: 60px; right: 60px; height: 2px;
-      background: rgba(255,255,255,.22);
-    }
-    .journey-nodes { position: relative; display: flex; justify-content: space-between; }
-    .journey-node { width: 156px; text-align: center; transition: transform .2s; position: relative; }
-    .journey-node:hover { transform: translateY(-4px); }
-    .node-circle {
-      width: 60px; height: 60px; border-radius: 50%;
-      background: var(--morado-dk); border: 2px solid rgba(255,255,255,.35);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px; transition: border-color .2s, box-shadow .2s, background .2s;
-      font-family: Georgia, serif; font-size: 21px; color: var(--blanco);
-    }
-    .journey-node:hover .node-circle {
-      border-color: var(--accent); background: var(--accent);
-      box-shadow: 0 0 0 8px rgba(255,0,84,.18);
-    }
-    .node-name { font-family: Georgia, serif; font-size: 15.5px; color: var(--blanco); margin-bottom: 5px; }
-    .node-beta {
-      display: inline-block; vertical-align: 2px; margin-left: 6px;
-      background: var(--accent); color: var(--blanco);
-      font-family: Arial, sans-serif; font-size: 8px; font-weight: bold;
-      letter-spacing: 1px; padding: 2px 5px; border-radius: 2px;
-    }
-    .node-q { font-size: 11.5px; color: rgba(255,255,255,.6); line-height: 1.45; padding: 0 6px; margin-bottom: 9px; }
-    .node-cta {
-      font-size: 11px; font-weight: bold; letter-spacing: 1.2px; text-transform: uppercase;
-      color: var(--accent); transition: color .2s;
-    }
-    .journey-node:hover .node-cta { color: var(--blanco); }
+    /* Panel del hero: qué se lleva el cliente */
+    .hero-panel { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius); padding: 22px 24px; backdrop-filter: blur(2px); }
+    .hero-panel .lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+    .hero-panel ul { list-style: none; display: grid; gap: 12px; }
+    .hero-panel li { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.9); }
+    .hero-panel li b { display: block; font-weight: 700; color: var(--mbc-white); }
+    .hero-panel .ic { color: var(--mbc-electric); margin-top: 2px; }
+    .panel-link { display: inline-block; margin-top: 16px; font-size: 12px; font-weight: 700; color: var(--mbc-white); border-bottom: 2px solid var(--mbc-electric); padding-bottom: 2px; }
+    .panel-link:hover { color: var(--mbc-electric-soft); }
 
-    /* Flecha de retorno (el bucle) */
-    .journey-loop { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 66px; pointer-events: none; }
-    .journey-loop svg { width: 100%; height: 100%; }
-    .loop-caption {
-      position: absolute; left: 0; right: 0; bottom: 0; text-align: center;
-      font-size: 11.5px; font-style: italic; color: rgba(255,255,255,.75);
-      font-family: Georgia, serif; letter-spacing: .3px;
-    }
-    .loop-caption b { color: var(--accent); font-style: normal; font-family: Arial, sans-serif; font-weight: bold; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; }
+    /* ── Secciones ── */
+    section { padding: 56px 0; }
+    section.alt { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+    .kicker { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--mbc-electric); margin-bottom: 10px; }
+    h2 { font-size: 26px; font-weight: 800; color: var(--mbc-navy); line-height: 1.2; letter-spacing: -.01em; }
+    h2 .hl { color: var(--mbc-electric); }
+    .lead { font-size: 14px; line-height: 1.6; color: var(--text-dim); max-width: 720px; margin-top: 10px; }
+    .sec-link { font-size: 12.5px; font-weight: 700; color: var(--mbc-navy); white-space: nowrap; border-bottom: 2px solid var(--mbc-electric); padding-bottom: 2px; }
+    .sec-link:hover { color: var(--mbc-electric); }
 
-    /* ── CÓMO FUNCIONA (3 pasos) ── */
-    .how { background: var(--blanco); padding: 48px 48px 52px; flex: 1; }
-    .how-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: stretch; gap: 0; }
-    .how-step { flex: 1; padding: 0 28px; position: relative; }
-    .how-step + .how-step { border-left: 1px solid rgba(79,6,42,.12); }
-    .how-num {
-      font-family: Georgia, serif; font-size: 15px; color: var(--accent);
-      letter-spacing: 1px; margin-bottom: 8px;
-    }
-    .how-title { font-family: Georgia, serif; font-size: 18px; color: var(--morado-dk); margin-bottom: 8px; }
-    .how-text { font-size: 13px; color: #555; line-height: 1.6; }
-    .how-text strong { color: var(--morado); }
-    .how-text a { color: var(--accent); font-weight: bold; }
-    .how-text a:hover { text-decoration: underline; }
+    /* Enfoques de proyecto */
+    .enfoques { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: enf; }
+    .enfoque { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 22px 20px; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; transition: .2s; }
+    .enfoque::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--mbc-navy); }
+    .enfoque:hover { border-color: var(--mbc-electric); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .enfoque:hover::before { background: var(--mbc-electric); }
+    .enfoque .top { display: flex; align-items: center; justify-content: space-between; }
+    .enfoque .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--mbc-electric-soft); color: var(--mbc-navy); display: flex; align-items: center; justify-content: center; }
+    .enfoque .icon svg { width: 22px; height: 22px; }
+    .enfoque .n { font-size: 28px; font-weight: 800; color: rgba(0,52,120,.14); line-height: 1; letter-spacing: -.02em; }
+    .enfoque h3 { font-size: 17px; font-weight: 800; color: var(--mbc-navy); line-height: 1.25; min-height: 2.5em; }
+    .enfoque .q { font-size: 13px; line-height: 1.5; color: var(--text-dim); font-style: italic; min-height: 3em; }
+    .enfoque .impacto { background: var(--bg); border-radius: 10px; padding: 12px 14px; }
+    .enfoque .impacto .lbl { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--mbc-electric); margin-bottom: 5px; }
+    .enfoque .impacto p { font-size: 13px; line-height: 1.5; color: var(--text); font-weight: 600; min-height: 6em; }
+    .enfoque .go { margin-top: auto; font-size: 12px; font-weight: 800; color: var(--mbc-navy); display: flex; flex-direction: column; gap: 3px; }
+    .enfoque .go span { font-size: 11px; font-weight: 600; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .enfoque:hover .go { color: var(--mbc-electric); }
+    .encadena { margin-top: 16px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--text-dim); }
+    .encadena .ic { color: var(--mbc-electric); }
 
-    /* ── OUTCOMES ── */
-    .outcomes-bar { background: var(--morado); padding: 28px 48px; }
-    .outcomes-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
-    .outcome-item { text-align: center; }
-    .outcome-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin: 0 auto 10px; }
-    .outcome-text { font-size: 12px; color: rgba(255,255,255,.85); letter-spacing: .3px; line-height: 1.5; }
-    .outcome-text strong { color: var(--blanco); display: block; margin-bottom: 2px; }
+    /* Consultoría 4.0 */
+    .pilares { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 36px; }
+    .pilar { padding: 4px 0 0; }
+    .pilar .icon { width: 40px; height: 40px; border-radius: 50%; background: var(--mbc-navy); color: var(--mbc-white); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .pilar .icon svg { width: 20px; height: 20px; }
+    .pilar h3 { font-size: 15px; font-weight: 800; color: var(--mbc-navy); line-height: 1.3; margin-bottom: 8px; }
+    .pilar p { font-size: 13px; line-height: 1.6; color: var(--text-dim); }
+    .acelera { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .acelera-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--line); }
+    .acelera-head h3 { font-size: 15px; font-weight: 800; color: var(--mbc-navy); }
+    .acelera-head p { font-size: 12px; color: var(--text-dim); }
+    .acelera-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .acol { padding: 18px 22px 20px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+    .acol:last-child { border-right: none; }
+    .acol .et { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
+    .acol .antes { font-size: 12.5px; line-height: 1.5; color: var(--text-faint); padding-left: 12px; border-left: 2px solid var(--line); }
+    .acol .antes b, .acol .con b { display: block; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2px; }
+    .acol .con { font-size: 12.5px; line-height: 1.5; color: var(--text); padding-left: 12px; border-left: 2px solid var(--mbc-electric); }
+    .acol .con b { color: var(--mbc-electric); }
+    .acelera-foot { padding: 12px 24px; border-top: 1px solid var(--line); background: var(--panel); display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 12px; color: var(--text-dim); }
+    .acelera-foot b { color: var(--mbc-navy); }
 
-    footer {
-      background: var(--morado-dk); padding: 16px 48px;
-      display: flex; align-items: center; justify-content: space-between;
+    /* Casos probados */
+    .casos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .caso { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; transition: .2s; }
+    a.caso:hover { border-color: var(--mbc-electric); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .caso .meta { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { font-size: 10.5px; font-weight: 700; color: var(--mbc-navy); background: var(--mbc-electric-soft); border: 1px solid rgba(20,122,255,.25); border-radius: var(--pill); padding: 3px 9px; }
+    .chip.neutral { background: var(--panel); border-color: var(--line); color: var(--text-dim); }
+    .caso h3 { font-size: 14.5px; font-weight: 800; color: var(--mbc-navy); line-height: 1.3; }
+    .caso p { font-size: 12.5px; line-height: 1.55; color: var(--text-dim); }
+    .caso .foot { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: var(--text-faint); }
+    .caso .foot b { color: var(--mbc-navy); }
+    a.caso:hover .foot b { color: var(--mbc-electric); }
+    .nota { margin-top: 14px; font-size: 12px; color: var(--text-faint); }
+
+    /* Gobierno */
+    .gob { background: var(--mbc-ceramic); border-radius: var(--radius-lg); padding: 34px 36px; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 36px; align-items: center; }
+    .gob h2 { font-size: 22px; }
+    .gob p { font-size: 13.5px; line-height: 1.6; color: var(--text-dim); margin: 10px 0 18px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 14px; }
+    .stat .v { font-size: 26px; font-weight: 800; color: var(--mbc-navy); line-height: 1; }
+    .stat .v small { font-size: 12px; font-weight: 700; color: var(--mbc-electric); margin-left: 4px; }
+    .stat .l { font-size: 11.5px; line-height: 1.4; color: var(--text-dim); margin-top: 8px; }
+
+    /* Recorrido 01–06 */
+    .ruta { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; position: relative; }
+    .ruta::before { content: ""; position: absolute; left: 8%; right: 8%; top: 22px; height: 2px; background: var(--line); }
+    .paso { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; transition: .2s; }
+    .paso:hover { border-color: var(--mbc-electric); background: var(--mbc-electric-soft); }
+    .paso .n { width: 24px; height: 24px; border-radius: 50%; background: var(--mbc-navy); color: var(--mbc-white); font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .paso b { font-size: 12.5px; font-weight: 800; color: var(--mbc-navy); }
+    .paso b i { font-style: normal; font-size: 8px; font-weight: 800; letter-spacing: .08em; background: var(--mbc-electric); color: var(--mbc-white); border-radius: 4px; padding: 2px 4px; margin-left: 5px; vertical-align: 2px; }
+    .paso small { font-size: 11px; line-height: 1.4; color: var(--text-dim); }
+    .paso .go { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mbc-navy); margin-top: auto; padding-top: 4px; }
+    .bucle { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-dim); }
+    .bucle b { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--mbc-navy); }
+    .bucle .ic { color: var(--mbc-electric); }
+
+    footer { background: var(--mbc-navy-deep); color: rgba(255,255,255,.55); margin-top: auto; }
+    footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+    footer .left { display: flex; align-items: center; gap: 14px; }
+    footer .mbc-logo { height: 16px; }
+
+    @media (max-width: 1000px) {
+      .hero .wrap { grid-template-columns: 1fr; padding-top: 44px; padding-bottom: 44px; }
+      .hero h1 { font-size: 32px; }
+      .enfoques, .pilares, .casos, .acelera-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .acol:nth-child(2) { border-right: none; }
+      .acol:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .gob { grid-template-columns: 1fr; }
+      .ruta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .ruta::before { display: none; }
     }
-    .footer-left { font-size: 11px; color: rgba(255,255,255,.4); letter-spacing: 1px; }
-    .footer-right { font-size: 11px; color: rgba(255,255,255,.3); }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 16px; }
+      header.top .wrap { height: 54px; }
+      .brand .logo { font-size: 16px; white-space: nowrap; }
+      .brand .tag { display: none; }
+      .topnav a { display: none; }
+      .topnav .mbc-logo { height: 20px; }
+      .hero h1 { font-size: 27px; }
+      .enfoques, .pilares, .casos, .stats, .ruta, .acelera-grid { grid-template-columns: 1fr; }
+      .enfoque h3, .enfoque .q, .enfoque .impacto p { min-height: 0; }
+      .acol { border-right: none; border-bottom: 1px solid var(--line); }
+      .acelera-head, .acelera-foot { flex-direction: column; align-items: flex-start; }
+      .sec-head { flex-direction: column; align-items: flex-start; }
+      section { padding: 40px 0; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div>
-      <div class="logo">Open Business <span>Accelerator</span></div>
-      <div class="header-tagline">Plataforma de casos de uso y APIs de negocio · Embedded Finance / BaaS</div>
+  <!-- CABECERA -->
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <div class="logo">Open Business <span>Accelerator</span></div>
+        <div class="tag">Open Finance · Embedded Finance · BaaS</div>
+      </a>
+      <nav class="topnav" aria-label="Secciones del portal">
+        <a href="#enfoques">Enfoques</a>
+        <a href="#como-trabajamos">Cómo trabajamos</a>
+        <a href="#casos">Casos</a>
+        <a href="#gobierno">Gobierno</a>
+        <a href="#plataforma">Plataforma</a>
+        <svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>
+      </nav>
     </div>
-    <div class="header-right">Entorno de Demo · 2026</div>
   </header>
 
-  <!-- HERO + RECORRIDO -->
+  <!-- HERO -->
   <div class="hero">
-    <div class="hero-label anim anim-1">Open Business · Open Finance · Embedded Finance · BaaS</div>
-    <h1 class="anim anim-1">Del discovery al despliegue de<br><em>casos de uso y APIs de negocio</em></h1>
-    <p class="hero-sub anim anim-2">
-      El <strong>set up de la entidad</strong>, casos de uso simulados con <strong>agentes de IA</strong>
-      y validación en <strong>sandbox con partners reales</strong> — para Open Finance,
-      <strong>Embedded Finance y BaaS</strong>, con el business case y la inversión
-      actualizándose en cada paso.
-    </p>
-
-    <div class="journey anim anim-3">
-      <div class="journey-stages">
-        <span class="journey-stage">Etapa 1 · Discovery &amp; Assessment</span>
-        <span class="journey-stage">Etapa 2 · Diseño de APIs</span>
-        <span class="journey-stage">Etapa 3 · Validación</span>
-      </div>
-      <div class="journey-track">
-        <div class="journey-line"></div>
-        <div class="journey-nodes">
-          <a class="journey-node" href="stages/1-discovery/assessment/index.html">
-            <div class="node-circle">01</div>
-            <div class="node-name">Assessment</div>
-            <div class="node-q">¿Dónde está la entidad y qué le falta?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/1-discovery/market-discovery/index.html">
-            <div class="node-circle">02</div>
-            <div class="node-name">Discovery<span class="node-beta">BETA</span></div>
-            <div class="node-q">¿Qué oportunidad hay en el mercado?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/api-inventory.html">
-            <div class="node-circle">03</div>
-            <div class="node-name">Inventario</div>
-            <div class="node-q">¿Qué APIs y sistemas ya tengo?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/api-designer.html">
-            <div class="node-circle">04</div>
-            <div class="node-name">Diseño de APIs</div>
-            <div class="node-q">¿Cómo construyo o extiendo el caso?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/enrichment.html">
-            <div class="node-circle">05</div>
-            <div class="node-name">Enrichment</div>
-            <div class="node-q">¿Cumplen el estándar y el gobierno?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/3-api-lab/index.html">
-            <div class="node-circle">06</div>
-            <div class="node-name">API Lab<span class="node-beta">BETA</span></div>
-            <div class="node-q">¿Funciona con partners y comercios reales?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
+    <div class="wrap">
+      <div>
+        <div class="hero-label anim anim-1">MBC · Práctica Open Business</div>
+        <h1 class="anim anim-1">Abrimos la entidad financiera a terceros <span class="hl">con visión de startup y experiencia de gran banca</span></h1>
+        <p class="anim anim-2">
+          Acompañamos a entidades financieras y operadores a abrirse por APIs en <strong>Open Finance, Embedded Finance y BaaS</strong>,
+          con cuatro enfoques de proyecto del diagnóstico al caso de uso en el mercado. Consultores 4.0 que trabajan
+          con IA generativa para llegar antes, con soluciones que <strong>nacen sin deuda técnica</strong> y
+          <strong>alineadas con la regulación</strong>.
+        </p>
+        <div class="cta-row anim anim-2">
+          <a class="btn btn-white" href="#enfoques">Nuestros enfoques
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-outline" href="#casos">Casos que ya hemos probado</a>
         </div>
       </div>
-      <div class="journey-loop">
-        <svg viewBox="0 0 1000 66" preserveAspectRatio="none" fill="none">
-          <path d="M 940 4 C 940 46, 60 46, 60 4"
-                stroke="#FF0054" stroke-width="1.8" stroke-dasharray="6 5" opacity=".8"/>
-          <path d="M 66 14 L 60 4 L 70 6" stroke="#FF0054" stroke-width="1.8" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="loop-caption"><b>El bucle</b> — los resultados del Lab refinan las APIs y actualizan el roadmap y la inversión del Assessment</div>
-      </div>
+      <aside class="hero-panel anim anim-3" aria-label="Nuestra diferencia">
+        <div class="lbl">Nuestra diferencia</div>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7.5A3.5 3.5 0 0 0 9.5 21H12V3z"/><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1 2 7.5 3.5 3.5 0 0 1-3.5 5.5H12"/></svg><div><b>Consultores 4.0</b>La IA generativa forma parte del oficio: detectamos lo manual y lo aceleramos.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1 1.5-1.5 4-1.5 5.5C5 20.5 7.5 20 9 19"/><path d="M9 15 6 12l3-6c2.5-3 6.5-4 12-3.5.5 5.5-.5 9.5-3.5 12l-6 3z"/><circle cx="15" cy="9" r="1.5"/></svg><div><b>Velocidad de startup</b>Prototipos y pilotos en semanas, con el rigor de grandes entidades financieras.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h6"/><path d="m15 16 2 2 4-4"/></svg><div><b>Sin deuda técnica</b>Estándares, gobierno y versionado desde el primer artefacto.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6L12 3z"/><path d="m9 12 2 2 4-4"/></svg><div><b>Dentro de la regulación</b>Los marcos de finanzas abiertas de cada mercado, como reglas de diseño.</div></li>
+        </ul>
+        <a class="panel-link" href="#como-trabajamos">Cómo trabajamos →</a>
+      </aside>
     </div>
   </div>
 
-  <!-- CÓMO FUNCIONA -->
-  <div class="how">
-    <div class="how-inner">
-      <div class="how-step anim anim-3">
-        <div class="how-num">Paso 1</div>
-        <div class="how-title">Set up de la entidad</div>
-        <div class="how-text">
-          El <a href="stages/1-discovery/assessment/index.html">Assessment</a> levanta el As-Is,
-          el stack, los GAPs y las dependencias entre tecnologías y equipos.
-          Es el <strong>mapa sobre el que se decide todo lo demás</strong>.
+  <!-- ENFOQUES DE PROYECTO -->
+  <section id="enfoques">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">Enfoques de proyecto</div>
+          <h2>Cómo generamos <span class="hl">impacto en la entidad</span></h2>
+          <p class="lead">Cuatro enfoques con los que acompañamos a la entidad financiera en su apertura a terceros. Cada uno responde a una pregunta de negocio y termina en un resultado concreto.</p>
         </div>
       </div>
-      <div class="how-step anim anim-4">
-        <div class="how-num">Paso 2</div>
-        <div class="how-title">Simular y diseñar el caso de uso</div>
-        <div class="how-text">
-          Cada caso de uso —<strong>APIs de Embedded Finance / BaaS o producto completo con
-          su frontal</strong>— se simula contra el set up: qué APIs, equipo e inversión necesita.
-          Con el <a href="stages/2-api-design/api-inventory.html">inventario de APIs</a> como punto de
-          partida, los <a href="stages/2-api-design/api-designer.html">agentes de IA</a> extienden lo
-          existente o diseñan en estándar ISO 20022.
+      <div class="enfoques">
+        <a class="enfoque" href="stages/1-discovery/assessment/index.html">
+          <div class="top"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="M8 11h6M11 8v6"/></svg></div><span class="n">01</span></div>
+          <h3>Diagnóstico y hoja de ruta</h3>
+          <div class="q">“¿Dónde estoy y qué me falta para abrirme a terceros?”</div>
+          <div class="impacto"><div class="lbl">Impacto para la entidad</div><p>Un mapa claro de brechas, dependencias e inversión para decidir con el comité.</p></div>
+          <div class="go"><span>Módulo 01 · Assessment</span>Ver cómo lo hacemos →</div>
+        </a>
+        <a class="enfoque" href="stages/1-discovery/market-discovery/index.html">
+          <div class="top"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3.5"/></svg></div><span class="n">02</span></div>
+          <h3>Descubrimiento y monetización</h3>
+          <div class="q">“¿Qué caso de uso tiene mercado y es viable con lo que ya tengo?”</div>
+          <div class="impacto"><div class="lbl">Impacto para la entidad</div><p>Casos priorizados por su potencial de negocio, validados pronto y listos para pasar a requisitos.</p></div>
+          <div class="go"><span>Módulo 02 · Discovery</span>Ver cómo lo hacemos →</div>
+        </a>
+        <a class="enfoque" href="stages/2-api-design/api-inventory.html">
+          <div class="top"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg></div><span class="n">03</span></div>
+          <h3>Diseño y gobierno de APIs</h3>
+          <div class="q">“¿Qué reutilizo, qué construyo y cómo lo mantengo en estándar?”</div>
+          <div class="impacto"><div class="lbl">Impacto para la entidad</div><p>APIs en estándar internacional, gobernadas y versionadas desde el primer día.</p></div>
+          <div class="go"><span>Módulos 03 a 05 · Ciclo de vida de APIs</span>Ver cómo lo hacemos →</div>
+        </a>
+        <a class="enfoque" href="stages/3-api-lab/index.html">
+          <div class="top"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7.5 15h9"/></svg></div><span class="n">04</span></div>
+          <h3>Validación con el ecosistema</h3>
+          <div class="q">“¿Funciona con partners reales y qué le cuento al comité?”</div>
+          <div class="impacto"><div class="lbl">Impacto para la entidad</div><p>Pilotos con partners antes del desarrollo productivo y un business case que se actualiza con datos reales.</p></div>
+          <div class="go"><span>Módulo 06 · API Lab</span>Ver cómo lo hacemos →</div>
+        </a>
+      </div>
+      <div class="encadena">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+        <span>Se contratan por separado o encadenados: cada enfoque deja a la entidad preparada para el siguiente.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO TRABAJAMOS · CONSULTORÍA 4.0 -->
+  <section id="como-trabajamos" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">Consultoría 4.0</div>
+          <h2>Consultores 4.0, <span class="hl">con la IA generativa en el ADN</span></h2>
+          <p class="lead">Los consultores de MBC trabajan con la IA generativa como parte del oficio: identifican oportunidades de mejora en los procesos manuales para aumentar el impacto de cada proyecto, y lo hacen con la experiencia de haber acompañado a grandes entidades financieras.</p>
         </div>
       </div>
-      <div class="how-step anim anim-5">
-        <div class="how-num">Paso 3</div>
-        <div class="how-title">Validar y devengar</div>
-        <div class="how-text">
-          Las APIs se prueban en el <a href="stages/3-api-lab/index.html">API Lab</a>
-          (Sandbox as a Service o el del cliente, con partners y comercios reales). El resultado
-          refina los diseños y <strong>actualiza el business case ante C-Level</strong>.
+      <div class="pilares">
+        <div class="pilar"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7.5A3.5 3.5 0 0 0 9.5 21H12V3z"/><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1 2 7.5 3.5 3.5 0 0 1-3.5 5.5H12"/></svg></div><h3>Detectamos y aceleramos lo manual</h3><p>Identificamos los procesos manuales que frenan un proyecto y los aceleramos con agentes propios, siempre con el criterio del consultor en la decisión.</p></div>
+        <div class="pilar"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1 1.5-1.5 4-1.5 5.5C5 20.5 7.5 20 9 19"/><path d="M9 15 6 12l3-6c2.5-3 6.5-4 12-3.5.5 5.5-.5 9.5-3.5 12l-6 3z"/><circle cx="15" cy="9" r="1.5"/></svg></div><h3>Visión de startup, experiencia de gran banca</h3><p>Prototipos navegables y pilotos en semanas, con el rigor de quien ha trabajado con bancos, reguladores y operadores en Latinoamérica y España.</p></div>
+        <div class="pilar"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h6"/><path d="m15 16 2 2 4-4"/></svg></div><h3>Sin deuda técnica desde el día uno</h3><p>Estándares internacionales, gobierno y versionado desde el primer artefacto: lo que se diseña hoy se puede operar y evolucionar mañana.</p></div>
+        <div class="pilar"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6L12 3z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Alineados con la regulación vigente</h3><p>Los marcos de finanzas abiertas de cada mercado entran como reglas de diseño, no como una revisión al final del proyecto.</p></div>
+      </div>
+      <div class="acelera">
+        <div class="acelera-head">
+          <h3>Dónde acelera la IA en cada enfoque</h3>
+          <p>Tareas que antes eran manuales y hoy hacemos con agentes propios</p>
+        </div>
+        <div class="acelera-grid">
+          <div class="acol"><div class="et">01 · Diagnóstico</div><div class="antes"><b>Antes</b>Semanas de entrevistas y hojas de cálculo para levantar la situación de partida.</div><div class="con"><b>Con consultoría 4.0</b>Levantamiento asistido y brechas calculadas automáticamente contra cada caso de uso.</div></div>
+          <div class="acol"><div class="et">02 · Descubrimiento</div><div class="antes"><b>Antes</b>Estudios de mercado largos antes de saber si una idea tiene recorrido.</div><div class="con"><b>Con consultoría 4.0</b>Audiencias sintéticas y viabilidad contra lo que la entidad ya tiene, en horas.</div></div>
+          <div class="acol"><div class="et">03 · APIs</div><div class="antes"><b>Antes</b>Diccionarios de datos y especificaciones escritos y revisados a mano.</div><div class="con"><b>Con consultoría 4.0</b>Especificación normalizada al estándar y revisada contra las políticas de gobierno.</div></div>
+          <div class="acol"><div class="et">04 · Validación</div><div class="antes"><b>Antes</b>Pruebas dispersas con partners y un business case que no se actualiza.</div><div class="con"><b>Con consultoría 4.0</b>Resultados del sandbox que refinan el diseño y actualizan el business case.</div></div>
+        </div>
+        <div class="acelera-foot">
+          <span><b>La IA propone; el consultor y las políticas de gobierno deciden.</b> Cada agente tiene contrato, versión y responsable, como cualquier API.</span>
+          <a class="sec-link" href="stages/2-api-design/governance-policies.html">Cómo gobernamos la IA</a>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- OUTCOMES -->
-  <div class="outcomes-bar">
-    <div class="outcomes-inner">
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Set up vivo</strong>GAPs, dependencias e inversión por caso de uso</div>
+  <!-- CASOS QUE YA HEMOS PROBADO -->
+  <section id="casos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">Evidencia</div>
+          <h2>Casos que ya hemos <span class="hl">trabajado y probado</span></h2>
+          <p class="lead">Recorridos y prototipos construidos con entidades de distintos mercados, anonimizados. Sirven de punto de partida en el Discovery: no se empieza de cero.</p>
+        </div>
+        <a class="sec-link" id="casos-link" href="stages/1-discovery/market-discovery/index.html">Ver el catálogo en el Discovery</a>
       </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Partners prueban</strong>antes del desarrollo productivo</div>
+      <div class="casos" id="casos-grid">
+        <!-- Se rellena desde demos/catalog.js si existe; si no, con el catálogo de referencia del Discovery -->
       </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Gobierno de APIs</strong>integrado desde el primer artefacto</div>
-      </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Time-to-market</strong>reducido en 60–70%</div>
-      </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>ISO 20022</strong>normalización automática del diccionario</div>
+      <div class="nota" id="casos-nota"></div>
+    </div>
+  </section>
+
+  <!-- GOBIERNO -->
+  <section id="gobierno" class="alt">
+    <div class="wrap">
+      <div class="gob">
+        <div>
+          <div class="kicker">Capa transversal</div>
+          <h2>Gobierno desde el primer artefacto</h2>
+          <p>Las políticas de APIs de la entidad, versionadas y citables por identificador, gobiernan cada diseño que sale de la plataforma y cada revisión que hace un agente. La misma capa cubre a los agentes: contrato, versión, owner y reglas que aplican, como cualquier otra API del inventario.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="stages/2-api-design/governance-policies.html">Ver políticas de gobierno</a>
+            <a class="btn btn-ghost" href="stages/2-api-design/enrichment.html">Cómo se evalúa una API</a>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="v">18</div><div class="l">reglas GOV-* de naming, versionado, errores, seguridad FAPI 2.0, paginación e idempotencia</div></div>
+          <div class="stat"><div class="v">7</div><div class="l">agentes con contrato, versión y responsable, gobernados como cualquier API</div></div>
+          <div class="stat"><div class="v">1<small>fuente</small></div><div class="l">de verdad por entidad: el set up que leen y escriben todos los módulos</div></div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- FOOTER -->
+  <!-- PLATAFORMA · RECORRIDO 01–06 -->
+  <section id="plataforma">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">La plataforma</div>
+          <h2>La herramienta con la que <span class="hl">lo ejecutamos</span></h2>
+          <p class="lead">Open Business Accelerator reúne el método y los agentes de la práctica en seis módulos. Es nuestra herramienta de trabajo en los proyectos y la que enseñamos en las demos.</p>
+        </div>
+      </div>
+      <div class="ruta">
+        <a class="paso" href="stages/1-discovery/assessment/index.html"><span class="n">01</span><b>Assessment</b><small>¿Dónde está la entidad y qué le falta?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/1-discovery/market-discovery/index.html"><span class="n">02</span><b>Discovery<i>Beta</i></b><small>¿Qué oportunidad hay en el mercado?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/api-inventory.html"><span class="n">03</span><b>Inventario</b><small>¿Qué APIs y sistemas ya tengo?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/api-designer.html"><span class="n">04</span><b>Diseño de APIs</b><small>¿Cómo construyo o extiendo el caso?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/enrichment.html"><span class="n">05</span><b>Gestión &amp; Versionado</b><small>¿Cumplen el estándar y cómo evolucionan?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/3-api-lab/index.html"><span class="n">06</span><b>API Lab<i>Beta</i></b><small>¿Funciona con partners y comercios reales?</small><span class="go">Entrar →</span></a>
+      </div>
+      <div class="bucle">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+        <b>El bucle</b><span>los resultados del Lab refinan las APIs y actualizan el roadmap y la inversión del Assessment.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIE -->
   <footer>
-    <div class="footer-left">Open Business Accelerator · 2026</div>
-    <div class="footer-right">Versión Demo</div>
+    <div class="wrap">
+      <div class="left">
+        <svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>
+        <span>Open Business Accelerator · 2026</span>
+      </div>
+      <span>Entorno de demo · datos ficticios</span>
+    </div>
   </footer>
 
+  <!-- Casos probados: lee demos/catalog.js si la biblioteca existe (F17); si no, muestra el catálogo de referencia del Discovery -->
+  <script>
+    (function () {
+      var grid = document.getElementById('casos-grid');
+      var nota = document.getElementById('casos-nota');
+      var link = document.getElementById('casos-link');
+      var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+
+      var TIPO = { 'recorrido-guiado': 'Recorrido guiado', 'walkthrough-portal': 'Walkthrough de portal', 'prototipo-producto': 'Prototipo de producto' };
+
+      function desdeCatalogo(cat) {
+        var pub = cat.filter(function (d) { return d.estado === 'publicada' || d.estado === 'revision'; }).slice(0, 3);
+        if (!pub.length) return false;
+        grid.innerHTML = pub.map(function (d) {
+          var prot = d.acceso === 'protegida';
+          return '<a class="caso" href="demos/' + esc(d.ruta) + '">'
+            + '<div class="meta"><span class="chip">' + esc(d.dominio) + '</span><span class="chip neutral">' + esc(TIPO[d.tipo] || d.tipo) + '</span>'
+            + (d.geografia ? '<span class="chip neutral">' + esc(d.geografia) + '</span>' : '')
+            + (prot ? '<span class="chip neutral">Acceso con contraseña</span>' : '') + '</div>'
+            + '<h3>' + esc(d.titulo) + '</h3><p>' + esc(d.resumen) + '</p>'
+            + '<div class="foot"><span>' + esc(d.marco || '') + '</span><b>Abrir demo →</b></div></a>';
+        }).join('');
+        link.href = 'demos/index.html'; link.textContent = 'Ver toda la biblioteca de demos';
+        nota.textContent = 'Demos autocontenidas con datos ficticios. Las que llevan candado son material de propuesta con acceso restringido.';
+        return true;
+      }
+
+      function respaldo() {
+        var ref = [
+          { d: 'Embedded Finance', t: 'Pagos embebidos en el checkout de un marketplace', p: 'La entidad expone iniciación de pagos y conciliación a un comercio digital; el caso arranca con APIs existentes y una extensión.', m: 'Catálogo A · Pagos embebidos' },
+          { d: 'BaaS', t: 'Crédito para trabajadores de plataformas (gig workers)', p: 'Scoring alternativo sobre datos de la plataforma y desembolso en cuenta: un caso completo con frontal propio y APIs nuevas.', m: 'Catálogo C · Crédito embebido' },
+          { d: 'Pagos', t: 'Recaudación y dispersión para empresas', p: 'Cobros masivos y pagos a proveedores por API para un ERP de pymes, con conciliación automática.', m: 'Catálogo D · Recaudación y dispersión' }
+        ];
+        grid.innerHTML = ref.map(function (c) {
+          return '<a class="caso" href="stages/1-discovery/market-discovery/index.html">'
+            + '<div class="meta"><span class="chip">' + esc(c.d) + '</span><span class="chip neutral">Caso de referencia</span></div>'
+            + '<h3>' + esc(c.t) + '</h3><p>' + esc(c.p) + '</p>'
+            + '<div class="foot"><span>' + esc(c.m) + '</span><b>Abrir en el Discovery →</b></div></a>';
+        }).join('');
+        nota.textContent = 'La biblioteca de demos interactivas se incorpora en la siguiente entrega; mientras tanto, estos casos se abren desde el catálogo del Discovery.';
+      }
+
+      var s = document.createElement('script');
+      s.src = 'demos/catalog.js';
+      s.onload = function () { if (!(window.DEMO_CATALOG && desdeCatalogo(window.DEMO_CATALOG))) respaldo(); };
+      s.onerror = respaldo;
+      document.head.appendChild(s);
+    })();
+  </script>
 </body>
 </html>

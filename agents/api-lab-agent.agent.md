@@ -44,7 +44,7 @@ Es una interfaz de tipo APIM (API Management): visual, densa en datos, orientada
 ## Header
 
 Fondo dark (`#260717`). Contenido:
-- Izquierda: logo "Open Business" en Georgia + separador + "API Lab"
+- Izquierda: logo "Open Business" en Montserrat 800 + separador + "API Lab"
 - Centro: badge de entorno `● SANDBOX · Controlado` en verde
 - Derecha: `← Volver al inicio` + badge "FASE BETA"
 
@@ -57,7 +57,7 @@ Indicadores de estado rápidos en el header (chips):
 
 ## Sidebar de navegación
 
-Fondo `#4F062A`. Items:
+Fondo `var(--mbc-navy)` (`<nav class="lab-nav">`, nunca `nav` a secas: colisiona con la barra de la plataforma). Items:
 
 ```
 📊 Dashboard          ← activo por defecto
