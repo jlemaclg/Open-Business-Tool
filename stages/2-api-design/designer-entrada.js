@@ -67,7 +67,23 @@ function init() {
     if (!e) return;
     fUseCase.value = e.nombre;
     fDesc.value = (e.descripcion || '') + (e.segmento ? `\n\nSegmento objetivo (del discovery): ${e.segmento}` : '');
-    $('deOk').innerHTML = `Estudio <b>${esc(e.nombre)}</b> cargado — el agente parte del contexto refinado en Discovery. Ajusta lo que necesites y analiza.`;
+    // F18 · paquete de requerimientos de negocio: APIs clasificadas y requisitos no funcionales/regulatorios
+    const p = e.paquete;
+    if (p?.viabilidad?.apis?.length) {
+      const apis = p.viabilidad.apis.map((a) => `- ${a.endpoint} [${a.estado}]${a.apiBase ? ` · base: ${a.apiBase}` : ''}`).join('\n');
+      const extra = (p.requerimientos || []).filter((g) => g.id === 'nfr' || g.id === 'reg')
+        .map((g) => `${g.titulo}:\n` + g.items.map((i) => `- ${i.texto}`).join('\n')).join('\n\n');
+      fDesc.value += `\n\nAPIs del caso (viabilidad del Discovery):\n${apis}` + (extra ? `\n\n${extra}` : '')
+        + (p.politicasAplicables?.length ? `\n\nPolíticas de gobierno aplicables: ${p.politicasAplicables.join(', ')}` : '');
+    }
+    // F19 · desde el inventario cruzado: API concreta a diseñar primero (?api=)
+    const apiObj = new URLSearchParams(location.search).get('api');
+    if (apiObj) fDesc.value += `\n\nAPI a diseñar primero (desde el inventario cruzado): ${apiObj}`;
+    const nReq = p ? (p.requerimientos || []).reduce((a, g) => a + g.items.length, 0) : 0;
+    $('deOk').innerHTML = `Estudio <b>${esc(e.nombre)}</b> cargado — el agente parte del contexto refinado en Discovery.`
+      + (p ? ` Incluye el paquete de requerimientos: <b>${nReq} requisitos</b>, <b>${p.viabilidad.apis.length} APIs</b> clasificadas (${esc(p.viabilidad.titular.toLowerCase())}).` : '')
+      + (apiObj ? ` API a diseñar primero: <b>${esc(apiObj)}</b>.` : '')
+      + ' Ajusta lo que necesites y analiza.';
     $('deOk').classList.add('on');
     $('deEstudio').classList.add('sel'); $('deCero').classList.remove('sel');
     $('deLoad').classList.add('on');

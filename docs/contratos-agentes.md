@@ -19,6 +19,7 @@ Todos los métodos son `async` y devuelven objetos JSON. Los mocks incluyen `_mo
 |---|---|---|
 | Discovery | `marketDiscovery(casoUso, entidad)` | existente (demo) |
 | Discovery / Assessment | `gapsYDependencias(casoUso, entidad)` ⭐ | nuevo · mock |
+| Discovery | `requerimientosProducto(casoUso, audiencia)` ⭐ | nuevo · mock (F18) |
 | API Design | `diseñarAPI(descripcionNL)` | existente |
 | API Design | `construirAPI(dataDictionary)` | existente |
 | API Design | `enriquecerAPI(yamlExistente)` | existente |
@@ -46,6 +47,28 @@ Calcula el *delta* del caso de uso contra la radiografía. Ramifica por `casoUso
 }
 ```
 Las `dependencias` devueltas tienen la forma de aristas del grafo → se pueden inyectar directamente en `entidad.grafoDependencias`.
+
+### `requerimientosProducto(casoUso, audiencia)` ⭐ — borrador de requisitos del producto (F18 · Híbrido)
+Propone los requerimientos del producto sobre la **plantilla MBC por categoría** y los adapta al caso y a la audiencia prioritaria. El consultor los edita en el Discovery antes de exportar el paquete de requerimientos de negocio.
+
+**Input:** `casoUso` `{ nombre, categoria }` (categorías del catálogo: CRÉDITO, PAGOS, CUENTAS, DISPERSIÓN, SEGUROS, INVERSIÓN, DATA) + `audiencia` `{ segmentoPrioritario: { nombre, propension, variables[] }, segmentos[] }`.
+
+**Output:**
+```jsonc
+{
+  "caso": "Crédito para gig workers",
+  "grupos": [
+    { "id": "func",  "titulo": "Funcionales",                    "items": [{ "id": "rq1", "texto": "…", "origen": "plantilla|agente" }] },
+    { "id": "datos", "titulo": "Datos y consentimiento",         "items": [ … ] },
+    { "id": "nfr",   "titulo": "No funcionales",                 "items": [ … ] },
+    { "id": "reg",   "titulo": "Regulatorios y de cumplimiento", "items": [ … ] }
+  ],
+  "_mock": true
+}
+```
+`origen: "agente"` marca lo que el agente añade sobre la plantilla (se muestra con etiqueta en la UI). Tras la edición, el paquete exportado marca `agente-editado` o `consultor`.
+
+> **No es un agente:** la viabilidad temprana (`core/viabilidad.js → clasificarCaso`) es Método MBC determinista — reglas de equivalencias, familias de API y capacidades de backend contra el inventario y el set up de la entidad. Por eso no pasa por este adaptador.
 
 ### `marketDiscovery(casoUso, entidad)`
 **Output:** `{ hipotesisProducto, tam, sam, som, propension }`.

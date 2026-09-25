@@ -85,7 +85,7 @@
   </div>
 
   <table class="inv">
-    <thead><tr><th>API</th><th>Dominio</th><th>Tipo</th><th>Endpoints</th><th>Sistemas backend</th><th>Gobierno</th><th>Reutilización</th></tr></thead>
+    <thead><tr><th>API</th><th>Dominio</th><th>Tipo</th><th>Endpoints</th><th>Sistemas backend</th><th>Gobierno</th><th>Reutilización</th><th id="thCruce" style="display:none">Para este caso</th></tr></thead>
     <tbody id="invBody"></tbody>
   </table>
 
@@ -99,6 +99,7 @@
       <div>
         <div class="dsec-title">Endpoints y mapeo a backend</div>
         <table class="map"><thead><tr><th>Endpoint</th><th>Sistema</th><th>Servicio interno</th></tr></thead><tbody id="dMap"></tbody></table>
+        <div id="dCruce"></div>
         <div class="dsec-title">Reutilización sugerida</div>
         <div class="kv" id="dReuse"></div>
       </div>
@@ -133,15 +134,16 @@ const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 function renderInv(){
   const d=$('fDominio').value, t=$('fTipo').value, q=$('fTexto').value.toLowerCase();
   const rows=APIS.filter(a=>(!d||a.dominio===d)&&(!t||a.tipo===t)&&(!q||JSON.stringify(a).toLowerCase().includes(q)));
+  if(window.invCruce) rows.sort(window.invCruce.orden); // F19 · cruce con un caso (inventory-cruce.js)
   $('invBody').innerHTML=rows.map(a=>`
-    <tr onclick="abrirDetalle('${a.id}')">
+    <tr onclick="abrirDetalle('${a.id}')" class="${window.invCruce?window.invCruce.clase(a):''}">
       <td><span class="api-name">${esc(a.nombre)}</span> <span class="api-ver">${a.ver}</span></td>
       <td>${a.dominio}</td>
       <td><span class="pill p-${a.tipo.toLowerCase()}">${a.tipo}</span></td>
       <td>${a.endpoints}</td>
       <td class="backend">${a.backends.map(b=>`<b>${esc(b)}</b>`).join(' · ')}</td>
       <td>${a.gov==='ok'?'<span class="gov-ok">Conforme</span>':'<span class="gov-warn">Observaciones</span>'}</td>
-      <td class="reuse">${esc(a.reuse)}</td>
+      <td class="reuse">${esc(a.reuse)}</td>${window.invCruce?window.invCruce.celda(a):''}
     </tr>`).join('');
   $('invCount').textContent=`${rows.length} de ${APIS.length} APIs · última sincronización con el API manager: hoy`;
 }
@@ -154,6 +156,7 @@ function abrirDetalle(id){
   const g=a.gobFicha;
   $('dGov').innerHTML=`<b>Owner:</b> ${esc(g.owner)}<br><b>Ciclo de vida:</b> ${esc(g.ciclo)}<br><b>Normalización:</b> ${esc(g.iso)}<br><b>Consumidores:</b> ${esc(g.consumidores)}`;
   $('dExtender').href=`api-designer.html?from=${a.id}`;
+  if(window.invCruce) window.invCruce.detalle(a);
   $('detail').classList.add('open');
   $('detail').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -166,6 +169,7 @@ function accionCiclo(btn, tipo){
 }
 renderInv();
 </script>
+<script type="module" src="inventory-cruce.js"></script>
 <script src="../../assets/nav.js" data-current="inventory"></script>
 </body>
 </html>
