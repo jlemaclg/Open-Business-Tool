@@ -21,14 +21,14 @@
     { id: 'discovery',    num: '02', nombre: 'Discovery',    url: 'stages/1-discovery/market-discovery/index.html', etapa: 0 },
     { id: 'inventory',    num: '03', nombre: 'Inventario',   url: 'stages/2-api-design/api-inventory.html',         etapa: 1 },
     { id: 'api-designer', num: '04', nombre: 'API Designer', url: 'stages/2-api-design/api-designer.html',          etapa: 1 },
-    { id: 'enrichment',   num: '05', nombre: 'Gestión & Versionado', url: 'stages/2-api-design/enrichment.html',    etapa: 1 },
+    { id: 'enrichment',   num: '05', nombre: 'Versionado', url: 'stages/2-api-design/enrichment.html',    etapa: 1 },
     { id: 'api-lab',      num: '06', nombre: 'API Lab',      url: 'stages/3-api-lab/index.html',                    etapa: 2 }
   ];
 
   var css = ''
     + '.obx-nav{background:#260717;border-bottom:2px solid #FF0054;font-family:Arial,sans-serif;'
-    + 'display:flex;align-items:center;gap:18px;padding:0 24px;height:40px;min-width:1280px;'
-    + 'position:relative;z-index:3000;box-sizing:border-box;}'
+    + 'display:flex;align-items:center;gap:14px;padding:0 18px;height:40px;min-width:1280px;'
+    + 'position:relative;z-index:3000;box-sizing:border-box;flex-shrink:0;width:100%;}'
     + '.obx-nav a{text-decoration:none;}'
     + '.obx-home{display:flex;align-items:center;gap:7px;color:#fff;font-size:12px;letter-spacing:.5px;white-space:nowrap;}'
     + '.obx-home svg{flex:0 0 auto;}'
@@ -45,7 +45,7 @@
     + '.obx-step.obx-actual .obx-num{color:#FF0054;}'
     + '.obx-arrow{color:rgba(255,255,255,.22);font-size:10px;flex:0 0 auto;}'
     + '.obx-etapa{color:rgba(255,255,255,.4);font-size:10.5px;letter-spacing:1.2px;'
-    + 'text-transform:uppercase;white-space:nowrap;}'
+    + 'text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px;}'
     + '.obx-pol{color:rgba(255,255,255,.6);font-size:11px;letter-spacing:.6px;white-space:nowrap;}'
     + '.obx-pol:hover{color:#FF0054;}'
     + '.obx-pol.obx-pol-actual{color:#FF0054;}';
@@ -78,7 +78,7 @@
       + '<span class="obx-num">' + it.num + '</span>' + it.nombre + '</a>';
   }
   html += '</div><a class="obx-pol' + (current === 'policies' ? ' obx-pol-actual' : '') + '" href="' + root
-    + 'stages/2-api-design/governance-policies.html" title="Políticas de gobierno de APIs — la base de conocimiento de los agentes">Políticas de gobierno</a>'
+    + 'stages/2-api-design/governance-policies.html" title="Políticas de gobierno de APIs — la base de conocimiento de los agentes">Políticas</a>'
     + '<div class="obx-sep"></div><div class="obx-etapa">'
     + (current === 'policies' ? 'Set up · Gobierno de APIs' : (etapaActual || 'Open Business Accelerator')) + '</div>';
 

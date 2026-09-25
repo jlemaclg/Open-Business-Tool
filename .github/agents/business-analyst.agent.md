@@ -2,7 +2,7 @@
 name: business-analyst
 description: Conversational agent that discovers business use cases, validates functionalities, designs API resources and data dictionaries with ISO 20022 semantics, and iterates with the user until the design is approved.
 tools: ["read", "search"]
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 

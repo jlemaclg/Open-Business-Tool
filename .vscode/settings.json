@@ -1,3 +1,4 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "livePreview.defaultPreviewPath": "/stages/2-api-design/api-designer.html"
 }

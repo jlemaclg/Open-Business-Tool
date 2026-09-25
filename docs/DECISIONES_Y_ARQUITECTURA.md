@@ -11,7 +11,7 @@
 
 - **Owner:** Jonathan Lema — Manager Open Business, Minsait (Open Finance & MMPP)
 - **Audiencia:** consultores de negocio (LATAM + España). Autoformación / demos internas.
-- **Última actualización:** 19 julio 2026
+- **Última actualización:** 25 septiembre 2026 (D12–D16: identidad MBC, biblioteca de demos, repositorio de agentes, convención agente/determinista, exportación de requerimientos)
 - **Estado:** arranque de proyecto (Fase 0 · MVP)
 
 ---
@@ -58,6 +58,11 @@ Ese cálculo del *delta* y el entendimiento (GAPs, dependencias) es trabajo de *
 | D9 | **Modelo de dominio en dos niveles:** Entidad (radiografía única) + Casos de Uso (colección aparte por `entidadId`). Dependencias como **grafo**. | El assessment es un mapa vivo de la entidad; los casos de uso se simulan encima. Un caso puede tener ecosistema propio de APIs y pantallas → colección aparte. |
 | D10 | **Agentes tras un adaptador `agents.js`** (gemelo de `storage.js`). Hoy **mocks realistas**; mañana Azure Function → Azure OpenAI, misma firma. | Permite construir el recorrido end-to-end sin backend y sustituir a real cambiando una línea. Sin LangChain (D5). |
 | D11 | **Licencia propietaria** (© Minsait/Indra, todos los derechos reservados; ver `LICENSE`). Repo **público solo durante la demo**, luego **privado**. | Es IP corporativa (herramienta + metodología `KB`). "Link abierto" ≠ open-source. Nada de MIT/Apache/GPL. Al pasar a privado, Pages desde repo privado requiere plan de pago de GitHub (verificar). Validar con legal/OSS de Indra. |
+| D12 | **Identidad visual MBC en todo el repo** (hub, barra, módulos, demos): azul oscuro `#003478`, azul eléctrico `#147AFF`, blanco, negro, gris cerámica `#E3E2DA`; Montserrat única; logo MBC vectorial. Tokens compartidos en `assets/mbc-tokens.css`; **ningún hex fuera de `:root`**. Queda **prohibida** la estética Minsait anterior (`#4F062A`, `#FF0054`, `#260717`, Georgia) y los emojis como iconos. Guía: `docs/guia-identidad-MBC.md`. | Rebrand de la unidad (libro de estilo transitorio V2.2). Las demos ya van en MBC; el hub migra para que todo el recorrido sea una sola línea visual. Se mantiene "sin Minsait en la UI"; la marca visible es Open Business Accelerator + logo MBC. |
+| D13 | **Biblioteca de demos dentro del repo** (`demos/` + `catalog.js` + `demos/index.html`; cada demo un HTML autocontenido) como evidencia del Discovery. **Excepción a D4 para demos de cliente:** pueden entrar en el repo público **solo cifradas** (AES-GCM/WebCrypto, contraseña compartida fuera de banda, script `tools/proteger-demo.py` antes del commit; la versión en claro nunca se commitea, vive en `_private/` ignorado). En `catalog.js`, `acceso: 'protegida'`. Una puerta de contraseña en JS sin cifrado **no** es una medida válida. | Las demos son el argumento de venta ("casos que ya hemos probado") y se enseñan a clientes. El repo y Pages son públicos y el historial de git es permanente: solo el cifrado protege el contenido. El login (F12) lo sustituirá. |
+| D14 | **Repositorio de agentes visible e inventariado como APIs**: página propia en el recorrido (`stages/agentes/`), datos en `assets/agents-data.js`, ficha por agente con contrato request/response, versión SemVer, owner, ciclo de vida y políticas aplicadas. Una sola fuente de definiciones en `agents/` (cierra F10). | En la demo hay que poder enseñar "cómo lo tenemos montado" y que los agentes están gobernados igual que las APIs. |
+| D15 | **Convención agente / determinista en toda la UI:** chips `Agente` (servicio de `core/agents.js`, banner "datos simulados" mientras sea mock), `Método MBC` (paso determinista construido con nuestra información + la del cliente) e `Híbrido` (propone el agente, valida una regla). Componente en `assets/mbc-tokens.css`. | Diferencia la práctica ("método + agentes") de "una demo con IA" y permite señalarlo en cada pantalla. |
+| D16 | **Gobierno transversal de APIs y agentes:** `governance-policies.html` con dos pestañas (GOV-* para APIs, GOV-AG-* para agentes), nodo propio en el home, entrada "Gobierno" en la barra y bloque "Políticas aplicadas" en cada módulo. **Exportación de requerimientos de negocio** desde el Discovery (paquete Markdown + JSON: caso, audiencia, requerimientos, viabilidad, APIs, políticas) como artefacto de traspaso a los equipos que redactan los requerimientos técnicos; el Designer lo consume vía `?estudio=`. | El gobierno es lo que da confianza a un banco y hoy es un enlace secundario. El traspaso negocio → técnico es el hueco entre el Discovery y el Designer. |
 
 ---
 
@@ -206,6 +211,8 @@ Destino a futuro (datos reales in-tenant), no vía de arranque. Indra ya tiene t
 
 ## 10. Plan por fases (tareas para Copilot)
 
+> El plan por features vigente está en `docs/plan-de-trabajo.md` (F0–F24). El análisis, el storytelling de venta y el detalle de las features F14–F24 están en `docs/PLAN_MBC_Y_STORYTELLING.md`.
+
 ### Fase 0 — MVP: publicar el HTML, link abierto (ahora)
 - [ ] Crear repo (p. ej. `openfinance-assessment`) en GitHub Minsait, con `main`.
 - [ ] `index.html` en la raíz (el HTML actual). `KB_01..KB_05` → `/kb`. Añadir `CHANGELOG.md`, `README.md`, este MD.
@@ -230,3 +237,7 @@ Destino a futuro (datos reales in-tenant), no vía de arranque. Indra ya tiene t
 - En Fase 2: ¿los assessments se comparten a todo el equipo (lectura común) o cada uno ve solo los suyos? (afecta RLS).
 - En Fase 2: ¿restringimos el alta a `@minsait.com` o abierto a cualquier email? (D3 lo deja opcional).
 - Primer caso de uso concreto de IA (dispara la Fase 3).
+- Ubicación definitiva del repositorio de agentes: `stages/agentes/` (propuesta, D14) o `agents/index.html`.
+- Modelos/dominios ISO 20022 nuevos a incorporar en el Designer (F22): lista a aportar por Jonathan al abrir la feature.
+- Extraer el CSS inline de `api-designer.html` y `enrichment.html` a `assets/` en F22/F23 (sin build, D7) para aligerar las páginas.
+- Instrucciones del proyecto de Claude: sustituir "estética Minsait" por identidad MBC (D12) y añadir `PLAN_MBC_Y_STORYTELLING.md` y `guia-identidad-MBC.md` a los archivos de conocimiento.

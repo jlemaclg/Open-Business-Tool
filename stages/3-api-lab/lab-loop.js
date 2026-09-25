@@ -15,7 +15,7 @@ import { EstadoAPI, Naturaleza } from '../../core/domain/casoDeUso.js';
 
 const css = document.createElement('style');
 css.textContent = `
-  .ll-wrap{max-width:1200px;margin:26px auto 60px;padding:0 40px;font-family:Arial,sans-serif;}
+  .ll-wrap{max-width:1200px;margin:26px auto 40px;padding:0 8px;font-family:Arial,sans-serif;}
   .ll-card{background:#fff;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;}
   .ll-head{background:#260717;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
   .ll-title{font-family:Georgia,serif;font-size:18px;} .ll-title span{color:#FF0054;}
@@ -69,7 +69,7 @@ wrap.innerHTML = `
       <div id="llResultado"><div class="ll-empty">Selecciona una API diseñada para el caso (creada desde el API Designer con "Guardar diseño en el caso") y simula su comportamiento con partners y comercios del sandbox.</div></div>
     </div>
   </div>`;
-document.body.insertBefore(wrap, document.querySelector('script[src*="nav.js"]') || null);
+(document.querySelector('.main-area') || document.body).appendChild(wrap);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
