@@ -6,6 +6,10 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-25
+
+La plataforma cambia a la identidad visual **MBC** (tokens compartidos, Montserrat, logo) en portal, barra de navegación y los seis módulos; entra el plan de evolución hacia herramienta de venta (decisiones D12–D16, features F14–F24), el Designer arranca desde un caso o un estudio de Discovery y el API Lab cierra el bucle de refinamiento.
+
 ### Added
 - Documentación: `docs/PLAN_MBC_Y_STORYTELLING.md` (diagnóstico, storytelling de venta en cuatro tipologías de proyecto, convención agente/determinista, biblioteca de demos con demos protegidas por cifrado, repositorio de agentes inventariado, plan F14–F24) y `docs/guia-identidad-MBC.md` (tokens, tipografía, logo, componentes y mapa de migración a la identidad MBC).
 - Favicon (`assets/favicon.svg`/`.png`) en las 8 páginas y metadatos Open Graph / Twitter Card en el portal (`assets/og-card.png` 1200×630) para que el enlace compartido en chats muestre tarjeta con título, descripción e imagen.

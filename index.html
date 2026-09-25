@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Business Accelerator</title>
-  <meta name="description" content="Plataforma de casos de uso y APIs de negocio para Open Finance, Embedded Finance y BaaS — del discovery al despliegue, con agentes de IA y validación en sandbox.">
+  <meta name="description" content="Abrimos la entidad a terceros por APIs — con método, con agentes y con casos ya probados. Open Finance, Embedded Finance y BaaS: del diagnóstico al caso de uso en producción.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/mbc-tokens.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mbc-tokens.css">
   <!-- Open Graph: la tarjeta que pintan Teams/WhatsApp/LinkedIn al pegar el link -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Open Business Accelerator">
   <meta property="og:title" content="Open Business Accelerator">
-  <meta property="og:description" content="Plataforma de casos de uso y APIs de negocio para Open Finance, Embedded Finance y BaaS — del discovery al despliegue.">
+  <meta property="og:description" content="Abrimos la entidad a terceros por APIs — con método, con agentes y con casos ya probados. Open Finance, Embedded Finance y BaaS.">
   <meta property="og:url" content="https://jlemaclg.github.io/Open-Business-Tool/">
   <meta property="og:image" content="https://jlemaclg.github.io/Open-Business-Tool/assets/og-card.png">
   <meta property="og:image:width" content="1200">
@@ -22,299 +22,470 @@
   <meta property="og:locale" content="es_ES">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Open Business Accelerator">
-  <meta name="twitter:description" content="Casos de uso y APIs de negocio: del discovery al despliegue.">
+  <meta name="twitter:description" content="Abrimos la entidad a terceros por APIs: con método, con agentes y con casos ya probados.">
   <meta name="twitter:image" content="https://jlemaclg.github.io/Open-Business-Tool/assets/og-card.png">
   <style>
-    :root {
-      --morado:    var(--mbc-navy);
-      --accent:    var(--mbc-electric);
-      --gris:      var(--bg);
-      --blanco:    #FFFFFF;
-      --morado-dk: var(--mbc-navy-deep);
-    }
+    /* Portal comercial (F16). Todos los colores por tokens de assets/mbc-tokens.css (D12). */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family:var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-width: 1280px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a { text-decoration: none; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; width: 100%; }
+    svg.ic { width: 18px; height: 18px; flex: 0 0 auto; }
 
-    /* ── Animaciones de entrada ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-    .anim   { animation: fadeUp .6s ease both; }
-    .anim-1 { animation-delay: .05s; } .anim-2 { animation-delay: .15s; }
-    .anim-3 { animation-delay: .25s; } .anim-4 { animation-delay: .35s; }
-    .anim-5 { animation-delay: .45s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .anim { animation: fadeUp .55s ease both; }
+    .anim-1 { animation-delay: .05s; } .anim-2 { animation-delay: .15s; } .anim-3 { animation-delay: .25s; }
 
-    /* ── HEADER ── */
-    header {
-      background: var(--mbc-navy-deep);
-      padding: 14px 48px;
-      display: flex; align-items: center; justify-content: space-between;
+    /* ── Cabecera ── */
+    header.top {
+      background: var(--mbc-navy-deep); border-bottom: 2px solid var(--mbc-electric);
       position: sticky; top: 0; z-index: 100;
-      border-bottom: 2px solid var(--mbc-electric);
     }
-    .logo { font-family:var(--sans); font-weight:800; font-size: 20px; color: var(--blanco); letter-spacing: .2px; }
-    .logo span { color: rgba(255,255,255,.72); font-weight:600; }
-    .header-tagline { font-size: 10.5px; color: rgba(255,255,255,.6); letter-spacing: .12em; text-transform: uppercase; margin-top: 3px; font-weight:600; }
-    .header-right .mbc-logo { height: 26px; }
-    .header-right { display:flex; align-items:center; gap:18px; font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: .08em; text-transform: uppercase; font-weight:600; }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 62px; }
+    .brand { display: flex; flex-direction: column; }
+    .brand .logo { font-weight: 800; font-size: 19px; color: var(--mbc-white); letter-spacing: .1px; line-height: 1.1; }
+    .brand .logo span { font-weight: 600; color: rgba(255,255,255,.72); }
+    .brand .tag { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .topnav { display: flex; align-items: center; gap: 22px; }
+    .topnav a { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.78); }
+    .topnav a:hover { color: var(--mbc-white); }
+    .topnav .mbc-logo { height: 24px; margin-left: 6px; }
 
-    /* ── HERO ── */
-    .hero {
-      background: linear-gradient(135deg, var(--mbc-navy) 0%, var(--mbc-navy-deep) 100%);
-      padding: 60px 48px 0;
-      text-align: center;
-      color: var(--blanco);
-      overflow: hidden;
-      position: relative;
-    }
-    .hero::after { content:""; position:absolute; right:-80px; top:-120px; width:360px; height:360px; border-radius:50%; background: radial-gradient(circle, rgba(20,122,255,.45), transparent 70%); pointer-events:none; }
-    .hero > * { position: relative; z-index: 1; }
-    .hero-label { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); font-weight:700; margin-bottom: 18px; }
-    .hero h1 { font-family:var(--sans); font-size: 40px; font-weight: 800; line-height: 1.2; margin-bottom: 18px; letter-spacing:-.01em; }
-    .hero h1 em { font-style: normal; color: var(--mbc-electric); }
-    .hero-sub {
-      font-size: 15.5px; color: rgba(255,255,255,.8); line-height: 1.65;
-      max-width: 820px; margin: 0 auto 8px;
-    }
-    .hero-sub strong { color: var(--blanco); font-weight: bold; }
+    /* ── Hero ── */
+    .hero { background: linear-gradient(135deg, var(--mbc-navy) 0%, var(--mbc-navy-deep) 100%); color: var(--mbc-white); position: relative; overflow: hidden; }
+    .hero::after { content: ""; position: absolute; right: -120px; top: -160px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(20,122,255,.5), transparent 68%); pointer-events: none; }
+    .hero .wrap { position: relative; z-index: 1; padding-top: 64px; padding-bottom: 60px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; }
+    .hero-label { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 18px; }
+    .hero h1 { font-size: 40px; font-weight: 800; line-height: 1.16; letter-spacing: -.01em; margin-bottom: 18px; }
+    .hero h1 .hl { color: var(--mbc-electric); }
+    .hero p { font-size: 15.5px; line-height: 1.65; color: rgba(255,255,255,.84); max-width: 620px; margin-bottom: 28px; }
+    .hero p strong { color: var(--mbc-white); font-weight: 700; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; padding: 11px 18px; border-radius: var(--radius-sm); border: 1.5px solid transparent; cursor: pointer; transition: .15s; }
+    .btn-white { background: var(--mbc-white); color: var(--mbc-navy); }
+    .btn-white:hover { background: var(--mbc-electric-soft); }
+    .btn-outline { background: transparent; color: var(--mbc-white); border-color: rgba(255,255,255,.45); }
+    .btn-outline:hover { border-color: var(--mbc-white); background: rgba(255,255,255,.08); }
+    .btn-primary { background: var(--mbc-navy); color: var(--mbc-white); }
+    .btn-primary:hover { background: var(--mbc-navy-deep); }
+    .btn-ghost { background: var(--panel); color: var(--mbc-navy); border-color: var(--line); }
+    .btn-ghost:hover { border-color: var(--mbc-electric); background: var(--mbc-electric-soft); }
 
-    /* ── RECORRIDO (nodos clicables) ── */
-    .journey { position: relative; max-width: 1080px; margin: 48px auto 0; padding-bottom: 100px; }
-    .journey-stages {
-      display: flex; justify-content: space-between; max-width: 1000px; margin: 0 auto 14px;
-    }
-    .journey-stage {
-      font-size: 10px; letter-spacing: 2.2px; text-transform: uppercase; color: rgba(255,255,255,.45);
-    }
-    .journey-track { position: relative; max-width: 1000px; margin: 0 auto; }
-    .journey-line {
-      position: absolute; top: 30px; left: 60px; right: 60px; height: 2px;
-      background: rgba(255,255,255,.22);
-    }
-    .journey-nodes { position: relative; display: flex; justify-content: space-between; }
-    .journey-node { width: 156px; text-align: center; transition: transform .2s; position: relative; }
-    .journey-node:hover { transform: translateY(-4px); }
-    .node-circle {
-      width: 60px; height: 60px; border-radius: 50%;
-      background: var(--mbc-navy-deep); border: 2px solid rgba(255,255,255,.35);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px; transition: border-color .2s, box-shadow .2s, background .2s;
-      font-family:var(--sans); font-weight:800; font-size: 19px; color: var(--blanco);
-    }
-    .journey-node:hover .node-circle {
-      border-color: var(--mbc-electric); background: var(--mbc-electric);
-      box-shadow: 0 0 0 8px rgba(20,122,255,.22);
-    }
-    .node-name { font-family:var(--sans); font-weight:700; font-size: 15px; color: var(--blanco); margin-bottom: 5px; }
-    .node-beta {
-      display: inline-block; vertical-align: 2px; margin-left: 6px;
-      background: var(--mbc-electric); color: var(--blanco);
-      font-family:var(--sans); font-size: 8px; font-weight: 800;
-      letter-spacing: 1px; padding: 2px 5px; border-radius: 4px;
-    }
-    .node-q { font-size: 11.5px; color: rgba(255,255,255,.6); line-height: 1.45; padding: 0 6px; margin-bottom: 9px; }
-    .node-cta {
-      font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
-      color: rgba(255,255,255,.85); transition: color .2s;
-    }
-    .journey-node:hover .node-cta { color: var(--blanco); }
+    /* Panel del hero: qué se lleva el cliente */
+    .hero-panel { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius); padding: 22px 24px; backdrop-filter: blur(2px); }
+    .hero-panel .lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+    .hero-panel ul { list-style: none; display: grid; gap: 12px; }
+    .hero-panel li { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.9); }
+    .hero-panel li b { display: block; font-weight: 700; color: var(--mbc-white); }
+    .hero-panel .ic { color: var(--mbc-electric); margin-top: 2px; }
 
-    /* Flecha de retorno (el bucle) */
-    .journey-loop { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 66px; pointer-events: none; }
-    .journey-loop svg { width: 100%; height: 100%; }
-    .loop-caption {
-      position: absolute; left: 0; right: 0; bottom: 0; text-align: center;
-      font-size: 11.5px; color: rgba(255,255,255,.8);
-      font-family:var(--sans); font-weight:500; letter-spacing: .1px;
-    }
-    .loop-caption b { color: var(--blanco); font-style: normal; font-family:var(--sans); font-weight: 800; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; }
+    /* ── Secciones ── */
+    section { padding: 56px 0; }
+    section.alt { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+    .kicker { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--mbc-electric); margin-bottom: 10px; }
+    h2 { font-size: 26px; font-weight: 800; color: var(--mbc-navy); line-height: 1.2; letter-spacing: -.01em; }
+    h2 .hl { color: var(--mbc-electric); }
+    .lead { font-size: 14px; line-height: 1.6; color: var(--text-dim); max-width: 720px; margin-top: 10px; }
+    .sec-link { font-size: 12.5px; font-weight: 700; color: var(--mbc-navy); white-space: nowrap; border-bottom: 2px solid var(--mbc-electric); padding-bottom: 2px; }
+    .sec-link:hover { color: var(--mbc-electric); }
 
-    /* ── CÓMO FUNCIONA (3 pasos) ── */
-    .how { background: var(--blanco); padding: 48px 48px 52px; flex: 1; }
-    .how-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: stretch; gap: 0; }
-    .how-step { flex: 1; padding: 0 28px; position: relative; }
-    .how-step + .how-step { border-left: 1px solid var(--line); }
-    .how-num {
-      font-family:var(--sans); font-weight:800; font-size: 10.5px; color: var(--mbc-electric);
-      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px;
-    }
-    .how-title { font-family:var(--sans); font-weight:800; font-size: 17px; color: var(--mbc-navy); margin-bottom: 8px; }
-    .how-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-    .how-text strong { color: var(--mbc-navy); }
-    .how-text a { color: var(--mbc-navy); font-weight: 700; text-decoration: underline; text-decoration-color: rgba(20,122,255,.5); text-underline-offset: 2px; }
-    .how-text a:hover { color: var(--mbc-electric); }
+    /* Tipologías de proyecto */
+    .tipos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .tipo { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px; position: relative; transition: .2s; }
+    .tipo:hover { border-color: var(--mbc-electric); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .tipo .n { position: absolute; top: 18px; right: 18px; font-size: 11px; font-weight: 800; color: var(--text-faint); letter-spacing: .08em; }
+    .tipo .icon { width: 42px; height: 42px; border-radius: 12px; background: var(--mbc-electric-soft); color: var(--mbc-navy); display: flex; align-items: center; justify-content: center; }
+    .tipo .icon svg { width: 22px; height: 22px; }
+    .tipo h3 { font-size: 16px; font-weight: 800; color: var(--mbc-navy); line-height: 1.25; }
+    .tipo .q { font-size: 12.5px; line-height: 1.5; color: var(--text-dim); font-style: italic; border-left: 2px solid var(--mbc-electric); padding-left: 10px; }
+    .tipo .lbl { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+    .tipo .out { font-size: 12.5px; line-height: 1.55; color: var(--text); }
+    .tipo .mods { display: flex; flex-wrap: wrap; gap: 6px; }
+    .mod { font-size: 10.5px; font-weight: 700; color: var(--mbc-navy); background: var(--panel); border: 1px solid var(--line); border-radius: var(--pill); padding: 3px 9px; }
+    .mod:hover { border-color: var(--mbc-electric); background: var(--mbc-electric-soft); }
+    .mod b { color: var(--mbc-electric); margin-right: 3px; }
+    .tipo .who { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+    .tipo .go { font-size: 11.5px; font-weight: 800; color: var(--mbc-navy); letter-spacing: .04em; text-transform: uppercase; margin-top: 4px; }
+    .tipo:hover .go { color: var(--mbc-electric); }
 
-    /* ── OUTCOMES ── */
-    .outcomes-bar { background: var(--mbc-navy); padding: 28px 48px; }
-    .outcomes-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
-    .outcome-item { text-align: center; }
-    .outcome-dot { width: 6px; height: 6px; background: var(--mbc-electric); border-radius: 50%; margin: 0 auto 10px; }
-    .outcome-text { font-size: 12px; color: rgba(255,255,255,.85); letter-spacing: .3px; line-height: 1.5; }
-    .outcome-text strong { color: var(--blanco); display: block; margin-bottom: 2px; font-weight:800; }
+    /* Dónde entra un agente */
+    .leyenda { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--text-dim); margin-bottom: 26px; }
+    .leyenda span.txt { margin-right: 6px; }
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px 26px; }
+    .timeline::before { content: ""; position: absolute; left: 40px; right: 40px; top: 41px; height: 2px; background: linear-gradient(90deg, var(--mbc-navy), var(--mbc-electric)); opacity: .35; }
+    .etapa { position: relative; padding-top: 30px; }
+    .etapa .dot { position: absolute; top: 4px; left: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--mbc-navy); border: 3px solid var(--panel); box-shadow: 0 0 0 2px var(--mbc-navy); }
+    .etapa .et { font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); display: flex; align-items: center; gap: 8px; }
+    .etapa .et i { font-style: normal; background: var(--mbc-electric-soft); color: var(--mbc-navy); border-radius: var(--pill); padding: 1px 7px; letter-spacing: 0; }
+    .etapa h3 { font-size: 15px; font-weight: 800; color: var(--mbc-navy); margin: 6px 0 6px; }
+    .etapa p { font-size: 12.5px; line-height: 1.5; color: var(--text-dim); margin-bottom: 12px; min-height: 38px; }
+    .etapa ul { list-style: none; display: grid; gap: 7px; border-top: 1px solid var(--line); padding-top: 12px; }
+    .etapa li { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--text); }
+    .etapa li code { font-family: var(--mono); font-size: 11px; color: var(--mbc-navy); background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    .etapa li .chip-agente, .etapa li .chip-metodo, .etapa li .chip-hibrido { font-size: 9.5px; padding: 2px 7px; }
 
-    footer {
-      background: var(--mbc-navy-deep); padding: 14px 48px;
-      display: flex; align-items: center; justify-content: space-between;
+    /* Casos probados */
+    .casos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .caso { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; transition: .2s; }
+    a.caso:hover { border-color: var(--mbc-electric); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .caso .meta { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { font-size: 10.5px; font-weight: 700; color: var(--mbc-navy); background: var(--mbc-electric-soft); border: 1px solid rgba(20,122,255,.25); border-radius: var(--pill); padding: 3px 9px; }
+    .chip.neutral { background: var(--panel); border-color: var(--line); color: var(--text-dim); }
+    .caso h3 { font-size: 14.5px; font-weight: 800; color: var(--mbc-navy); line-height: 1.3; }
+    .caso p { font-size: 12.5px; line-height: 1.55; color: var(--text-dim); }
+    .caso .foot { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: var(--text-faint); }
+    .caso .foot b { color: var(--mbc-navy); }
+    a.caso:hover .foot b { color: var(--mbc-electric); }
+    .nota { margin-top: 14px; font-size: 12px; color: var(--text-faint); }
+
+    /* Gobierno */
+    .gob { background: var(--mbc-ceramic); border-radius: var(--radius-lg); padding: 34px 36px; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 36px; align-items: center; }
+    .gob h2 { font-size: 22px; }
+    .gob p { font-size: 13.5px; line-height: 1.6; color: var(--text-dim); margin: 10px 0 18px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 14px; }
+    .stat .v { font-size: 26px; font-weight: 800; color: var(--mbc-navy); line-height: 1; }
+    .stat .v small { font-size: 12px; font-weight: 700; color: var(--mbc-electric); margin-left: 4px; }
+    .stat .l { font-size: 11.5px; line-height: 1.4; color: var(--text-dim); margin-top: 8px; }
+
+    /* Recorrido 01–06 */
+    .ruta { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; position: relative; }
+    .ruta::before { content: ""; position: absolute; left: 8%; right: 8%; top: 22px; height: 2px; background: var(--line); }
+    .paso { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; transition: .2s; }
+    .paso:hover { border-color: var(--mbc-electric); background: var(--mbc-electric-soft); }
+    .paso .n { width: 24px; height: 24px; border-radius: 50%; background: var(--mbc-navy); color: var(--mbc-white); font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .paso b { font-size: 12.5px; font-weight: 800; color: var(--mbc-navy); }
+    .paso b i { font-style: normal; font-size: 8px; font-weight: 800; letter-spacing: .08em; background: var(--mbc-electric); color: var(--mbc-white); border-radius: 4px; padding: 2px 4px; margin-left: 5px; vertical-align: 2px; }
+    .paso small { font-size: 11px; line-height: 1.4; color: var(--text-dim); }
+    .paso .go { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mbc-navy); margin-top: auto; padding-top: 4px; }
+    .bucle { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-dim); }
+    .bucle b { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--mbc-navy); }
+    .bucle .ic { color: var(--mbc-electric); }
+
+    footer { background: var(--mbc-navy-deep); color: rgba(255,255,255,.55); margin-top: auto; }
+    footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+    footer .left { display: flex; align-items: center; gap: 14px; }
+    footer .mbc-logo { height: 16px; }
+
+    @media (max-width: 1000px) {
+      .hero .wrap { grid-template-columns: 1fr; padding-top: 44px; padding-bottom: 44px; }
+      .hero h1 { font-size: 32px; }
+      .tipos, .timeline, .casos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .timeline::before { display: none; }
+      .gob { grid-template-columns: 1fr; }
+      .ruta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .ruta::before { display: none; }
     }
-    .footer-left { display:flex; align-items:center; gap:14px; font-size: 11px; color: rgba(255,255,255,.55); letter-spacing: .06em; font-weight:600; }
-    .footer-left .mbc-logo { height: 16px; }
-    .footer-right { font-size: 11px; color: rgba(255,255,255,.4); }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 16px; }
+      header.top .wrap { height: 54px; }
+      .brand .logo { font-size: 16px; white-space: nowrap; }
+      .brand .tag { display: none; }
+      .topnav a { display: none; }
+      .topnav .mbc-logo { height: 20px; }
+      .hero h1 { font-size: 27px; }
+      .tipos, .timeline, .casos, .stats, .ruta { grid-template-columns: 1fr; }
+      .sec-head { flex-direction: column; align-items: flex-start; }
+      section { padding: 40px 0; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div>
-      <div class="logo">Open Business <span>Accelerator</span></div>
-      <div class="header-tagline">Plataforma de casos de uso y APIs de negocio · Embedded Finance / BaaS</div>
+  <!-- CABECERA -->
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <div class="logo">Open Business <span>Accelerator</span></div>
+        <div class="tag">Open Finance · Embedded Finance · BaaS</div>
+      </a>
+      <nav class="topnav" aria-label="Secciones del portal">
+        <a href="#que-hacemos">Qué hacemos</a>
+        <a href="#agentes">Agentes</a>
+        <a href="#casos">Casos probados</a>
+        <a href="#gobierno">Gobierno</a>
+        <a href="#recorrido">Recorrido</a>
+        <svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>
+      </nav>
     </div>
-    <div class="header-right"><span>Entorno de demo · 2026</span><svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg></div>
   </header>
 
-  <!-- HERO + RECORRIDO -->
+  <!-- HERO -->
   <div class="hero">
-    <div class="hero-label anim anim-1">Open Business · Open Finance · Embedded Finance · BaaS</div>
-    <h1 class="anim anim-1">Del discovery al despliegue de<br><em>casos de uso y APIs de negocio</em></h1>
-    <p class="hero-sub anim anim-2">
-      El <strong>set up de la entidad</strong>, casos de uso simulados con <strong>agentes de IA</strong>
-      y validación en <strong>sandbox con partners reales</strong> — para Open Finance,
-      <strong>Embedded Finance y BaaS</strong>, con el business case y la inversión
-      actualizándose en cada paso.
-    </p>
-
-    <div class="journey anim anim-3">
-      <div class="journey-stages">
-        <span class="journey-stage">Etapa 1 · Discovery &amp; Assessment</span>
-        <span class="journey-stage">Etapa 2 · Diseño de APIs</span>
-        <span class="journey-stage">Etapa 3 · Validación</span>
-      </div>
-      <div class="journey-track">
-        <div class="journey-line"></div>
-        <div class="journey-nodes">
-          <a class="journey-node" href="stages/1-discovery/assessment/index.html">
-            <div class="node-circle">01</div>
-            <div class="node-name">Assessment</div>
-            <div class="node-q">¿Dónde está la entidad y qué le falta?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/1-discovery/market-discovery/index.html">
-            <div class="node-circle">02</div>
-            <div class="node-name">Discovery<span class="node-beta">BETA</span></div>
-            <div class="node-q">¿Qué oportunidad hay en el mercado?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/api-inventory.html">
-            <div class="node-circle">03</div>
-            <div class="node-name">Inventario</div>
-            <div class="node-q">¿Qué APIs y sistemas ya tengo?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/api-designer.html">
-            <div class="node-circle">04</div>
-            <div class="node-name">Diseño de APIs</div>
-            <div class="node-q">¿Cómo construyo o extiendo el caso?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/2-api-design/enrichment.html">
-            <div class="node-circle">05</div>
-            <div class="node-name">Gestión &amp; Versionado</div>
-            <div class="node-q">¿Cumplen el estándar y cómo evolucionan?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
-          <a class="journey-node" href="stages/3-api-lab/index.html">
-            <div class="node-circle">06</div>
-            <div class="node-name">API Lab<span class="node-beta">BETA</span></div>
-            <div class="node-q">¿Funciona con partners y comercios reales?</div>
-            <div class="node-cta">Entrar →</div>
-          </a>
+    <div class="wrap">
+      <div>
+        <div class="hero-label anim anim-1">Práctica Open Business · plataforma de casos de uso y APIs de negocio</div>
+        <h1 class="anim anim-1">Abrimos la entidad a terceros por APIs: <span class="hl">con método, con agentes y con casos ya probados</span></h1>
+        <p class="anim anim-2">
+          Open Finance, Embedded Finance y BaaS, del diagnóstico al caso de uso en producción.
+          Cuatro tipos de proyecto sobre una misma plataforma: cada paso deja claro <strong>qué hace un agente</strong>,
+          <strong>qué hace nuestro método</strong> y <strong>qué se lleva la entidad</strong>.
+        </p>
+        <div class="cta-row anim anim-2">
+          <a class="btn btn-white" href="#que-hacemos">Qué hacemos
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-outline" href="#casos">Casos que ya hemos probado</a>
         </div>
       </div>
-      <div class="journey-loop">
-        <svg viewBox="0 0 1000 66" preserveAspectRatio="none" fill="none">
-          <path d="M 940 4 C 940 46, 60 46, 60 4"
-                stroke="#147AFF" stroke-width="1.8" stroke-dasharray="6 5" opacity=".9"/>
-          <path d="M 66 14 L 60 4 L 70 6" stroke="#147AFF" stroke-width="1.8" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="loop-caption"><b>El bucle</b> — los resultados del Lab refinan las APIs y actualizan el roadmap y la inversión del Assessment</div>
-      </div>
+      <aside class="hero-panel anim anim-3" aria-label="Qué se lleva la entidad">
+        <div class="lbl">Qué se lleva la entidad</div>
+        <ul>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><div><b>Set up de la entidad</b>As-Is, GAPs, dependencias, roadmap e inversión: el mapa sobre el que se decide todo.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Viabilidad temprana del caso de uso</b>Audiencia, requerimientos del producto y qué APIs se reutilizan, se extienden o son nuevas.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6L12 3z"/><path d="m9 12 2 2 4-4"/></svg><div><b>APIs en estándar y gobernadas</b>ISO 20022, versionadas, conformes a políticas y probadas con partners antes de producción.</div></li>
+          <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-5 3 3 5-7"/></svg><div><b>Business case vivo</b>La inversión y el roadmap se actualizan con cada caso y con lo que el sandbox devuelve.</div></li>
+        </ul>
+      </aside>
     </div>
   </div>
 
-  <!-- CÓMO FUNCIONA -->
-  <div class="how">
-    <div class="how-inner">
-      <div class="how-step anim anim-3">
-        <div class="how-num">Paso 1</div>
-        <div class="how-title">Set up de la entidad</div>
-        <div class="how-text">
-          El <a href="stages/1-discovery/assessment/index.html">Assessment</a> levanta el As-Is,
-          el stack, los GAPs y las dependencias entre tecnologías y equipos.
-          Es el <strong>mapa sobre el que se decide todo lo demás</strong>.
+  <!-- QUÉ HACEMOS · TIPOLOGÍAS DE PROYECTO -->
+  <section id="que-hacemos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">Qué hacemos</div>
+          <h2>Cuatro tipos de proyecto, <span class="hl">una sola plataforma</span></h2>
+          <p class="lead">Cada tipología responde a una pregunta de la entidad y termina en un entregable concreto. Los módulos del recorrido son las herramientas con las que lo hacemos.</p>
         </div>
       </div>
-      <div class="how-step anim anim-4">
-        <div class="how-num">Paso 2</div>
-        <div class="how-title">Simular y diseñar el caso de uso</div>
-        <div class="how-text">
-          Cada caso de uso —<strong>APIs de Embedded Finance / BaaS o producto completo con
-          su frontal</strong>— se simula contra el set up: qué APIs, equipo e inversión necesita.
-          Con el <a href="stages/2-api-design/api-inventory.html">inventario de APIs</a> como punto de
-          partida, los <a href="stages/2-api-design/api-designer.html">agentes de IA</a> extienden lo
-          existente o diseñan en estándar ISO 20022.
-        </div>
+      <div class="tipos">
+        <article class="tipo">
+          <span class="n">01</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="M8 11h6M11 8v6"/></svg></div>
+          <h3>Entender la entidad</h3>
+          <div class="q">"¿Dónde estoy y qué me falta para abrir mi arquitectura a terceros?"</div>
+          <div><div class="lbl">Entregable</div><div class="out">Set up de la entidad: As-Is, stack, GAPs, dependencias técnicas y organizativas, roadmap e inversión a justificar ante el comité.</div></div>
+          <div><div class="lbl">Herramientas</div><div class="mods"><a class="mod" href="stages/1-discovery/assessment/index.html"><b>01</b>Assessment</a></div></div>
+          <div class="who"><span class="chip-metodo">Método MBC · levantamiento y business case</span><span class="chip-agente">Agente · delta de GAPs</span></div>
+          <a class="go" href="stages/1-discovery/assessment/index.html">Entrar al Assessment →</a>
+        </article>
+        <article class="tipo">
+          <span class="n">02</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h7l2 2h9v11H3z"/><path d="M8 13h8"/></svg></div>
+          <h3>Descubrir y decidir la monetización</h3>
+          <div class="q">"¿Qué caso de uso tiene mercado, para quién, y es viable con lo que tengo?"</div>
+          <div><div class="lbl">Entregable</div><div class="out">Caso priorizado con audiencia, requerimientos del producto, viabilidad temprana y el paquete de requerimientos de negocio para el traspaso al equipo técnico.</div></div>
+          <div><div class="lbl">Herramientas</div><div class="mods"><a class="mod" href="stages/1-discovery/market-discovery/index.html"><b>02</b>Discovery</a><a class="mod" href="#casos">Casos probados</a></div></div>
+          <div class="who"><span class="chip-metodo">Método MBC · repositorio y viabilidad</span><span class="chip-agente">Agente · audiencias sintéticas</span></div>
+          <a class="go" href="stages/1-discovery/market-discovery/index.html">Entrar al Discovery →</a>
+        </article>
+        <article class="tipo">
+          <span class="n">03</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg></div>
+          <h3>Diseñar y gobernar las APIs</h3>
+          <div class="q">"¿Qué reutilizo, qué extiendo y qué construyo, y cómo lo mantengo en estándar?"</div>
+          <div><div class="lbl">Entregable</div><div class="out">Inventario cruzado con el caso, APIs diseñadas en ISO 20022, versionadas y conformes a las políticas de gobierno desde el primer artefacto.</div></div>
+          <div><div class="lbl">Herramientas</div><div class="mods"><a class="mod" href="stages/2-api-design/api-inventory.html"><b>03</b>Inventario</a><a class="mod" href="stages/2-api-design/api-designer.html"><b>04</b>Designer</a><a class="mod" href="stages/2-api-design/enrichment.html"><b>05</b>Versionado</a></div></div>
+          <div class="who"><span class="chip-metodo">Método MBC · políticas e ISO 20022</span><span class="chip-hibrido">Híbrido · el agente propone, la regla valida</span></div>
+          <a class="go" href="stages/2-api-design/api-inventory.html">Entrar al Inventario →</a>
+        </article>
+        <article class="tipo">
+          <span class="n">04</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 4H8z"/><path d="M6 7h12l2 12H4z"/><path d="M12 11v4"/></svg></div>
+          <h3>Probar y devengar</h3>
+          <div class="q">"¿Funciona con partners reales y qué le cuento al comité?"</div>
+          <div><div class="lbl">Entregable</div><div class="out">APIs validadas en sandbox con partners y comercios, refinamientos sobre el diseño y business case actualizado con lo aprendido.</div></div>
+          <div><div class="lbl">Herramientas</div><div class="mods"><a class="mod" href="stages/3-api-lab/index.html"><b>06</b>API Lab</a></div></div>
+          <div class="who"><span class="chip-metodo">Método MBC · sandbox y devengo</span><span class="chip-agente">Agente · refinamiento y roadmap</span></div>
+          <a class="go" href="stages/3-api-lab/index.html">Entrar al API Lab →</a>
+        </article>
       </div>
-      <div class="how-step anim anim-5">
-        <div class="how-num">Paso 3</div>
-        <div class="how-title">Validar y devengar</div>
-        <div class="how-text">
-          Las APIs se prueban en el <a href="stages/3-api-lab/index.html">API Lab</a>
-          (Sandbox as a Service o el del cliente, con partners y comercios reales). El resultado
-          refina los diseños y <strong>actualiza el business case ante C-Level</strong>.
+    </div>
+  </section>
+
+  <!-- DÓNDE ENTRA UN AGENTE -->
+  <section id="agentes" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">El ciclo completo</div>
+          <h2>Dónde entra un agente <span class="hl">y dónde no</span></h2>
+          <p class="lead">No están todos en el mismo sitio. El método es nuestro y se adapta con la información de la entidad; los agentes entran donde aportan velocidad y siempre detrás de una regla que valida.</p>
+        </div>
+        <a class="sec-link" href="stages/2-api-design/governance-policies.html">Cómo gobernamos los agentes</a>
+      </div>
+      <div class="leyenda">
+        <span class="txt">Leyenda:</span>
+        <span class="chip-agente">Agente</span><span>servicio de IA, hoy con datos simulados</span>
+        <span class="chip-metodo">Método MBC</span><span>paso determinista: nuestra información + la de la entidad</span>
+        <span class="chip-hibrido">Híbrido</span><span>el agente propone, una regla valida</span>
+      </div>
+      <div class="timeline">
+        <div class="etapa">
+          <span class="dot"></span>
+          <div class="et">Etapa 1 <i>2</i></div>
+          <h3>Entender</h3>
+          <p>Levantar la entidad y calcular cuánto le falta para cada caso.</p>
+          <ul>
+            <li>Levantamiento y business case <span class="chip-metodo">Método</span></li>
+            <li><code>gapsYDependencias</code> <span class="chip-agente">Agente</span></li>
+          </ul>
+        </div>
+        <div class="etapa">
+          <span class="dot"></span>
+          <div class="et">Etapa 2 <i>4</i></div>
+          <h3>Descubrir y decidir</h3>
+          <p>Elegir el caso con mercado y saber pronto si es viable.</p>
+          <ul>
+            <li>Repositorio de casos probados <span class="chip-metodo">Método</span></li>
+            <li><code>marketDiscovery</code> · audiencias <span class="chip-agente">Agente</span></li>
+            <li>Requerimientos del producto <span class="chip-hibrido">Híbrido</span></li>
+            <li>Viabilidad contra el inventario <span class="chip-metodo">Método</span></li>
+          </ul>
+        </div>
+        <div class="etapa">
+          <span class="dot"></span>
+          <div class="et">Etapa 3 <i>4</i></div>
+          <h3>Diseñar y gobernar</h3>
+          <p>Lo que se diseña se revisa contra las mismas reglas para todo el mundo.</p>
+          <ul>
+            <li>Inventario y políticas GOV-* <span class="chip-metodo">Método</span></li>
+            <li><code>diseñarAPI</code> · <code>construirAPI</code> <span class="chip-agente">Agente</span></li>
+            <li><code>enriquecerAPI</code> · ISO 20022 <span class="chip-hibrido">Híbrido</span></li>
+            <li>Versionado SemVer y deprecación <span class="chip-metodo">Método</span></li>
+          </ul>
+        </div>
+        <div class="etapa">
+          <span class="dot"></span>
+          <div class="et">Etapa 4 <i>3</i></div>
+          <h3>Probar y devengar</h3>
+          <p>El sandbox devuelve datos y el business case los recoge.</p>
+          <ul>
+            <li>Sandbox, métricas y devengo <span class="chip-metodo">Método</span></li>
+            <li><code>refinarAPI</code> <span class="chip-agente">Agente</span></li>
+            <li><code>actualizarRoadmap</code> <span class="chip-agente">Agente</span></li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- OUTCOMES -->
-  <div class="outcomes-bar">
-    <div class="outcomes-inner">
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Set up vivo</strong>GAPs, dependencias e inversión por caso de uso</div>
+  <!-- CASOS QUE YA HEMOS PROBADO -->
+  <section id="casos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">Evidencia</div>
+          <h2>Casos que ya hemos <span class="hl">trabajado y probado</span></h2>
+          <p class="lead">Recorridos y prototipos construidos con entidades de distintos mercados, anonimizados. Sirven de punto de partida en el Discovery: no se empieza de cero.</p>
+        </div>
+        <a class="sec-link" id="casos-link" href="stages/1-discovery/market-discovery/index.html">Ver el catálogo en el Discovery</a>
       </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Partners prueban</strong>antes del desarrollo productivo</div>
+      <div class="casos" id="casos-grid">
+        <!-- Se rellena desde demos/catalog.js si existe; si no, con el catálogo de referencia del Discovery -->
       </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Gobierno de APIs</strong>integrado desde el primer artefacto</div>
-      </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>Time-to-market</strong>reducido en 60–70%</div>
-      </div>
-      <div class="outcome-item">
-        <div class="outcome-dot"></div>
-        <div class="outcome-text"><strong>ISO 20022</strong>normalización automática del diccionario</div>
+      <div class="nota" id="casos-nota"></div>
+    </div>
+  </section>
+
+  <!-- GOBIERNO -->
+  <section id="gobierno" class="alt">
+    <div class="wrap">
+      <div class="gob">
+        <div>
+          <div class="kicker">Capa transversal</div>
+          <h2>Gobierno desde el primer artefacto</h2>
+          <p>Las políticas de APIs de la entidad, versionadas y citables por identificador, gobiernan cada diseño que sale de la plataforma y cada revisión que hace un agente. La misma capa cubre a los agentes: contrato, versión, owner y reglas que aplican, como cualquier otra API del inventario.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="stages/2-api-design/governance-policies.html">Ver políticas de gobierno</a>
+            <a class="btn btn-ghost" href="stages/2-api-design/enrichment.html">Cómo se evalúa una API</a>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="v">18</div><div class="l">reglas GOV-* de naming, versionado, errores, seguridad FAPI 2.0, paginación e idempotencia</div></div>
+          <div class="stat"><div class="v">7</div><div class="l">servicios de agente con contrato de entrada y salida, detrás de un único adaptador</div></div>
+          <div class="stat"><div class="v">1<small>fuente</small></div><div class="l">de verdad por entidad: el set up que leen y escriben todos los módulos</div></div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- FOOTER -->
+  <!-- RECORRIDO 01–06 -->
+  <section id="recorrido">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="kicker">El recorrido</div>
+          <h2>Seis módulos, <span class="hl">un solo hilo</span></h2>
+        </div>
+      </div>
+      <div class="ruta">
+        <a class="paso" href="stages/1-discovery/assessment/index.html"><span class="n">01</span><b>Assessment</b><small>¿Dónde está la entidad y qué le falta?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/1-discovery/market-discovery/index.html"><span class="n">02</span><b>Discovery<i>Beta</i></b><small>¿Qué oportunidad hay en el mercado?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/api-inventory.html"><span class="n">03</span><b>Inventario</b><small>¿Qué APIs y sistemas ya tengo?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/api-designer.html"><span class="n">04</span><b>Diseño de APIs</b><small>¿Cómo construyo o extiendo el caso?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/2-api-design/enrichment.html"><span class="n">05</span><b>Gestión &amp; Versionado</b><small>¿Cumplen el estándar y cómo evolucionan?</small><span class="go">Entrar →</span></a>
+        <a class="paso" href="stages/3-api-lab/index.html"><span class="n">06</span><b>API Lab<i>Beta</i></b><small>¿Funciona con partners y comercios reales?</small><span class="go">Entrar →</span></a>
+      </div>
+      <div class="bucle">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+        <b>El bucle</b><span>los resultados del Lab refinan las APIs y actualizan el roadmap y la inversión del Assessment.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIE -->
   <footer>
-    <div class="footer-left"><svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg><span>Open Business Accelerator · 2026</span></div>
-    <div class="footer-right">Versión Demo</div>
+    <div class="wrap">
+      <div class="left">
+        <svg class="mbc-logo" viewBox="0 0 3860.17 856.07" xmlns="http://www.w3.org/2000/svg" fill="currentColor" role="img" aria-label="MBC"><path d="M418.06 0 626.07 488.07 701.67 492.29 910.14 0 1328.21 0 1328.21 856.07 1100.17 856.07 1100.17 192.01 1048.6 192.48 830.28 684.35 496.03 682.1 280.46 194.49 228.04 192.01 228.04 856.07 0 856.07 0 0 418.06 0Z"/><path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/><path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>
+        <span>Open Business Accelerator · 2026</span>
+      </div>
+      <span>Entorno de demo · datos ficticios</span>
+    </div>
   </footer>
 
+  <!-- Casos probados: lee demos/catalog.js si la biblioteca existe (F17); si no, muestra el catálogo de referencia del Discovery -->
+  <script>
+    (function () {
+      var grid = document.getElementById('casos-grid');
+      var nota = document.getElementById('casos-nota');
+      var link = document.getElementById('casos-link');
+      var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+
+      var TIPO = { 'recorrido-guiado': 'Recorrido guiado', 'walkthrough-portal': 'Walkthrough de portal', 'prototipo-producto': 'Prototipo de producto' };
+
+      function desdeCatalogo(cat) {
+        var pub = cat.filter(function (d) { return d.estado === 'publicada' || d.estado === 'revision'; }).slice(0, 3);
+        if (!pub.length) return false;
+        grid.innerHTML = pub.map(function (d) {
+          var prot = d.acceso === 'protegida';
+          return '<a class="caso" href="demos/' + esc(d.ruta) + '">'
+            + '<div class="meta"><span class="chip">' + esc(d.dominio) + '</span><span class="chip neutral">' + esc(TIPO[d.tipo] || d.tipo) + '</span>'
+            + (d.geografia ? '<span class="chip neutral">' + esc(d.geografia) + '</span>' : '')
+            + (prot ? '<span class="chip neutral">Acceso con contraseña</span>' : '') + '</div>'
+            + '<h3>' + esc(d.titulo) + '</h3><p>' + esc(d.resumen) + '</p>'
+            + '<div class="foot"><span>' + esc(d.marco || '') + '</span><b>Abrir demo →</b></div></a>';
+        }).join('');
+        link.href = 'demos/index.html'; link.textContent = 'Ver toda la biblioteca de demos';
+        nota.textContent = 'Demos autocontenidas con datos ficticios. Las que llevan candado son material de propuesta con acceso restringido.';
+        return true;
+      }
+
+      function respaldo() {
+        var ref = [
+          { d: 'Embedded Finance', t: 'Pagos embebidos en el checkout de un marketplace', p: 'La entidad expone iniciación de pagos y conciliación a un comercio digital; el caso arranca con APIs existentes y una extensión.', m: 'Catálogo A · Pagos embebidos' },
+          { d: 'BaaS', t: 'Crédito para trabajadores de plataformas (gig workers)', p: 'Scoring alternativo sobre datos de la plataforma y desembolso en cuenta: un caso completo con frontal propio y APIs nuevas.', m: 'Catálogo C · Crédito embebido' },
+          { d: 'Pagos', t: 'Recaudación y dispersión para empresas', p: 'Cobros masivos y pagos a proveedores por API para un ERP de pymes, con conciliación automática.', m: 'Catálogo D · Recaudación y dispersión' }
+        ];
+        grid.innerHTML = ref.map(function (c) {
+          return '<a class="caso" href="stages/1-discovery/market-discovery/index.html">'
+            + '<div class="meta"><span class="chip">' + esc(c.d) + '</span><span class="chip neutral">Caso de referencia</span></div>'
+            + '<h3>' + esc(c.t) + '</h3><p>' + esc(c.p) + '</p>'
+            + '<div class="foot"><span>' + esc(c.m) + '</span><b>Abrir en el Discovery →</b></div></a>';
+        }).join('');
+        nota.textContent = 'La biblioteca de demos interactivas se incorpora en la siguiente entrega; mientras tanto, estos casos se abren desde el catálogo del Discovery.';
+      }
+
+      var s = document.createElement('script');
+      s.src = 'demos/catalog.js';
+      s.onload = function () { if (!(window.DEMO_CATALOG && desdeCatalogo(window.DEMO_CATALOG))) respaldo(); };
+      s.onerror = respaldo;
+      document.head.appendChild(s);
+    })();
+  </script>
 </body>
 </html>
