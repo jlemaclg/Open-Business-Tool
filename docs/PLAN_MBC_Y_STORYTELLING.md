@@ -51,10 +51,19 @@ Hoy: hero "Del discovery al despliegue…", recorrido de 6 nodos con pregunta, "
 
 ### 2.1 La frase
 
-> **Abrimos la entidad a terceros por APIs — con método, con agentes y con casos ya probados.**
-> Open Finance, Embedded Finance y BaaS: del diagnóstico al caso de uso en producción.
+> **Abrimos la entidad financiera a terceros con visión de startup y experiencia de gran banca.**
+> Cuatro enfoques de proyecto en Open Finance, Embedded Finance y BaaS, ejecutados por consultores 4.0 con la IA generativa en el ADN; soluciones que nacen sin deuda técnica y alineadas con la regulación vigente.
 
-### 2.2 Las cuatro tipologías de proyecto (el hilo del home y de la barra)
+**Mensajes de marca (revisados con Jonathan, 25-09-2026):**
+
+- **No vendemos un producto: mostramos nuestros enfoques de proyecto** para generar impacto en la entidad. La plataforma es *la herramienta con la que lo ejecutamos*, nunca el protagonista del mensaje. Evitar "tipos de proyecto sobre una plataforma".
+- **Consultores 4.0 con la IA generativa en el ADN**: identifican oportunidades de mejora en procesos manuales para aumentar el impacto del proyecto. La IA se cuenta como "dónde acelera" (antes / con consultoría 4.0), no con nombres técnicos de servicios.
+- **Visión y mentalidad de startup con la experiencia de grandes entidades financieras.**
+- **Sin deuda técnica desde el día uno** y **alineados con los marcos regulatorios vigentes** (la regulación entra como regla de diseño, no como revisión final).
+
+Nombres de los enfoques en la UI: **01 Diagnóstico y hoja de ruta · 02 Descubrimiento y monetización · 03 Diseño y gobierno de APIs · 04 Validación con el ecosistema** (equivalen a las tipologías de la tabla 2.2).
+
+### 2.2 Los cuatro enfoques de proyecto (el hilo del home y de la barra)
 
 | # | Tipología (lo que vende la práctica) | Pregunta del cliente | Qué entregamos | Módulos que lo soportan | Dónde actúa un agente / dónde es determinista |
 |---|---|---|---|---|---|
@@ -86,7 +95,9 @@ Se define como componente en `assets/mbc-tokens.css` (F14) y se aplica en cada m
 
 ---
 
-## 3. Home comercial: estructura propuesta (F16)
+## 3. Home comercial: estructura (F16 · implementada, revisada 25-09)
+
+> Implementado: hero con la frase de 2.1 y panel "Nuestra diferencia" → enfoques (pregunta, impacto, módulo) → Consultoría 4.0 (pilares + "Dónde acelera la IA") → casos probados → gobierno → la plataforma (recorrido 01–06). Los chips Agente/Método/Híbrido de D15 se quedan en los módulos, no en el home. La estructura original se conserva abajo como referencia.
 
 Identidad MBC, fondo claro, una sola columna de contenido `max-width 1240px`, sin `min-width:1280px` (hoy el home no es responsive).
 

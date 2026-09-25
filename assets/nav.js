@@ -2,7 +2,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Uso: incluir al final del <body> de cada herramienta:
 //   <script src="<ruta-relativa>/assets/nav.js" data-current="assessment"></script>
-// Valores de data-current: assessment | discovery | inventory | api-designer | enrichment | api-lab | policies
+// Valores de data-current: assessment | discovery | inventory | api-designer | enrichment | api-lab | policies | demos
+// (las demos de demos/<slug>/ NO cargan esta barra: son ficheros autocontenidos que vuelven al hub desde su hero)
 //
 // La barra se inyecta arriba del todo: muestra el recorrido 01→06, resalta el
 // módulo actual y siempre ofrece la vuelta al portal. Las rutas se calculan
@@ -91,10 +92,14 @@
     + '<path d="M3139.84 201 3860.17 201 3860.17 0 3148.64 0C3148.13 0 3147.62 0.01 3147.11 0.02 2906.1 1.66 2724.88 176.94 2724.88 428.03 2724.88 679.12 2905.48 852.72 3144.73 856.01 3145.07 856.01 3145.42 856.02 3145.76 856.03 3145.9 856.03 3146.05 856.03 3146.19 856.03 3147 856.04 3147.81 856.06 3148.63 856.06L3860.16 856.06 3860.16 655.06 3141.03 655.06C3033.15 651.52 2947.27 567.26 2947.27 428.02 2947.27 288.78 3029.79 204.6 3139.84 200.98Z"/>'
     + '<path d="M1485.95 0 2304.74 0C2482.07 0 2588.46 94.17 2588.46 231.14 2588.46 311.86 2550.55 384.01 2463.72 407.24L2463.72 426.81C2560.33 441.49 2614.14 508.75 2614.14 618.81 2614.14 765.56 2516.3 856.06 2334.08 856.06L1485.94 856.06 1485.94 0ZM2292.51 335.09C2345.1 335.09 2373.23 305.74 2373.23 259.27 2373.23 212.8 2345.1 183.45 2292.51 183.45L1706.08 183.45 1706.08 335.1 2292.51 335.1ZM2299.84 672.62C2357.32 672.62 2386.67 646.94 2386.67 595.57 2386.67 544.2 2357.32 518.52 2299.84 518.52L1706.08 518.52 1706.08 672.61 2299.84 672.61Z"/></svg>';
 
-  html += '</div><a class="obx-pol' + (current === 'policies' ? ' obx-pol-actual' : '') + '" href="' + root
+  var demosIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    + '<rect x="3" y="5" width="18" height="13" rx="2"/><path d="m10 9 4 2.5-4 2.5z" fill="currentColor" stroke="none"/><path d="M8 21h8"/></svg>';
+  html += '</div><a class="obx-pol' + (current === 'demos' ? ' obx-pol-actual' : '') + '" href="' + root
+    + 'demos/index.html" title="Biblioteca de demos: casos de uso ya trabajados y probados">' + demosIcon + 'Demos</a>'
+    + '<a class="obx-pol' + (current === 'policies' ? ' obx-pol-actual' : '') + '" href="' + root
     + 'stages/2-api-design/governance-policies.html" title="Gobierno: políticas de APIs y de agentes que aplican en todo el recorrido">' + shieldIcon + 'Gobierno</a>'
     + '<div class="obx-sep"></div><div class="obx-etapa">'
-    + (current === 'policies' ? 'Set up · Gobierno' : (etapaActual || 'Open Business Accelerator')) + '</div>'
+    + (current === 'policies' ? 'Set up · Gobierno' : current === 'demos' ? 'Biblioteca de demos' : (etapaActual || 'Open Business Accelerator')) + '</div>'
     + mbcLogo;
 
   nav.innerHTML = html;

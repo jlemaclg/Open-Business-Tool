@@ -6,6 +6,15 @@ versionado según [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+### Added
+- **Biblioteca de demos** (F17 · D13): `demos/index.html` (filtros por tipo, dominio, geografía y acceso; buscador; tarjetas con candado para las protegidas) y `demos/catalog.js` como registro único (`window.DEMO_CATALOG`). Cada demo es un HTML autocontenido bajo `demos/<slug>/` que vuelve al hub desde su hero; no carga `nav.js`. El portal ya la lee para la sección "Casos que ya hemos probado".
+- **Demos protegidas por contraseña**: `tools/proteger-demo.py` cifra el HTML (PBKDF2-HMAC-SHA256 · AES-256-GCM) y genera una página de desbloqueo en identidad MBC que descifra en el navegador con WebCrypto; sin backend ni build. La versión en claro vive en `_private/` (ignorado por git) y nunca se commitea. Primera demo protegida: `demos/uy-mandato-debito-precargado-push/` (activación de mandatos de débito, solicitud precargada y push bancario, 14 pasos; `acceso: 'protegida'`, `estado: 'revision'`).
+- `tools/check_demo.py`: comprobaciones previas a publicar una demo (placeholders, Montserrat, logo MBC, nota de datos ficticios, recursos externos permitidos, tamaño, registro en `catalog.js`).
+- `assets/nav.js`: entrada **Demos** con icono junto a **Gobierno**; `data-current="demos"` para la biblioteca.
+
+### Changed
+- Portal `index.html` rehecho como pieza de venta (F16): hero con el posicionamiento de la práctica ("Abrimos la entidad financiera a terceros con visión de startup y experiencia de gran banca") y panel "Nuestra diferencia"; **cuatro enfoques de proyecto** (Diagnóstico y hoja de ruta · Descubrimiento y monetización · Diseño y gobierno de APIs · Validación con el ecosistema) con la pregunta de la entidad, el impacto y el módulo que lo soporta; sección **Consultoría 4.0** (consultores con la IA generativa en el ADN, velocidad de startup con experiencia de gran banca, sin deuda técnica, alineados con la regulación) y tabla "Dónde acelera la IA en cada enfoque" (antes / con consultoría 4.0); "Casos que ya hemos probado" desde `demos/catalog.js`; banda de Gobierno; la plataforma se presenta como la herramienta con la que ejecutamos, no como producto. Responsive hasta 390 px.
+
 ## [0.3.0] - 2026-09-25
 
 La plataforma cambia a la identidad visual **MBC** (tokens compartidos, Montserrat, logo) en portal, barra de navegación y los seis módulos; entra el plan de evolución hacia herramienta de venta (decisiones D12–D16, features F14–F24), el Designer arranca desde un caso o un estudio de Discovery y el API Lab cierra el bucle de refinamiento.
