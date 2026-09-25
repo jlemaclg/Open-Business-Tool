@@ -22,30 +22,30 @@ const COLS = ['canal', 'capacidad', 'servicio', 'core', 'equipo'];   // columnas
 const css = document.createElement('style');
 css.textContent = `
   .gd-grid{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start;}
-  .gd-svgwrap{background:#fff;border:1px solid #e6e3d8;border-radius:5px;padding:10px;overflow:auto;}
+  .gd-svgwrap{background:#fff;border:1px solid var(--mbc-ceramic);border-radius:5px;padding:10px;overflow:auto;}
   .gd-legend{font-size:10.5px;color:#777;margin-top:6px;display:flex;gap:16px;flex-wrap:wrap;}
   .gd-legend span{display:inline-flex;align-items:center;gap:5px;}
   .gd-sw{display:inline-block;width:14px;height:0;border-top:2px solid #999;}
-  .gd-form label{display:block;font-size:10px;font-weight:bold;letter-spacing:1.1px;text-transform:uppercase;color:#4F062A;margin:9px 0 3px;}
-  .gd-form input[type=text],.gd-form select{width:100%;padding:7px 9px;border:1px solid #c9c6bb;border-radius:3px;font-size:12.5px;background:#fff;}
+  .gd-form label{display:block;font-size:10px;font-weight:bold;letter-spacing:1.1px;text-transform:uppercase;color:var(--mbc-navy);margin:9px 0 3px;}
+  .gd-form input[type=text],.gd-form select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:3px;font-size:12.5px;background:#fff;}
   .gd-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .gd-btn{margin-top:10px;background:#4F062A;color:#fff;border:none;padding:9px 16px;border-radius:3px;font-size:12.5px;cursor:pointer;}
-  .gd-btn:hover{background:#FF0054;}
-  .gd-btn-sec{margin-top:10px;background:#fff;color:#4F062A;border:1px solid #4F062A;padding:8px 14px;border-radius:3px;font-size:12px;cursor:pointer;}
-  .gd-btn-sec:hover{border-color:#FF0054;color:#FF0054;}
-  .gd-mock{background:rgba(255,0,84,.08);border:1px solid rgba(255,0,84,.3);color:#FF0054;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:10px;}
-  .gd-delta h4{font-family:Georgia,serif;font-size:15px;color:#260717;margin:16px 0 6px;}
+  .gd-btn{margin-top:10px;background:var(--mbc-navy);color:#fff;border:none;padding:9px 16px;border-radius:3px;font-size:12.5px;cursor:pointer;}
+  .gd-btn:hover{background:var(--mbc-electric);}
+  .gd-btn-sec{margin-top:10px;background:#fff;color:var(--mbc-navy);border:1px solid var(--mbc-navy);padding:8px 14px;border-radius:3px;font-size:12px;cursor:pointer;}
+  .gd-btn-sec:hover{border-color:var(--mbc-electric);color:var(--mbc-electric);}
+  .gd-mock{background:rgba(20,122,255,.08);border:1px solid rgba(20,122,255,.3);color:var(--mbc-electric);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:10px;}
+  .gd-delta h4{font-family:var(--sans);font-size:15px;color:var(--mbc-navy-deep);margin:16px 0 6px;}
   table.gd-t{width:100%;border-collapse:collapse;font-size:11.5px;background:#fff;}
-  .gd-t th{text-align:left;color:#4F062A;border-bottom:2px solid #4F062A;padding:5px 8px;font-size:10px;letter-spacing:.6px;text-transform:uppercase;}
-  .gd-t td{padding:6px 8px;border-bottom:1px solid #efede6;}
+  .gd-t th{text-align:left;color:var(--mbc-navy);border-bottom:2px solid var(--mbc-navy);padding:5px 8px;font-size:10px;letter-spacing:.6px;text-transform:uppercase;}
+  .gd-t td{padding:6px 8px;border-bottom:1px solid var(--bg);}
   .gd-ok{color:#1a7f37;font-weight:bold;} .gd-warn{color:#b58900;font-weight:bold;} .gd-block{color:#c62828;font-weight:bold;}
-  .gd-inv{margin-top:14px;background:#260717;color:#fff;padding:14px 18px;border-radius:5px;display:flex;gap:28px;align-items:center;}
-  .gd-inv b{font-family:Georgia,serif;font-size:20px;color:#FF0054;display:block;}
+  .gd-inv{margin-top:14px;background:var(--mbc-navy-deep);color:#fff;padding:14px 18px;border-radius:5px;display:flex;gap:28px;align-items:center;}
+  .gd-inv b{font-family:var(--sans);font-size:20px;color:var(--mbc-electric);display:block;}
   .gd-inv small{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);}
   .gd-empty{font-size:12.5px;color:#777;font-style:italic;padding:14px 0;}
   .gd-analizar{display:flex;gap:10px;align-items:flex-end;margin-bottom:6px;}
   .gd-analizar select{flex:1;}
-  .gd-spin{font-size:12px;color:#FF0054;font-style:italic;}
+  .gd-spin{font-size:12px;color:var(--mbc-electric);font-style:italic;}
   .gd-dellink{font-size:10.5px;color:#b33;cursor:pointer;background:none;border:none;opacity:.7;}
   .gd-dellink:hover{opacity:1;text-decoration:underline;}
 `;
@@ -71,17 +71,17 @@ sec.innerHTML = `
         <div class="gd-svgwrap"><svg id="gdSvg" width="640" height="360"></svg></div>
         <div class="gd-legend">
           <span><span class="gd-sw" style="border-color:#999;"></span> técnica</span>
-          <span><span class="gd-sw" style="border-top-style:dotted;border-color:#4F062A;"></span> organizativa</span>
+          <span><span class="gd-sw" style="border-top-style:dotted;border-color:var(--mbc-navy);"></span> organizativa</span>
           <span><span class="gd-sw" style="border-top-style:dashed;border-color:#b58900;"></span> equipo</span>
           <span><span class="gd-sw" style="border-color:#c62828;border-top-width:3px;"></span> bloqueante</span>
-          <span style="color:#FF0054;">nodo rosa = GAP (no existe aún)</span>
+          <span style="color:var(--mbc-electric);">nodo rosa = GAP (no existe aún)</span>
         </div>
         <button class="gd-btn-sec" id="gdSeed">Cargar ejemplo de referencia</button>
       </div>
       <div class="card gd-delta" id="gdDeltaCard" style="margin-top:16px;">
         <h3>Análisis del caso de uso — el delta contra el set up</h3>
         <div class="gd-analizar">
-          <div style="flex:1;"><label style="font-size:10px;font-weight:bold;letter-spacing:1.1px;text-transform:uppercase;color:#4F062A;">Caso de uso</label>
+          <div style="flex:1;"><label style="font-size:10px;font-weight:bold;letter-spacing:1.1px;text-transform:uppercase;color:var(--mbc-navy);">Caso de uso</label>
           <select id="gdCaso"></select></div>
           <button class="gd-btn" id="gdAnalizar">Analizar con el agente</button>
         </div>
@@ -148,16 +148,16 @@ function renderGrafo() {
   out += aristas.filter((a) => pos[a.origen] && pos[a.destino]).map((a) => {
     const p1 = pos[a.origen], p2 = pos[a.destino];
     const blq = a.estado === 'bloqueante', rsg = a.estado === 'riesgo';
-    const color = blq ? '#c62828' : rsg ? '#b58900' : (a.tipo === 'organizativa' ? '#4F062A' : '#999');
+    const color = blq ? '#c62828' : rsg ? '#b58900' : (a.tipo === 'organizativa' ? 'var(--mbc-navy)' : '#999');
     const mx = (p1.x + p2.x) / 2;
     return `<path d="M ${p1.x} ${p1.y} C ${mx} ${p1.y}, ${mx} ${p2.y}, ${p2.x} ${p2.y}" fill="none" stroke="${color}" stroke-width="${blq ? 2.6 : 1.6}" stroke-dasharray="${DASH[a.tipo] || ''}" opacity=".85"><title>${H.esc(nodoNombre(a.origen))} → ${H.esc(nodoNombre(a.destino))} (${a.tipo} · ${a.estado})</title></path>`;
   }).join('');
   out += nodos.map((n) => {
     const p = pos[n.id]; if (!p) return '';
     const gap = n.estado === 'gap', par = n.estado === 'parcial';
-    const fill = gap ? '#fff' : '#4F062A';
-    const stroke = gap ? '#FF0054' : par ? '#b58900' : '#4F062A';
-    const txt = gap ? '#FF0054' : '#fff';
+    const fill = gap ? '#fff' : 'var(--mbc-navy)';
+    const stroke = gap ? 'var(--mbc-electric)' : par ? '#b58900' : 'var(--mbc-navy)';
+    const txt = gap ? 'var(--mbc-electric)' : '#fff';
     const w = Math.max(86, n.nombre.length * 6.6 + 18);
     return `<g><rect x="${p.x - w / 2}" y="${p.y - 15}" width="${w}" height="30" rx="15" fill="${fill}" stroke="${stroke}" stroke-width="2" ${gap ? 'stroke-dasharray="5 3"' : ''}/>
       <text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="10.5" fill="${txt}">${H.esc(n.nombre)}</text></g>`;
@@ -293,7 +293,7 @@ H.$('gdAnalizar').onclick = async () => {
     ${d._mock ? '<span class="gd-mock">Datos simulados — agente mock</span>' : ''}
     <h4>APIs necesarias</h4>
     <table class="gd-t"><thead><tr><th>API</th><th>Estado</th><th>Razón</th><th></th></tr></thead><tbody>
-      ${d.apisNecesarias.map((a) => `<tr><td>${esc(a.nombre)}</td><td class="${a.estado === 'existente' ? 'gd-ok' : 'gd-warn'}">${a.estado}</td><td>${esc(a.razon)}</td><td><a href="../../2-api-design/api-designer.html?caso=${caso.id}&api=${encodeURIComponent(a.nombre)}" style="color:#FF0054;font-weight:bold;font-size:11px;">Diseñar →</a></td></tr>`).join('')}
+      ${d.apisNecesarias.map((a) => `<tr><td>${esc(a.nombre)}</td><td class="${a.estado === 'existente' ? 'gd-ok' : 'gd-warn'}">${a.estado}</td><td>${esc(a.razon)}</td><td><a href="../../2-api-design/api-designer.html?caso=${caso.id}&api=${encodeURIComponent(a.nombre)}" style="color:var(--mbc-electric);font-weight:bold;font-size:11px;">Diseñar →</a></td></tr>`).join('')}
     </tbody></table>
     <h4>Necesidades tecnológicas</h4>
     ${d.necesidadesTecnologicas.length ? `<table class="gd-t"><thead><tr><th>Pieza</th><th>Capa</th><th>Esfuerzo estimado</th></tr></thead><tbody>

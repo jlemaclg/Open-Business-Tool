@@ -29,25 +29,25 @@ const ETAPA_LABEL = {
 const css = document.createElement('style');
 css.textContent = `
   .cu-grid{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start;}
-  .cu-form label{display:block;font-size:10.5px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:var(--morado,#4F062A);margin:12px 0 4px;}
-  .cu-form input[type=text]{width:100%;padding:9px 10px;border:1px solid #c9c6bb;border-radius:3px;font-size:13px;}
-  .cu-nat{display:block;border:1px solid #c9c6bb;border-radius:4px;padding:10px 12px;margin-bottom:8px;cursor:pointer;font-size:12.5px;line-height:1.45;}
-  .cu-nat:hover{border-color:#FF0054;}
+  .cu-form label{display:block;font-size:10.5px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:var(--morado,var(--mbc-navy));margin:12px 0 4px;}
+  .cu-form input[type=text]{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:3px;font-size:13px;}
+  .cu-nat{display:block;border:1px solid var(--line);border-radius:4px;padding:10px 12px;margin-bottom:8px;cursor:pointer;font-size:12.5px;line-height:1.45;}
+  .cu-nat:hover{border-color:var(--mbc-electric);}
   .cu-nat input{margin-right:8px;}
-  .cu-nat b{color:#260717;}
+  .cu-nat b{color:var(--mbc-navy-deep);}
   .cu-nat small{display:block;color:#777;margin-left:21px;}
-  .cu-btn{margin-top:14px;background:#4F062A;color:#fff;border:none;padding:10px 20px;border-radius:3px;font-size:13px;cursor:pointer;letter-spacing:.4px;}
-  .cu-btn:hover{background:#FF0054;}
-  .cu-aviso{background:rgba(255,0,84,.07);border-left:3px solid #FF0054;padding:10px 14px;font-size:12px;margin-bottom:14px;}
-  .cu-card{background:#fff;border:1px solid #e6e3d8;border-radius:5px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;box-shadow:0 1px 6px rgba(0,0,0,.05);}
-  .cu-card-title{font-family:Georgia,serif;font-size:16px;color:#260717;margin-bottom:5px;}
+  .cu-btn{margin-top:14px;background:var(--mbc-navy);color:#fff;border:none;padding:10px 20px;border-radius:3px;font-size:13px;cursor:pointer;letter-spacing:.4px;}
+  .cu-btn:hover{background:var(--mbc-electric);}
+  .cu-aviso{background:rgba(20,122,255,.07);border-left:3px solid var(--mbc-electric);padding:10px 14px;font-size:12px;margin-bottom:14px;}
+  .cu-card{background:#fff;border:1px solid var(--mbc-ceramic);border-radius:5px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+  .cu-card-title{font-family:var(--sans);font-size:16px;color:var(--mbc-navy-deep);margin-bottom:5px;}
   .cu-pill{display:inline-block;font-size:10px;padding:2px 9px;border-radius:12px;letter-spacing:.4px;margin-right:6px;}
   .cu-pill-baas{background:rgba(26,127,55,.1);color:#1a7f37;border:1px solid rgba(26,127,55,.3);}
-  .cu-pill-full{background:rgba(255,0,84,.1);color:#FF0054;border:1px solid rgba(255,0,84,.3);}
-  .cu-pill-etapa{background:rgba(79,6,42,.08);color:#4F062A;border:1px solid rgba(79,6,42,.25);}
+  .cu-pill-full{background:rgba(20,122,255,.1);color:var(--mbc-electric);border:1px solid rgba(20,122,255,.3);}
+  .cu-pill-etapa{background:rgba(0,52,120,.08);color:var(--mbc-navy);border:1px solid rgba(0,52,120,.25);}
   .cu-meta{font-size:11px;color:#888;margin-top:6px;}
   .cu-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:0 0 auto;}
-  .cu-gaps{font-size:11.5px;padding:8px 14px;border-radius:3px;border:1px solid #c9c6bb;background:#f4f3ee;color:#999;cursor:not-allowed;white-space:nowrap;}
+  .cu-gaps{font-size:11.5px;padding:8px 14px;border-radius:3px;border:1px solid var(--line);background:var(--bg);color:#999;cursor:not-allowed;white-space:nowrap;}
   .cu-del{font-size:11px;color:#b33;background:none;border:none;cursor:pointer;opacity:.7;}
   .cu-del:hover{opacity:1;text-decoration:underline;}
   .cu-empty{font-size:12.5px;color:#777;font-style:italic;padding:18px 0;}
@@ -80,7 +80,7 @@ sec.innerHTML = `
       <button class="cu-btn" id="cuCrear">Crear caso de uso</button>
     </div>
     <div>
-      <h3 style="margin-bottom:10px;">Casos de la entidad <span id="cuEntNombre" style="color:#FF0054;"></span></h3>
+      <h3 style="margin-bottom:10px;">Casos de la entidad <span id="cuEntNombre" style="color:var(--mbc-electric);"></span></h3>
       <div id="cuLista"></div>
     </div>
   </div>`;
@@ -118,6 +118,7 @@ async function renderCasos() {
         <span class="cu-pill ${c.naturaleza === Naturaleza.CASO_COMPLETO ? 'cu-pill-full' : 'cu-pill-baas'}">${esc(NAT_LABEL[c.naturaleza] || c.naturaleza)}</span>
         <span class="cu-pill cu-pill-etapa">Etapa: ${esc(ETAPA_LABEL[c.etapa] || c.etapa)}</span>
         <div class="cu-meta">Actualizado: ${c.actualizadoEn ? new Date(c.actualizadoEn).toLocaleString('es') : '—'}</div>
+        ${(c.ecosistema?.apis || []).length ? `<div class="cu-meta">APIs: ${c.ecosistema.apis.map((a) => `${esc(a.nombre)} <b style="color:${a.estado === 'refinada' ? '#1a7f37' : a.estado === 'final' ? 'var(--mbc-navy)' : '#b58900'};">(${a.estado})</b>`).join(' · ')}</div>` : ''}
       </div>
       <div class="cu-actions">
         ${window.__obaGaps

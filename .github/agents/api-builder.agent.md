@@ -2,7 +2,7 @@
 name: api-builder
 description: Generate production-ready OpenAPI 3.1 YAML, JSON Schemas, and artifacts from an approved data dictionary produced by the business-analyst agent.
 tools: ["read", "search", "terminal"]
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 

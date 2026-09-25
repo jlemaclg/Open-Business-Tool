@@ -5,22 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Assessment de la Entidad · Open Business Accelerator</title>
 <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg"><link rel="alternate icon" type="image/png" href="../../../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/mbc-tokens.css">
 <style>
 :root{
-  --morado:#4F062A; --morado-osc:#260717; --accent:#FF0054;
-  --gris:#E3E2DA; --blanco:#FFFFFF;
+  --morado:var(--mbc-navy); --morado-osc:var(--mbc-navy-deep); --accent:var(--mbc-electric);
+  --gris:var(--bg); --blanco:#FFFFFF;
   --ok:#2e7d32; --warn:#b26a00; --bad:#c62828;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
-body{font-family:Arial,Helvetica,sans-serif; background:var(--gris); color:var(--morado); font-size:13px;}
-h1,h2,h3,.serif{font-family:Georgia,serif; font-weight:400;}
+body{font-family:var(--sans); background:var(--gris); color:var(--morado); font-size:13px;}
+h1,h2,h3,.serif{font-family:var(--sans); font-weight:700;}
 .accent{color:var(--accent);}
 
 /* ── Top bar ── */
-#topbar{background:var(--morado); color:var(--blanco); padding:14px 40px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
-#topbar .brand{font-family:Georgia,serif; font-size:22px; letter-spacing:-0.5px;}
+#topbar{background:var(--morado); color:var(--blanco); padding:12px 40px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+#topbar .brand{font-family:var(--sans);font-weight:800; font-size:18px; letter-spacing:-0.2px; white-space:nowrap;}
 #topbar .brand b{color:var(--accent); font-weight:400;}
-#topbar .tool-title{font-size:12px; opacity:.85; border-left:1px solid rgba(255,255,255,.3); padding-left:20px;}
+#topbar .tool-title{font-size:11px; line-height:1.35; opacity:.85; border-left:1px solid rgba(255,255,255,.3); padding-left:16px;}
 #topbar .spacer{flex:1;}
 #topbar input, #topbar select{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.35); color:#fff; padding:6px 10px; border-radius:3px; font-size:12px;}
 #topbar input::placeholder{color:rgba(255,255,255,.6);}
@@ -40,32 +43,32 @@ section.mod{display:none;}
 section.mod.active{display:block;}
 .eyebrow{font-size:11px; letter-spacing:1.5px; text-transform:uppercase; opacity:.8; margin-bottom:6px;}
 h2.mod-title{font-size:24px; margin-bottom:4px; line-height:1.2;}
-.mod-sub{font-family:Georgia,serif; font-size:14px; opacity:.85; margin-bottom:18px;}
-.card{background:var(--blanco); border-radius:6px; padding:18px 20px; margin-bottom:18px; box-shadow:0 1px 3px rgba(38,7,23,.08);}
+.mod-sub{font-family:var(--sans);font-weight:500; font-size:14px; opacity:.85; margin-bottom:18px;}
+.card{background:var(--blanco); border-radius:6px; padding:18px 20px; margin-bottom:18px; box-shadow:0 1px 3px rgba(0,31,77,.08);}
 .card h3{font-size:16px; margin-bottom:10px;}
-.card h3 .hint{font-family:Arial; font-size:11px; opacity:.6;}
+.card h3 .hint{font-family:var(--sans); font-size:11px; opacity:.6;}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
 .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
 .kpis{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
 .kpi{background:var(--morado); color:#fff; border-radius:6px; padding:14px 18px; min-width:170px; flex:1;}
 .kpi.light{background:var(--blanco); color:var(--morado); border-top:3px solid var(--accent);}
 .kpi .lbl{font-size:10px; text-transform:uppercase; letter-spacing:1px; opacity:.75;}
-.kpi .val{font-family:Georgia,serif; font-size:24px; margin-top:4px;}
+.kpi .val{font-family:var(--sans);font-weight:700; font-size:24px; margin-top:4px;}
 .kpi .sub{font-size:10.5px; opacity:.75; margin-top:3px;}
 
 /* ── Tables ── */
 table{width:100%; border-collapse:collapse; font-size:12px;}
 th{background:var(--morado); color:#fff; text-align:left; padding:7px 8px; font-weight:400; font-size:11px; white-space:nowrap;}
-td{padding:5px 8px; border-bottom:1px solid rgba(79,6,42,.12); vertical-align:middle;}
-tr:hover td{background:rgba(79,6,42,.04);}
-td input, td select{width:100%; border:1px solid rgba(79,6,42,.2); border-radius:3px; padding:4px 6px; font-size:12px; color:var(--morado); background:#fff;}
+td{padding:5px 8px; border-bottom:1px solid rgba(0,52,120,.12); vertical-align:middle;}
+tr:hover td{background:rgba(0,52,120,.04);}
+td input, td select{width:100%; border:1px solid rgba(0,52,120,.2); border-radius:3px; padding:4px 6px; font-size:12px; color:var(--morado); background:#fff;}
 td input[type=number]{text-align:right;}
 td input:focus, td select:focus{outline:2px solid var(--accent);}
 .num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
-.tot-row td{font-weight:700; border-top:2px solid var(--morado); background:rgba(79,6,42,.06);}
+.tot-row td{font-weight:700; border-top:2px solid var(--morado); background:rgba(0,52,120,.06);}
 .small{font-size:11px; opacity:.75;}
 .pill{display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; color:#fff;}
-.pill.fab{background:var(--accent);} .pill.cel{background:var(--morado);} .pill.opc{background:#8a8a7e;}
+.pill.fab{background:var(--accent);} .pill.cel{background:var(--morado);} .pill.opc{background:var(--text-faint);}
 button.mini{background:var(--morado); color:#fff; border:none; border-radius:3px; padding:4px 10px; cursor:pointer; font-size:11px;}
 button.mini.rojo{background:var(--accent);}
 button.mini.ghost{background:transparent; color:var(--morado); border:1px solid var(--morado);}
@@ -77,24 +80,24 @@ button.mini.ghost{background:transparent; color:var(--morado); border:1px solid 
 .gantt{border-collapse:collapse;}
 .gantt th, .gantt td{padding:2px 4px; font-size:10px; border:none;}
 .gantt .bar{height:12px; border-radius:2px;}
-.gantt td.mcell{min-width:20px; border-left:1px solid rgba(79,6,42,.07);}
-.amb-row td{font-weight:700; background:rgba(79,6,42,.08); font-size:11px;}
+.gantt td.mcell{min-width:20px; border-left:1px solid rgba(0,52,120,.07);}
+.amb-row td{font-weight:700; background:rgba(0,52,120,.08); font-size:11px;}
 
 /* ── Maturity chips ── */
 .mat{display:inline-block; min-width:86px; text-align:center; padding:3px 6px; border-radius:3px; font-size:10.5px; font-weight:700; color:#fff;}
 .m0{background:#c62828;} .m1{background:#d95f2b;} .m2{background:#b26a00;} .m3{background:#8f8f3d;} .m4{background:#5c8f3d;} .m5{background:#2e7d32;}
 
-.ticker{background:var(--morado); color:#fff; border-radius:6px; padding:12px 18px; font-family:Georgia,serif; font-size:13.5px; margin-top:6px;}
-.note{background:rgba(255,0,84,.07); border-left:3px solid var(--accent); padding:10px 14px; font-size:11.5px; margin:10px 0; border-radius:0 4px 4px 0;}
+.ticker{background:var(--morado); color:#fff; border-radius:6px; padding:12px 18px; font-family:var(--sans);font-weight:700; font-size:13.5px; margin-top:6px;}
+.note{background:rgba(20,122,255,.07); border-left:3px solid var(--accent); padding:10px 14px; font-size:11.5px; margin:10px 0; border-radius:0 4px 4px 0;}
 details.metodo{margin:10px 0;}
 details.metodo summary{cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:7px; font-size:10.5px; font-weight:bold; letter-spacing:1.3px; text-transform:uppercase; color:var(--accent); opacity:.85;}
 details.metodo summary:hover{opacity:1;}
 details.metodo summary::-webkit-details-marker{display:none;}
-details.metodo summary::before{content:'+'; font-family:Georgia,serif; font-size:14px; line-height:1;}
+details.metodo summary::before{content:'+'; font-family:var(--sans);font-weight:700; font-size:14px; line-height:1;}
 details.metodo[open] summary::before{content:'\2212';}
 details.metodo .note{margin-top:8px;}
 .chart-box{background:#fff; border-radius:6px; padding:14px;}
-svg text{font-family:Arial; }
+svg text{font-family:var(--sans); }
 footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5px; padding:12px 40px; display:flex; justify-content:space-between;}
 @media print{ #topbar button,#tabs{display:none;} section.mod{display:block; page-break-before:always;} }
 </style>
@@ -177,7 +180,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
     <div id="levSug"></div>
   </div>
   <div class="card" style="overflow-x:auto">
-    <h3>Fichas de levantamiento <span class="hint">— filtrar por frente: </span><select id="levFiltro" style="width:auto;border:1px solid rgba(79,6,42,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="renderAll()"><option value="-1">Todos los frentes</option></select></h3>
+    <h3>Fichas de levantamiento <span class="hint">— filtrar por frente: </span><select id="levFiltro" style="width:auto;border:1px solid rgba(0,52,120,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="renderAll()"><option value="-1">Todos los frentes</option></select></h3>
     <div id="levTabla"></div>
     <div style="margin-top:10px"><button class="mini" onclick="addLev()">+ Añadir pregunta</button>
     <span class="small" style="margin-left:14px">Estados: <b>Pendiente</b> (sin levantar) · <b>Cumple</b> · <b>Parcialmente</b> · <b>No cumple</b> · <b>No aplica</b>. Registrar compromisos (documentos, sesiones con proveedores, validaciones) en la última columna.</span></div>
@@ -301,7 +304,7 @@ footer{background:var(--morado-osc); color:rgba(255,255,255,.6); font-size:10.5p
   <h2 class="mod-title"><span class="accent">In-house, Híbrido o SaaS</span>: la madurez del As-Is y el time-to-market ponderan la decisión</h2>
   <div class="mod-sub">Compara los tres caminos con los números de este assessment: In-house construye todo, Híbrido delega la capa compleja (IdP, consentimiento, directorio), SaaS delega la plataforma completa. En los tres sobreviven la integración con el core, el gobierno y el cumplimiento — ante el regulador, el responsable siempre es el banco.</div>
   <div class="grid2">
-    <div class="card"><h3>Escenario SaaS / PaaS <span class="hint">— preset: </span><select id="s_preset" style="width:auto;border:1px solid rgba(79,6,42,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="aplicarPresetSaas(this.value)"><option value="">— valores propios —</option><option value="paas">Referencia PaaS regional (IPI/IPC)</option><option value="tiers">Referencia SaaS por tiers + Consent Engine</option></select></h3>
+    <div class="card"><h3>Escenario SaaS / PaaS <span class="hint">— preset: </span><select id="s_preset" style="width:auto;border:1px solid rgba(0,52,120,.3);border-radius:3px;padding:3px 6px;font-size:11px" onchange="aplicarPresetSaas(this.value)"><option value="">— valores propios —</option><option value="paas">Referencia PaaS regional (IPI/IPC)</option><option value="tiers">Referencia SaaS por tiers + Consent Engine</option></select></h3>
       <table id="saasParams">
         <tr><td>Setup / implantación inicial (USD)</td><td><input type="number" id="s_setup" onchange="S.saas.setup=+this.value;dirty();renderAll()"></td></tr>
         <tr><td>Suscripción anual (USD/año)</td><td><input type="number" id="s_susc" onchange="S.saas.susc=+this.value;dirty();renderAll()"></td></tr>
@@ -722,7 +725,7 @@ function rInis(R){
   const f=R.f;
   let h='<table><tr><th>ID</th><th style="min-width:240px">Iniciativa</th><th>Ámbito</th><th>Tipo</th><th>Ejecución</th><th class="num">Fábrica USD</th><th>Dur. (m)</th><th>Mes ini.</th><th title="Iniciativa crítica de infraestructura — marca la ruta crítica">Crítica ★</th><th title="IDs de los que depende, separados por coma">Depende de</th><th>Incluir</th><th></th></tr>';
   S.inis.forEach((x,i)=>{
-    h+=`<tr style="${x.incl?'':'opacity:.45'}${x.crit?';background:rgba(255,0,84,.05)':''}">
+    h+=`<tr style="${x.incl?'':'opacity:.45'}${x.crit?';background:rgba(20,122,255,.05)':''}">
     <td>${esc(x.id)}</td>
     <td><input value="${esc(x.nombre)}" onchange="S.inis[${i}].nombre=this.value;dirty()"></td>
     <td><select onchange="S.inis[${i}].amb=+this.value;dirty();renderAll()">${AMBITOS.map((a,j)=>`<option value="${j}"${j===x.amb?' selected':''}>${a}</option>`).join('')}</select></td>
@@ -770,11 +773,11 @@ function rRoadmap(R){
       const m0=Math.max(1,Math.round(i.mes)), m1=Math.min(H,Math.ceil(m0+i.dur-1));
       const col=i.presu?'var(--accent)':'var(--morado)';
       h+=`<tr><td style="white-space:nowrap; max-width:270px; overflow:hidden; text-overflow:ellipsis" title="${esc(i.nombre)}${i.dep?' · depende de: '+esc(i.dep):''}">${i.crit?'<span style="color:var(--accent)" title="Crítica de infraestructura — ruta crítica">★</span> ':''}${esc(i.id)} · ${esc(i.nombre)}</td>`;
-      h+=`<td><input type="number" min="1" max="${H}" value="${Math.round(i.mes)}" style="width:42px;border:1px solid rgba(79,6,42,.25);border-radius:3px;font-size:10px;padding:2px" onchange="moverIni(${idx},+this.value)"></td>`;
-      h+=`<td><input type="number" min="0.5" step="0.5" value="${i.dur}" style="width:42px;border:1px solid rgba(79,6,42,.25);border-radius:3px;font-size:10px;padding:2px" onchange="S.inis[${idx}].dur=+this.value;dirty();renderAll()"></td>`;
+      h+=`<td><input type="number" min="1" max="${H}" value="${Math.round(i.mes)}" style="width:42px;border:1px solid rgba(0,52,120,.25);border-radius:3px;font-size:10px;padding:2px" onchange="moverIni(${idx},+this.value)"></td>`;
+      h+=`<td><input type="number" min="0.5" step="0.5" value="${i.dur}" style="width:42px;border:1px solid rgba(0,52,120,.25);border-radius:3px;font-size:10px;padding:2px" onchange="S.inis[${idx}].dur=+this.value;dirty();renderAll()"></td>`;
       for(let m=1;m<=H;m++){
         const activo=m>=m0&&m<=m1;
-        h+=`<td class="mcell" style="cursor:pointer${finRC&&m<=finRC?';background:rgba(255,0,84,.03)':''}" title="clic: mover inicio a ${mesLabel(m)}" onclick="moverIni(${idx},${m})">${activo?`<div class="bar" style="background:${col};${i.crit?'outline:2px solid var(--accent);outline-offset:-1px;height:14px':''}"></div>`:''}</td>`;
+        h+=`<td class="mcell" style="cursor:pointer${finRC&&m<=finRC?';background:rgba(20,122,255,.03)':''}" title="clic: mover inicio a ${mesLabel(m)}" onclick="moverIni(${idx},${m})">${activo?`<div class="bar" style="background:${col};${i.crit?'outline:2px solid var(--accent);outline-offset:-1px;height:14px':''}"></div>`:''}</td>`;
       }
       h+='</tr>';});
   });
@@ -802,7 +805,7 @@ function rRoadmap(R){
 
 function rCelula(R){
   const f=R.f, H=R.H;
-  let h=`<table><tr><th>Perfil</th><th class="num">USD/h</th><th class="num">USD/mes FTE (172 HH)</th><th>Dedicación (FTE)</th><th>% del horizonte activo</th><th class="num">Meses</th><th title="El desarrollo asistido por IA reduce el esfuerzo de este perfil (factor del módulo 1: ${Math.round((1-R.iaF)*100)}%)">IA ⚡</th><th class="num">Costo total USD</th><th></th></tr>`;
+  let h=`<table><tr><th>Perfil</th><th class="num">USD/h</th><th class="num">USD/mes FTE (172 HH)</th><th>Dedicación (FTE)</th><th>% del horizonte activo</th><th class="num">Meses</th><th title="El desarrollo asistido por IA reduce el esfuerzo de este perfil (factor del módulo 1: ${Math.round((1-R.iaF)*100)}%)">IA </th><th class="num">Costo total USD</th><th></th></tr>`;
   let tot=0;
   S.roles.forEach((r,i)=>{ const meses=Math.round(H*(r.pctMeses||100)/100), cost=r.tarifa*172*r.fte*meses*(r.tec?R.iaF:1); tot+=cost;
     h+=`<tr><td><input value="${esc(r.rol)}" onchange="S.roles[${i}].rol=this.value;dirty()"></td>
@@ -884,7 +887,7 @@ function rBC(R){ const f=R.f,Y=R.Y;
       h+=`<td class="num" style="${v<0?'color:var(--accent)':''}">${fmtK(v)}</td>`; }
     h+=`<td class="num">${lbl==='Flujo acumulado'?fmtK((R.acum[Y]||0)*f):fmtK(t)}</td></tr>`;});
   h+='</table>'; $('bcTabla').innerHTML=h;
-  $('chartFlujo').innerHTML=lineChart([{name:'Acumulado',color:'#FF0054',data:R.acum.slice(1).map(v=>v*f)},{name:'Flujo anual',color:'#4F062A',data:R.flujo.slice(1).map(v=>v*f)}],Y);
+  $('chartFlujo').innerHTML=lineChart([{name:'Acumulado',color:'var(--mbc-electric)',data:R.acum.slice(1).map(v=>v*f)},{name:'Flujo anual',color:'var(--mbc-navy)',data:R.flujo.slice(1).map(v=>v*f)}],Y);
   $('chartBarras').innerHTML=barChart(R,f,Y);
   $('tick7').innerHTML= R.payback==null
    ? `Con los parámetros actuales el programa <b>no amortiza en ${Y} años</b> — palancas: líneas premium, ritmo de adopción, alcance de iniciativas opcionales, horizonte de célula.`
@@ -906,7 +909,7 @@ function rSaas(R){ const f=R.f,Y=R.Y,sa=S.saas,hb=S.hib;
   const bestN= best===accI?'In-house':best===accH?'Híbrido':'SaaS';
   h+=`<tr class="tot-row"><td>Δ vs mejor escenario (${bestN})</td>${Array.from({length:Y},(_,i)=>'<td></td>').join('')}<td class="num">In-h +${fmtK((accI-best)*f)} · Híb +${fmtK((accH-best)*f)} · SaaS +${fmtK((accS-best)*f)}</td></tr>`;
   h+='</table>'; $('saasTabla').innerHTML=h;
-  $('chartSaas').innerHTML=lineChart([{name:'In-house acum.',color:'#4F062A',data:cI},{name:'Híbrido acum.',color:'#9c5c78',data:cH},{name:'SaaS acum.',color:'#FF0054',data:cS}],Y);
+  $('chartSaas').innerHTML=lineChart([{name:'In-house acum.',color:'var(--mbc-navy)',data:cI},{name:'Híbrido acum.',color:'var(--text-dim)',data:cH},{name:'SaaS acum.',color:'var(--mbc-electric)',data:cS}],Y);
   const mad=R.madProm;
   const lean= mad>=3.2 ? 'in' : mad<=1.8 ? 'saas' : 'neutro';
   $('saasVeredicto').innerHTML=`<div class="note"><b>Lectura a ${Y} años:</b> el acumulado favorece a <b>${bestN}</b> (In-house USD ${fmtK(accI*f)} K · Híbrido ${fmtK(accH*f)} K · SaaS ${fmtK(accS*f)} K). Madurez As-Is ${mad.toFixed(1)}/5 → ${lean==='in'?'la base tecnológica existente favorece <b>in-house o híbrido</b>: el cliente ya opera plataforma, el gap es regulatorio, y el factor IA abarata el build.':lean==='saas'?'la baja madurez favorece <b>SaaS</b> (o híbrido como paso intermedio): menor riesgo de ejecución y time-to-market en semanas, aunque el acumulado a largo plazo sea mayor.':'madurez media: el <b>híbrido</b> suele ser el punto de partida — delega el corazón regulatorio (IdP/consentimiento/directorio) y construye la capa de datos e integración donde ya hay capacidades.'} Recordar: TCO no captura lock-in, soberanía de datos ni escalamiento por tiers; y ante el regulador la responsabilidad no se delega.</div>`;
@@ -915,7 +918,7 @@ function rSaas(R){ const f=R.f,Y=R.Y,sa=S.saas,hb=S.hib;
 
 /* ═══════════════ LEVANTAMIENTO ═══════════════ */
 const CUMPL=["Pendiente","Cumple","Parcialmente","No cumple","No aplica"];
-const CUMPL_COL={"Pendiente":"#8a8a7e","Cumple":"#2e7d32","Parcialmente":"#b26a00","No cumple":"#c62828","No aplica":"#bbb"};
+const CUMPL_COL={"Pendiente":"var(--text-faint)","Cumple":"#2e7d32","Parcialmente":"#b26a00","No cumple":"#c62828","No aplica":"#bbb"};
 function madSugerida(frente){ // desde cumplimiento: Cumple=5, Parcial=2.5, No cumple=0.5
   const rs=S.lev.filter(q=>q.frente===frente&&["Cumple","Parcialmente","No cumple"].includes(q.cumpl));
   if(!rs.length) return null;
@@ -956,11 +959,11 @@ function rLev(R){
   S.lev.forEach((q,i)=>{ if(filtro>=0&&q.frente!==filtro) return;
     h+=`<tr><td>${esc(q.id)}</td>
     <td><select onchange="S.lev[${i}].frente=+this.value;dirty();renderAll()">${FRENTES.map((f,j)=>`<option value="${j}"${j===q.frente?' selected':''}>${f}</option>`).join('')}</select></td>
-    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" onchange="S.lev[${i}].preg=this.value;dirty()">${esc(q.preg)}</textarea></td>
-    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Respuesta del cliente…" onchange="S.lev[${i}].resp=this.value;dirty()">${esc(q.resp)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(0,52,120,.2);border-radius:3px;font-size:11.5px;font-family:var(--sans);padding:4px" onchange="S.lev[${i}].preg=this.value;dirty()">${esc(q.preg)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(0,52,120,.2);border-radius:3px;font-size:11.5px;font-family:var(--sans);padding:4px" placeholder="Respuesta del cliente…" onchange="S.lev[${i}].resp=this.value;dirty()">${esc(q.resp)}</textarea></td>
     <td><select style="color:#fff;font-weight:700;background:${CUMPL_COL[q.cumpl]}" onchange="S.lev[${i}].cumpl=this.value;dirty();renderAll()">${CUMPL.map(c=>`<option${c===q.cumpl?' selected':''}>${c}</option>`).join('')}</select></td>
-    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Acción · Responsable · Resultado esperado" onchange="S.lev[${i}].plan=this.value;dirty()">${esc(q.plan)}</textarea></td>
-    <td><textarea rows="2" style="width:100%;border:1px solid rgba(79,6,42,.2);border-radius:3px;font-size:11.5px;font-family:Arial;padding:4px" placeholder="Docs, sesiones proveedor, validaciones…" onchange="S.lev[${i}].com=this.value;dirty()">${esc(q.com)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(0,52,120,.2);border-radius:3px;font-size:11.5px;font-family:var(--sans);padding:4px" placeholder="Acción · Responsable · Resultado esperado" onchange="S.lev[${i}].plan=this.value;dirty()">${esc(q.plan)}</textarea></td>
+    <td><textarea rows="2" style="width:100%;border:1px solid rgba(0,52,120,.2);border-radius:3px;font-size:11.5px;font-family:var(--sans);padding:4px" placeholder="Docs, sesiones proveedor, validaciones…" onchange="S.lev[${i}].com=this.value;dirty()">${esc(q.com)}</textarea></td>
     <td><span class="del" onclick="S.lev.splice(${i},1);dirty();renderAll()">×</span></td></tr>`;});
   h+='</table>'; $('levTabla').innerHTML=h;
   $('tickL').innerHTML=`Levantamiento al <b class="accent">${tot?Math.round(resp/tot*100):0}%</b> · las respuestas "No cumple" y "Parcialmente" anticipan las iniciativas a activar en el catálogo (módulo 5).`;
@@ -968,7 +971,7 @@ function rLev(R){
 function addLev(){ S.lev.push({id:"L-"+String(S.lev.length+1).padStart(2,'0'),frente:1,preg:"Nueva pregunta",resp:"",cumpl:"Pendiente",plan:"",com:""}); dirty(); renderAll(); }
 
 /* ═══════════════ STACK & GAPS ═══════════════ */
-const EST_COL={"Reutilizable":"#2e7d32","Evolucionar":"#b26a00","Construir":"#FF0054","No aplica":"#8a8a7e"};
+const EST_COL={"Reutilizable":"#2e7d32","Evolucionar":"#b26a00","Construir":"var(--mbc-electric)","No aplica":"var(--text-faint)"};
 function rStack(R){
   const cnt=e=>S.stack.filter(x=>x.estado===e).length;
   $('stackKpis').innerHTML=`
@@ -979,14 +982,14 @@ function rStack(R){
   // mapa visual por capas
   let m='';
   CAPAS.forEach((capa,ci)=>{ const comps=S.stack.filter(x=>x.capa===ci); if(!comps.length) return;
-    m+=`<div style="display:flex; margin-bottom:6px; border-radius:5px; overflow:hidden; box-shadow:0 1px 2px rgba(38,7,23,.1)">
+    m+=`<div style="display:flex; margin-bottom:6px; border-radius:5px; overflow:hidden; box-shadow:0 1px 2px rgba(0,31,77,.1)">
     <div style="background:var(--morado); color:#fff; width:190px; min-width:190px; padding:10px 12px; font-size:11px; display:flex; align-items:center">${esc(capa)}</div>
-    <div style="background:rgba(79,6,42,.05); flex:1; padding:8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center">`;
+    <div style="background:rgba(0,52,120,.05); flex:1; padding:8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center">`;
     comps.forEach(x=>{ const c=EST_COL[x.estado]||'#888';
       m+=`<div title="${esc(x.tec)} — ${esc(x.nota)}${x.inis&&x.inis!=='—'?' · Iniciativas: '+esc(x.inis):''}" style="background:#fff; border-left:4px solid ${c}; border-radius:3px; padding:5px 9px; font-size:10.5px; cursor:default">
       <b>${esc(x.comp)}</b><br><span style="opacity:.7">${esc(x.tec)}</span> <span style="color:${c}; font-weight:700; font-size:9.5px">● ${x.estado.toUpperCase()}</span>${x.inis&&x.inis!=='—'?`<span style="opacity:.6; font-size:9.5px"> · Ini ${esc(x.inis)}</span>`:''}</div>`;});
     m+='</div></div>';});
-  m+=`<div class="small" style="margin-top:6px"><span style="color:#2e7d32;font-weight:700">●</span> Reutilizable &nbsp; <span style="color:#b26a00;font-weight:700">●</span> Evolucionar &nbsp; <span style="color:#FF0054;font-weight:700">●</span> Construir &nbsp; <span style="color:#8a8a7e;font-weight:700">●</span> No aplica — pasa el cursor sobre un componente para ver el detalle.</div>`;
+  m+=`<div class="small" style="margin-top:6px"><span style="color:#2e7d32;font-weight:700">●</span> Reutilizable &nbsp; <span style="color:#b26a00;font-weight:700">●</span> Evolucionar &nbsp; <span style="color:var(--mbc-electric);font-weight:700">●</span> Construir &nbsp; <span style="color:var(--text-faint);font-weight:700">●</span> No aplica — pasa el cursor sobre un componente para ver el detalle.</div>`;
   $('stackMapa').innerHTML=m;
   // tabla detalle
   let h='<table><tr><th>Capa</th><th style="min-width:180px">Componente / capacidad</th><th style="min-width:150px">Tecnología actual</th><th>Estado GAP</th><th>Iniciativas</th><th style="min-width:200px">Actividades / nota</th><th></th></tr>';
@@ -1011,13 +1014,13 @@ function lineChart(series,Y){
   const all=series.flatMap(s=>s.data); const mx=Math.max(...all,0), mn=Math.min(...all,0), rg=(mx-mn)||1;
   const X=i=>p+i*(W-p-14)/Math.max(1,Y-1), Yc=v=>Hh-26-((v-mn)/rg)*(Hh-52);
   let s=`<svg viewBox="0 0 ${W} ${Hh}" style="width:100%">`;
-  s+=`<line x1="${p}" y1="${Yc(0)}" x2="${W-10}" y2="${Yc(0)}" stroke="#4F062A" stroke-width="1" opacity=".4"/>`;
-  for(let i=0;i<Y;i++) s+=`<text x="${X(i)}" y="${Hh-8}" font-size="9" fill="#4F062A" text-anchor="middle">A${i+1}</text>`;
-  [mx,mn].forEach(v=>{ if(v!==0) s+=`<text x="${p-4}" y="${Yc(v)+3}" font-size="9" fill="#4F062A" text-anchor="end">${fmtK(v)}K</text>`;});
+  s+=`<line x1="${p}" y1="${Yc(0)}" x2="${W-10}" y2="${Yc(0)}" stroke="var(--mbc-navy)" stroke-width="1" opacity=".4"/>`;
+  for(let i=0;i<Y;i++) s+=`<text x="${X(i)}" y="${Hh-8}" font-size="9" fill="var(--mbc-navy)" text-anchor="middle">A${i+1}</text>`;
+  [mx,mn].forEach(v=>{ if(v!==0) s+=`<text x="${p-4}" y="${Yc(v)+3}" font-size="9" fill="var(--mbc-navy)" text-anchor="end">${fmtK(v)}K</text>`;});
   series.forEach(se=>{ let d=''; se.data.forEach((v,i)=>{ d+=(i?'L':'M')+X(i)+' '+Yc(v)+' '; });
     s+=`<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2.5"/>`;
     se.data.forEach((v,i)=>{ s+=`<circle cx="${X(i)}" cy="${Yc(v)}" r="3" fill="${se.color}"/>`; }); });
-  series.forEach((se,j)=>{ s+=`<rect x="${p+j*150}" y="6" width="10" height="10" fill="${se.color}"/><text x="${p+j*150+14}" y="15" font-size="10" fill="#4F062A">${se.name}</text>`; });
+  series.forEach((se,j)=>{ s+=`<rect x="${p+j*150}" y="6" width="10" height="10" fill="${se.color}"/><text x="${p+j*150+14}" y="15" font-size="10" fill="var(--mbc-navy)">${se.name}</text>`; });
   return s+'</svg>';
 }
 function barChart(R,f,Y){
@@ -1027,13 +1030,13 @@ function barChart(R,f,Y){
   let s=`<svg viewBox="0 0 ${W} ${Hh}" style="width:100%">`;
   for(let y=1;y<=Y;y++){ const x=p+(y-1)*bw;
     const hC=(R.capex[y]*f/mx)*(Hh-60), hO=(R.opex[y]*f/mx)*(Hh-60), hI=(R.ing[y]*f/mx)*(Hh-60);
-    s+=`<rect x="${x+4}" y="${Hh-30-hC-hO}" width="${bw*0.32}" height="${hC}" fill="#4F062A"/>`;
-    s+=`<rect x="${x+4}" y="${Hh-30-hO}" width="${bw*0.32}" height="${hO}" fill="#9c5c78"/>`;
-    s+=`<rect x="${x+8+bw*0.32}" y="${Hh-30-hI}" width="${bw*0.32}" height="${hI}" fill="#FF0054"/>`;
-    s+=`<text x="${x+bw/2}" y="${Hh-14}" font-size="9" fill="#4F062A" text-anchor="middle">A${y}</text>`; }
-  s+=`<rect x="${p}" y="6" width="10" height="10" fill="#4F062A"/><text x="${p+14}" y="15" font-size="10" fill="#4F062A">CAPEX</text>`;
-  s+=`<rect x="${p+80}" y="6" width="10" height="10" fill="#9c5c78"/><text x="${p+94}" y="15" font-size="10" fill="#4F062A">OPEX</text>`;
-  s+=`<rect x="${p+160}" y="6" width="10" height="10" fill="#FF0054"/><text x="${p+174}" y="15" font-size="10" fill="#4F062A">Ingresos</text>`;
+    s+=`<rect x="${x+4}" y="${Hh-30-hC-hO}" width="${bw*0.32}" height="${hC}" fill="var(--mbc-navy)"/>`;
+    s+=`<rect x="${x+4}" y="${Hh-30-hO}" width="${bw*0.32}" height="${hO}" fill="var(--text-dim)"/>`;
+    s+=`<rect x="${x+8+bw*0.32}" y="${Hh-30-hI}" width="${bw*0.32}" height="${hI}" fill="var(--mbc-electric)"/>`;
+    s+=`<text x="${x+bw/2}" y="${Hh-14}" font-size="9" fill="var(--mbc-navy)" text-anchor="middle">A${y}</text>`; }
+  s+=`<rect x="${p}" y="6" width="10" height="10" fill="var(--mbc-navy)"/><text x="${p+14}" y="15" font-size="10" fill="var(--mbc-navy)">CAPEX</text>`;
+  s+=`<rect x="${p+80}" y="6" width="10" height="10" fill="var(--text-dim)"/><text x="${p+94}" y="15" font-size="10" fill="var(--mbc-navy)">OPEX</text>`;
+  s+=`<rect x="${p+160}" y="6" width="10" height="10" fill="var(--mbc-electric)"/><text x="${p+174}" y="15" font-size="10" fill="var(--mbc-navy)">Ingresos</text>`;
   return s+'</svg>';
 }
 
