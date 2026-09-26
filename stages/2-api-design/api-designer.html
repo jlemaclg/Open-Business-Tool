@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/mbc-tokens.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui.css"/>
 <style>
 /* ── MBC Tokens (alias sobre assets/mbc-tokens.css) ─────────────────────────────────── */
 :root {
@@ -357,6 +357,7 @@ textarea { resize:vertical; min-height:100px; line-height:1.5; }
   .p-phases { flex-direction:column; }
 }
 </style>
+<link rel="stylesheet" href="designer-refinado.css">
 </head>
 <body>
 
@@ -1090,17 +1091,21 @@ sequenceDiagram
 ══════════════════════════════════════════════════════════════ -->
 <script>
 // ── Mermaid config ───────────────────────────────────────────
-mermaid.initialize({
+// Los colores van en literal: mermaid no resuelve variables CSS (excepción documentada a la regla de tokens, D12).
+// Si el CDN no carga (red corporativa, sin conexión) el Designer sigue funcionando: el diagrama muestra su definición.
+if (window.mermaid) mermaid.initialize({
   startOnLoad: false,
   theme: 'base',
   themeVariables: {
-    primaryColor: 'var(--bg)',
-    primaryTextColor: 'var(--mbc-navy-deep)',
-    primaryBorderColor: 'var(--mbc-navy)',
-    lineColor: 'var(--mbc-electric)',
-    secondaryColor: 'var(--bg)',
-    tertiaryColor: '#e8f4fd',
-    fontFamily: 'Arial, Helvetica, sans-serif',
+    primaryColor: '#E7F1FF',          // --mbc-electric-soft
+    primaryTextColor: '#001F4D',      // --mbc-navy-deep
+    primaryBorderColor: '#003478',    // --mbc-navy
+    lineColor: '#147AFF',             // --mbc-electric
+    secondaryColor: '#F3F5F9',        // --bg
+    tertiaryColor: '#FFFFFF',
+    actorBkg: '#003478', actorTextColor: '#FFFFFF', actorBorder: '#003478',
+    noteBkgColor: '#FFF4D6', noteBorderColor: '#E8A400',
+    fontFamily: 'Montserrat, Segoe UI, Arial, sans-serif',
     fontSize: '13px'
   },
   sequence: { actorMargin: 50, messageMargin: 30, mirrorActors: false }
@@ -1230,6 +1235,7 @@ function setDiagTab(n) {
     document.getElementById('diag'+i).style.display = i===n ? 'block' : 'none';
     document.getElementById('dt'+i).classList.toggle('on', i===n);
   });
+  if (n > 1) renderDiagrams(); // UML y flujo se dibujan al abrirlos, también si se entra directamente
 }
 
 // ── Render Mermaid on demand ──────────────────────────────────
@@ -1239,11 +1245,17 @@ function renderDiagrams() {
     const el = document.getElementById(id);
     if (!el) return;
     const def = el.textContent.trim();
+    if (!window.mermaid) {
+      el.innerHTML = '<p class="diag-off">El diagrama se dibuja con una librería externa que no ha cargado (sin conexión o bloqueada por la red). Esta es su definición:</p><pre class="diag-src"></pre>';
+      el.querySelector('.diag-src').textContent = def;
+      mermaidDone[id] = true;
+      return;
+    }
     mermaid.render(id + '-svg', def).then(({svg}) => {
       el.innerHTML = svg;
       mermaidDone[id] = true;
     }).catch(e => {
-      el.innerHTML = '<p style="color:#922b21;font-size:12px;padding:20px">Error al renderizar diagrama. Requiere conexión a internet (cdnjs.cloudflare.com).</p>';
+      el.innerHTML = '<p class="diag-off">No se ha podido dibujar el diagrama (requiere conexión con cdnjs.cloudflare.com).</p>';
       console.warn('Mermaid error:', e);
     });
   });
@@ -1617,7 +1629,10 @@ function initSwaggerUI() {
   if (swaggerInited) return;
   swaggerInited = true;
   const script = document.createElement('script');
-  script.src = 'https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-bundle.js';
+  script.src = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui-bundle.js';
+  script.onerror = function() {
+    document.getElementById('swagger-ui-container').innerHTML = '<p class="diag-off">Swagger UI no ha cargado (sin conexión con cdn.jsdelivr.net). El contrato completo está en la pestaña OpenAPI YAML.</p>';
+  };
   script.onload = function() {
     SwaggerUIBundle({
       spec: getApiSpec(),
@@ -1639,6 +1654,7 @@ renderLlmOptions();
 updateTeamBadge();
 updateLlmBadge();
 </script>
+<script src="designer-flujo.js"></script>
 <script src="../../assets/nav.js" data-current="api-designer"></script>
 <script src="../../assets/inventory-data.js"></script>
 <script type="module" src="designer-context.js"></script>

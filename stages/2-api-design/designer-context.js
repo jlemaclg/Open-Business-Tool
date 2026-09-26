@@ -42,7 +42,9 @@ if (casoId || fromId || usecase) {
 
   const banner = document.createElement('div');
   banner.className = 'dc-banner';
-  document.body.insertBefore(banner, document.body.firstChild);
+  // Bajo la barra de navegación y la franja de gobierno (antes de la portada del Designer)
+  const ancla = document.getElementById('portada');
+  if (ancla) ancla.before(banner); else document.body.insertBefore(banner, document.body.firstChild);
   const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
   if (fromId) {
@@ -84,6 +86,6 @@ if (casoId || fromId || usecase) {
   } else if (usecase) {
     // ── Contexto libre desde Market Discovery ──
     banner.innerHTML = `<span class="dc-tag">Desde Discovery</span>
-      <div class="dc-txt">Caso de uso explorado en Market Discovery: <b>${esc(usecase)}</b> — descríbelo al agente para arrancar el diseño.</div>`;
+      <div class="dc-txt">Caso de uso explorado en Market Discovery: <b>${esc(usecase)}</b>${apiObjetivo ? ` · API a diseñar: <b>${esc(apiObjetivo)}</b> (sin cobertura en el inventario)` : ''} — descríbelo al agente para arrancar el diseño.</div>`;
   }
 }

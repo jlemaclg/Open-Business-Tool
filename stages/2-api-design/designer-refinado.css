@@ -1,0 +1,149 @@
+/* designer-refinado.css — Refinado visual del API Designer (F22)
+   ─────────────────────────────────────────────────────────────────────────────
+   Capa de estilos que se carga DESPUÉS del <style> propio del Designer y lo
+   alinea con el resto de módulos MBC: lienzo claro, cabeceras ligeras, tarjetas
+   blancas, barra de progreso del flujo (designer-flujo.js) y marcas D15
+   (agente / método / human-in-the-loop). No cambia el comportamiento: si se
+   quita el <link>, el Designer vuelve a su aspecto anterior.
+   Solo tokens de assets/mbc-tokens.css (regla D12).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Portada: hero compacto como el de Demos, sobre lienzo claro ── */
+#portada { min-height:auto; background:var(--bg); padding:26px 44px 40px; }
+#portada .p-top, #portada .p-footer, #portada .p-div { display:none; }
+#portada .p-body {
+  max-width:1100px; width:100%; margin:0 auto; padding:30px 36px 32px;
+  background:linear-gradient(135deg,var(--mbc-navy) 0%,var(--mbc-navy-deep) 100%);
+  border-radius:20px; position:relative; overflow:hidden; align-items:flex-start;
+}
+#portada .p-body::after { content:""; position:absolute; right:-70px; top:-70px; width:300px; height:300px; background:radial-gradient(circle,rgba(20,122,255,.5),transparent 70%); }
+#portada .p-content { position:relative; z-index:1; max-width:none; width:100%; }
+#portada .p-eyebrow { font-size:11px; letter-spacing:.14em; font-weight:700; margin-bottom:10px; }
+#portada .p-h1 { font-size:30px; font-weight:800; letter-spacing:-.01em; line-height:1.15; margin-bottom:10px; }
+#portada .p-sub { font-size:14px; line-height:1.55; color:rgba(255,255,255,.82); max-width:820px; margin-bottom:22px; }
+#portada .p-phases { gap:12px; margin-bottom:24px; }
+#portada .p-phase { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); border-radius:12px; padding:12px 16px; flex:1; min-width:240px; }
+#portada .p-phase-n { font-size:20px; }
+#portada .p-phase-desc { color:rgba(255,255,255,.62); }
+.p-guia { position:relative; z-index:1; max-width:1100px; margin:16px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.p-guia div { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-size:12px; color:var(--text-dim); line-height:1.45; }
+.p-guia b { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--mbc-navy); margin-bottom:4px; }
+.p-guia b span { width:22px; height:22px; border-radius:50%; background:var(--mbc-electric-soft); color:var(--mbc-navy); font-size:11px; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; }
+
+/* ── Barra del flujo (antes cabecera fija oscura que tapaba la navegación) ── */
+#app-header { position:sticky; top:0; box-shadow:0 1px 0 var(--line); z-index:200; }
+#app-header .hdr-brand { background:var(--panel); height:auto; min-height:52px; padding:8px 44px; gap:14px; }
+#app-header .hdr-logo, #app-header .hdr-sep, #app-header .hdr-prod, #app-header .hdr-right > a { display:none; }
+#app-header .hdr-llm-badge { background:var(--mbc-electric-soft); border-color:rgba(20,122,255,.35); color:var(--mbc-navy); font-weight:700; }
+#app-header .hdr-team-badge { background:var(--bg); border-color:var(--line); color:var(--text-dim); font-weight:600; }
+.df-steps { display:flex; align-items:center; gap:6px; list-style:none; margin:0; padding:0; }
+.df-step { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--text-dim); white-space:nowrap; }
+.df-step .n { width:24px; height:24px; border-radius:50%; border:1.5px solid var(--line); background:var(--panel); display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--text-dim); transition:all .3s; }
+.df-step.on { color:var(--mbc-navy); font-weight:800; }
+.df-step.on .n { background:var(--mbc-electric); border-color:var(--mbc-electric); color:var(--panel); box-shadow:0 0 0 3px var(--mbc-electric-soft); }
+.df-step.ok { color:var(--mbc-navy); }
+.df-step.ok .n { background:var(--ok-soft); border-color:var(--ok); color:var(--ok); }
+.df-sep { width:26px; height:1.5px; background:var(--line); flex:0 0 auto; }
+.df-sep.ok { background:var(--ok); }
+.df-quien { font-size:10px; font-weight:700; letter-spacing:.04em; color:var(--text-dim); margin-left:2px; }
+
+#app { padding-top:0; background:var(--bg); }
+
+/* ── Cabeceras de sección ligeras ── */
+.sec-hdr { background:transparent; padding:30px 0 0; }
+.sec-hdr .wrap { padding-top:0; padding-bottom:0; }
+.sec-hdr h2 { color:var(--mbc-navy-deep); font-size:24px; font-weight:800; letter-spacing:-.01em; }
+.sec-hdr .sub { color:var(--text-dim); font-size:13.5px; max-width:780px; line-height:1.55; }
+.eyebrow { font-weight:700; letter-spacing:.14em; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.eyebrow .chip-agente, .eyebrow .chip-metodo, .eyebrow .chip-hibrido { letter-spacing:.02em; text-transform:none; }
+a.chip-agente, a.chip-metodo, a.chip-hibrido { text-decoration:none; }
+a.chip-agente:hover, a.chip-metodo:hover, a.chip-hibrido:hover { border-color:var(--mbc-navy); }
+.sec-hdr + .wrap, .sec-hdr + .wrap-sm { padding-top:20px; }
+.wrap-sm { max-width:860px; }
+.card { border-radius:12px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(16,27,51,.04); }
+.de-chooser { max-width:none; border-radius:12px; border-color:var(--line); }
+.llm-note { display:block; border-radius:8px; }
+.llm-note svg { vertical-align:-2px; margin-right:6px; }
+@media (min-width:901px) { .stats { grid-template-columns:repeat(6,1fr); } }
+
+/* ── Traza técnica del agente: discreta, como nota ── */
+.stub { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--mbc-electric); border-radius:8px; color:var(--text-dim); font-family:var(--mono); font-size:10.5px; padding:7px 12px; }
+.stub::before { content:"Traza"; font-family:var(--sans); font-size:9.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--mbc-navy); background:var(--mbc-electric-soft); border-radius:10px; padding:2px 8px; flex:0 0 auto; }
+
+/* ── Tarjeta del agente trabajando: blanca, pasos legibles ── */
+.agent-card { background:var(--panel); border:1px solid var(--line); border-radius:14px; box-shadow:0 2px 12px rgba(16,27,51,.06); padding:32px 40px; margin-top:26px; }
+.agent-card .eyebrow { justify-content:center; }
+.ag-title { color:var(--mbc-navy-deep); font-weight:800; }
+.ag-sub { color:var(--text-dim); margin-bottom:28px; }
+.ag-icon.p { background:var(--bg); border-color:var(--line); }
+.ag-icon.p svg { stroke:var(--text-dim); }
+.ag-icon.l { background:var(--mbc-electric-soft); }
+.ag-icon.d { background:var(--ok-soft); border-color:var(--ok); }
+.ag-lbl { color:var(--text-dim); }
+.ag-lbl.d { color:var(--text); }
+.ag-pill { background:var(--bg); border-color:var(--line); color:var(--text-dim); font-family:var(--mono); font-size:10px; }
+.ag-done-check { background:var(--ok-soft); border-color:var(--ok); }
+.ag-done-title { color:var(--mbc-navy-deep); }
+.ag-done-sub { color:var(--text-dim); }
+
+/* ── Pregunta del agente (human-in-the-loop) ── */
+.aq { background:var(--panel); border:1px solid rgba(20,122,255,.35); border-left:4px solid var(--mbc-electric); border-radius:12px; }
+.aq-nm { color:var(--mbc-navy); }
+.aq-rl { color:var(--text-dim); }
+.aq-txt { color:var(--text); }
+.aq-txt strong { color:var(--mbc-navy-deep) !important; }
+.aq-txt code { background:var(--mbc-electric-soft); color:var(--mbc-navy); }
+.aq-opt { border-color:var(--line); color:var(--mbc-navy); background:var(--bg); font-weight:600; }
+.aq-opt:hover { background:var(--mbc-electric-soft); border-color:var(--mbc-electric); color:var(--mbc-navy); }
+.aq-opt.sel { background:var(--mbc-electric); border-color:var(--mbc-electric); color:var(--panel); }
+.aq-resolved { background:var(--ok-soft); border-color:rgba(15,157,88,.35); }
+.aq-resolved div[style] { color:var(--text) !important; }
+.aq-resolved #aqResolvedText { color:var(--text-dim) !important; }
+.aq-resolved-icon { background:var(--panel); border-color:var(--ok); }
+.review-done-bar { border-radius:12px; }
+.hil-nota { display:inline-flex; align-items:center; gap:6px; font-size:11px; color:var(--text-dim); }
+.hil-nota a { color:var(--mbc-navy); font-weight:700; text-decoration:none; border-bottom:1px solid rgba(20,122,255,.45); }
+
+/* ── Bloque de código: el texto base (dos puntos, guiones) era casi invisible sobre el fondo oscuro ── */
+.code { color:rgba(255,255,255,.88); border-radius:12px; }
+
+/* ── Tablas, pestañas, barras ── */
+.tbl th { background:var(--mbc-navy); }
+.tabs { border-bottom-color:var(--line); }
+.tab svg { width:13px; height:13px; vertical-align:-2px; margin-right:5px; }
+.dtab { border-radius:20px; }
+.confirm-bar { border-radius:12px; border-color:var(--line); }
+.ticker { background:var(--mbc-electric-soft); color:var(--mbc-navy-deep); border:1px solid rgba(20,122,255,.3); border-radius:12px; }
+.ticker .hl { color:var(--mbc-navy); }
+.stat { border-radius:12px; border:1px solid var(--line); border-top:3px solid var(--mbc-electric); }
+.model-card, .mermaid-wrap { border-radius:12px; border:1px solid var(--line); }
+
+/* ── Diagramas sin librería (CDN bloqueado): se muestra la definición ── */
+.diag-off { font-size:12px; color:var(--text-dim); background:var(--bg); border:1px dashed var(--line); border-radius:8px; padding:9px 12px; margin-bottom:10px; text-align:left; }
+.diag-src { font-family:var(--mono); font-size:11.5px; line-height:1.6; color:var(--text); background:var(--bg); border-radius:8px; padding:14px 16px; overflow-x:auto; white-space:pre; text-align:left; margin:0; }
+
+/* ── Siguiente paso (cierre del flujo) ── */
+.df-next { margin-top:28px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 24px; }
+.df-next h3 { font-size:16px; font-weight:800; color:var(--mbc-navy-deep); margin-bottom:4px; }
+.df-next > p { font-size:12.5px; color:var(--text-dim); margin-bottom:16px; }
+.df-next-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+.df-next a { display:block; text-decoration:none; border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:var(--bg); transition:border-color .2s, background .2s; }
+.df-next a:hover { border-color:var(--mbc-electric); background:var(--mbc-electric-soft); }
+.df-next a b { display:block; font-size:13px; color:var(--mbc-navy); margin-bottom:4px; }
+.df-next a small { display:block; font-size:11.5px; color:var(--text-dim); line-height:1.45; }
+
+/* ── Banner de contexto (designer-context.js) en claro, bajo la navegación ── */
+.dc-banner { background:var(--mbc-electric-soft) !important; border-bottom:1px solid rgba(20,122,255,.3) !important; color:var(--text) !important; padding:10px 44px !important; z-index:1 !important; }
+.dc-banner .dc-tag { background:var(--mbc-navy) !important; border-color:var(--mbc-navy) !important; color:var(--panel) !important; border-radius:20px !important; }
+.dc-banner .dc-txt { color:var(--text) !important; }
+.dc-banner .dc-txt b { color:var(--mbc-navy-deep) !important; }
+.dc-banner .dc-txt .dc-pill { border-color:var(--line) !important; color:var(--text-dim) !important; background:var(--panel); }
+.dc-banner .dc-txt a { color:var(--mbc-navy) !important; }
+.dc-banner .dc-btn { border-radius:20px !important; font-weight:700; }
+.dc-banner .dc-btn:hover:not(:disabled) { background:var(--mbc-navy) !important; color:var(--panel) !important; }
+
+@media (max-width:900px) {
+  .p-guia { grid-template-columns:1fr 1fr; }
+  #app-header .hdr-brand { padding:8px 16px; flex-wrap:wrap; }
+  .df-quien { display:none; }
+}
