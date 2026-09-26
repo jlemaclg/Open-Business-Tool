@@ -270,7 +270,7 @@
     var defUrl = REPO + a.definicion;
     var pol = (a.politicas || []).map(function (k) {
       var txt = POL[k] || 'Regla de diseño de APIs del espacio de Gobierno.';
-      return '<li><code>' + esc(k) + '</code><span>' + esc(txt) + '</span></li>';
+      return '<li><a href="' + ROOT + 'stages/2-api-design/governance-policies.html#' + esc(k) + '" title="Abrir la regla en el espacio de Gobierno"><code>' + esc(k) + '</code></a><span>' + esc(txt) + '</span></li>';
     }).join('');
     var aviso = a.ciclo === 'Simulado'
       ? '<div class="aviso">' + sv('<path d="M12 4 2.5 20h19L12 4z"/><path d="M12 10v4M12 17.5v.5"/>') + '<span>Hoy responde con datos simulados para la demo. En producción se sirve desde una Azure Function con Azure OpenAI, <b>con la misma firma</b>: los módulos no cambian.</span></div>'
@@ -292,7 +292,7 @@
       + '</div>'
       + '<div class="blk"><div class="t">Ciclo de vida</div><div class="lc">' + LC.map(function (s, i) { return '<span class="' + (i === idx ? 'on' : (i < idx ? 'past' : '')) + '">' + s + '</span>'; }).join('') + '</div></div>'
       + '<div class="blk"><div class="t">Contrato</div><div class="code"><div><small>Entrada</small><pre>' + esc(JSON.stringify(a.entrada, null, 2)) + '</pre></div><div><small>Salida</small><pre>' + esc(JSON.stringify(a.salida, null, 2)) + '</pre></div></div></div>'
-      + '<div class="blk"><div class="t">Políticas que cumple <a href="' + ROOT + 'stages/2-api-design/governance-policies.html#agentes">Guardrails en Gobierno →</a></div>'
+      + '<div class="blk"><div class="t">Políticas que cumple <a href="' + ROOT + 'stages/2-api-design/governance-policies.html#indice">Índice de reglas →</a></div>'
       + (pol ? '<ul class="pol">' + pol + '</ul>' : '<div style="font-size:12.5px;color:var(--text-dim)">Paso de método: se rige por el procedimiento de la práctica, sin guardrails de IA.</div>') + '</div>'
       + '</div>';
     $('ficha').classList.add('on'); $('scrim').classList.add('on'); $('ficha').setAttribute('aria-hidden', 'false');

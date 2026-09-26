@@ -42,7 +42,9 @@ if (casoId || fromId || usecase) {
 
   const banner = document.createElement('div');
   banner.className = 'dc-banner';
-  document.body.insertBefore(banner, document.body.firstChild);
+  // Bajo la barra de navegación y la franja de gobierno (antes de la portada del Designer)
+  const ancla = document.getElementById('portada');
+  if (ancla) ancla.before(banner); else document.body.insertBefore(banner, document.body.firstChild);
   const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
   if (fromId) {

@@ -110,4 +110,12 @@
 
   nav.innerHTML = html;
   document.body.insertBefore(nav, document.body.firstChild);
+
+  // F21 · Gobierno transversal: franja con las reglas que aplica este módulo (assets/politicas.js)
+  if (current && current !== 'policies' && current !== 'demos') {
+    var pol = document.createElement('script');
+    pol.src = root + 'assets/politicas.js';
+    pol.setAttribute('data-current', current);
+    document.head.appendChild(pol);
+  }
 })();

@@ -64,22 +64,38 @@
   .history table{width:100%;border-collapse:collapse;font-size:11.5px;background:#fff;}
   .history th{text-align:left;color:var(--morado);border-bottom:2px solid var(--morado);padding:5px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.6px;}
   .history td{padding:6px 8px;border-bottom:1px solid var(--bg);}
+  /* F21 · pestañas APIs / Agentes, regla enlazada e índice */
+  .gtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px 18px 4px;}
+  .gtab{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text-dim);background:var(--bg);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 10px;cursor:pointer;text-align:left;line-height:1.25;}
+  .gtab small{display:block;font-size:10.5px;font-weight:600;color:var(--text-faint);}
+  .gtab.on{background:var(--mbc-navy);border-color:var(--mbc-navy);color:#fff;} .gtab.on small{color:rgba(255,255,255,.75);}
+  .gcount{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .gcount span{font-size:10.5px;font-weight:700;color:var(--mbc-navy);background:var(--mbc-electric-soft);border-radius:20px;padding:2px 9px;}
+  .doc h2.flash{animation:flash 2.4s ease;border-radius:6px;}
+  @keyframes flash{0%,40%{background:var(--mbc-electric-soft);box-shadow:0 0 0 6px var(--mbc-electric-soft);}100%{background:transparent;box-shadow:none;}}
+  .doc h2 .rule-link{margin-left:8px;font-size:11px;font-weight:600;color:var(--text-faint);text-decoration:none;opacity:0;}
+  .doc h2:hover .rule-link{opacity:1;}
+  .idx-mod{display:inline-block;font-size:10.5px;font-weight:700;color:var(--mbc-navy);background:var(--mbc-electric-soft);border-radius:20px;padding:1px 8px;margin:1px 3px 1px 0;white-space:nowrap;}
+  .idx-agt .rule-id{background:rgba(20,122,255,.18);}
+  .doc td a{color:var(--mbc-navy);font-weight:700;}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">Open Business <span>·</span> Accelerator</div>
-  <div class="hdr-right">Set up · Políticas de Gobierno de APIs</div>
+  <div class="hdr-right">Set up · Gobierno de APIs y agentes</div>
 </header>
 
 <div class="wrap">
   <aside>
     <div class="space">
-      <div class="space-name">Gobierno de APIs</div>
-      <div class="space-meta">Espacio de la entidad de referencia · 11 páginas</div>
+      <div class="space-name">Gobierno de APIs y agentes</div>
+      <div class="space-meta" id="spaceMeta">Espacio de la entidad de referencia</div>
       <span class="space-pill">Base aterrizable por entidad</span>
+      <div class="gcount" id="gCount"></div>
     </div>
+    <div class="gtabs" role="tablist"><button class="gtab" data-tab="api" role="tab">Políticas de APIs<small id="tcApi"></small></button><button class="gtab" data-tab="agentes" role="tab">Políticas de agentes<small id="tcAgt"></small></button></div>
     <nav class="tree" id="tree"></nav>
   </aside>
   <main>
@@ -102,8 +118,12 @@
   </main>
 </div>
 
+<script src="../../assets/politicas.js" data-current="policies"></script>
 <script>
 const PAGINAS = {
+indice: { grupo:'Transversal', titulo:'Índice de reglas · dónde se aplica', ver:'v1.1.0', estado:'vigente', owner:'Equipo Gobierno de APIs', fecha:'2026-09-25',
+ hist:[['v1.1.0','2026-09-25','Gobierno APIs','Índice transversal: cada regla con los módulos de la plataforma donde se aplica']],
+ body:'' /* se genera en ir('indice') a partir de las páginas y de assets/politicas.js */ },
 inicio: { grupo:'Fundamentos', titulo:'Inicio del espacio', ver:'v1.0.1', estado:'vigente', owner:'Equipo Gobierno de APIs', fecha:'2026-07-15',
  hist:[['v1.0.1','2026-07-15','Gobierno APIs','Se incorpora paginación por endpoint y guardrails de agentes'],['v1.0.0','2026-05-02','Gobierno APIs','Publicación inicial del espacio']],
  body:`
@@ -282,23 +302,56 @@ agentes: { grupo:'Agentes IA', titulo:'Guardrails de los agentes IA', ver:'v1.0.
  <h2><span class="rule-id">AGT-DAT-01</span>Datos</h2>
  <p>Fuera del tenant de la entidad, solo datos demo o anonimizados. Los datos reales de clientes se procesan únicamente en la infraestructura aprobada por la entidad.</p>
  <h2><span class="rule-id">AGT-GOV-01</span>Gobierno del cambio</h2>
- <p>Los cambios de estos guardrails siguen el mismo flujo que el resto del espacio: propuesta → PR → aprobación del equipo de Gobierno (+ Riesgo Tecnológico) → versión etiquetada.</p>`},
+ <p>Los cambios de estos guardrails siguen el mismo flujo que el resto del espacio: propuesta → PR → aprobación del equipo de Gobierno (+ Riesgo Tecnológico) → versión etiquetada.</p>
+ <div class="callout">Cada agente de la práctica declara qué guardrails cumple en su ficha del <a href="../agentes/index.html"><b>Repositorio de agentes</b></a>, junto a su contrato, versión y owner.</div>`},
 };
 
 const $=id=>document.getElementById(id);
 let ACTUAL='inicio';
 
+// ── F21 · pestañas, reglas enlazables e índice ──
+const TAB_DE = (p) => p.grupo === 'Agentes IA' ? 'agentes' : (p.grupo === 'Transversal' ? '*' : 'api');
+let TAB = 'api';
+const REGLA_PAGINA = {};   // GOV-XXX-NN → id de página
+Object.entries(PAGINAS).forEach(([id, p]) => {
+  (p.body.match(/rule-id">([A-Z]+-[A-Z]+-\d+)</g) || []).forEach((m) => { const r = m.slice(9, -1); if (!REGLA_PAGINA[r]) REGLA_PAGINA[r] = id; });
+});
+const nApi = Object.keys(REGLA_PAGINA).filter((r) => r.startsWith('GOV-')).length;
+const nAgt = Object.keys(REGLA_PAGINA).filter((r) => r.startsWith('AGT-')).length;
+$('tcApi').textContent = `${nApi} reglas`;
+$('tcAgt').textContent = `${nAgt} guardrails`;
+$('spaceMeta').textContent = `Espacio de la entidad de referencia · ${Object.keys(PAGINAS).length} páginas`;
+$('gCount').innerHTML = `<span>${nApi} reglas de API</span><span>${nAgt} guardrails de agentes</span>`;
+document.querySelectorAll('.gtab').forEach((b) => b.onclick = () => { TAB = b.dataset.tab; ir(TAB === 'agentes' ? 'agentes' : 'inicio'); });
+
 function renderTree(){
+  document.querySelectorAll('.gtab').forEach((b) => b.classList.toggle('on', b.dataset.tab === TAB));
   const grupos={};
-  Object.entries(PAGINAS).forEach(([id,p])=>{ (grupos[p.grupo]=grupos[p.grupo]||[]).push([id,p]); });
+  Object.entries(PAGINAS).forEach(([id,p])=>{ const t = TAB_DE(p); if (t !== '*' && t !== TAB) return; (grupos[p.grupo]=grupos[p.grupo]||[]).push([id,p]); });
   $('tree').innerHTML=Object.entries(grupos).map(([g,items])=>
     `<div class="tree-group">${g}</div>`+items.map(([id,p])=>
       `<a class="tree-item${id===ACTUAL?' active':''}" onclick="ir('${id}')">${p.titulo}<span class="tv">${p.ver}</span></a>`).join('')
   ).join('');
 }
 
-function ir(id){
+function cuerpoIndice(){
+  const fila = (r) => {
+    const pg = REGLA_PAGINA[r], meta = (window.OBA_POLICIES || {})[r] || {};
+    const mods = (window.OBA_policyModules ? window.OBA_policyModules(r) : []).map((m) => `<span class="idx-mod">${m.nombre}</span>`).join('') || '<span style="color:var(--text-faint)">Revisión de diseño</span>';
+    return `<tr class="${r.startsWith('AGT') ? 'idx-agt' : ''}"><td><span class="rule-id">${r}</span></td><td><a href="#${r}">${meta.t || ''}</a></td><td>${PAGINAS[pg].titulo}</td><td>${mods}</td></tr>`;
+  };
+  const orden = Object.keys(REGLA_PAGINA);
+  return `<p>Todas las reglas del espacio en una tabla: su identificador, la página donde se define y <b>los módulos de la plataforma donde se aplican</b>. Cada módulo muestra además, bajo la barra de navegación, la franja <i>Gobierno aplicado</i> con sus reglas enlazadas a esta página.</p>
+    <h2>Políticas de APIs <span style="font-weight:600;color:var(--text-faint);font-size:13px">${nApi}</span></h2>
+    <table><thead><tr><th>Regla</th><th>Qué exige</th><th>Página</th><th>Dónde se aplica</th></tr></thead><tbody>${orden.filter((r) => r.startsWith('GOV')).map(fila).join('')}</tbody></table>
+    <h2>Guardrails de agentes <span style="font-weight:600;color:var(--text-faint);font-size:13px">${nAgt}</span></h2>
+    <table><thead><tr><th>Regla</th><th>Qué exige</th><th>Página</th><th>Dónde se aplica</th></tr></thead><tbody>${orden.filter((r) => r.startsWith('AGT')).map(fila).join('')}</tbody></table>
+    <div class="callout">Los agentes, uno a uno y con los guardrails que cumple cada uno, están en el <a href="../agentes/index.html"><b>Repositorio de agentes</b></a>.</div>`;
+}
+
+function ir(id, regla){
   ACTUAL=id; const p=PAGINAS[id];
+  if (TAB_DE(p) !== '*') TAB = TAB_DE(p);
   $('bcActual').textContent=p.titulo;
   $('pgTitle').textContent=p.titulo;
   $('pgMeta').innerHTML=`
@@ -306,12 +359,29 @@ function ir(id){
     <span class="meta-pill ${p.estado==='vigente'?'mp-vigente':'mp-revision'}">${p.estado==='vigente'?'Vigente':'En revisión'}</span>
     <span><span class="avatar">G</span>${p.owner}</span>
     <span>Última actualización: ${p.fecha}</span>`;
-  $('pgBody').innerHTML=p.body;
+  $('pgBody').innerHTML = id === 'indice' ? cuerpoIndice() : p.body;
+  // Cada regla es enlazable: <h2 id="GOV-XXX-NN"> con enlace copiable
+  $('pgBody').querySelectorAll('h2').forEach((h) => {
+    const r = h.querySelector('.rule-id'); if (!r) return;
+    h.id = r.textContent.trim();
+    h.insertAdjacentHTML('beforeend', `<a class="rule-link" href="#${h.id}" title="Enlace a esta regla">#</a>`);
+  });
   $('pgHist').innerHTML=p.hist.map(h=>`<tr><td><b>${h[0]}</b></td><td>${h[1]}</td><td>${h[2]}</td><td>${h[3]}</td></tr>`).join('');
   renderTree();
-  window.scrollTo({top:0});
+  const h = regla && document.getElementById(regla);
+  if (h) { h.scrollIntoView({ block: 'center' }); h.classList.add('flash'); }
+  else window.scrollTo({top:0});
 }
-ir(PAGINAS[location.hash.slice(1)] ? location.hash.slice(1) : 'inicio'); // #agentes abre los guardrails (enlace desde el repositorio de agentes)
+
+// #pagina abre la página; #GOV-XXX-NN / #AGT-XXX-NN abre la página de la regla y la resalta
+function irHash(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (PAGINAS[h]) return ir(h);
+  if (REGLA_PAGINA[h]) return ir(REGLA_PAGINA[h], h);
+  ir('inicio');
+}
+window.addEventListener('hashchange', irHash);
+irHash();
 </script>
 <script src="../../assets/nav.js" data-current="policies"></script>
 </body>

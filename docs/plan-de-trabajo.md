@@ -134,15 +134,16 @@ Con `?caso=` o `?estudio=`, cada API del inventario se etiqueta (reutilizable / 
 `stages/agentes/index.html` + `assets/agents-data.js`: filtros por etapa y tipo con contador, tarjetas (icono, tipo, nombre, descripción, "Ver ficha"), sección "Dónde entra un agente" (4 etapas), ficha por agente como una API del inventario (contrato, versión, owner, ciclo de vida, políticas). Una sola fuente de definiciones en `agents/`.
 **DoD:** los 7 servicios de `core/agents.js` (más los pasos deterministas relevantes) aparecen inventariados y cada ficha enlaza al módulo donde actúa.
 
-### 🔜 F21 · Gobierno transversal — `feat/gobierno-transversal`
+### ✅ F21 · Gobierno transversal — `feat/gobierno-transversal`
 `governance-policies.html` con pestañas *APIs* (GOV-*) y *Agentes* (guardrails AGT-* ya existentes: fuentes, citación, no inventar, human-in-the-loop, auditoría, datos, gobierno del cambio; valorar añadir versionado de prompt/contrato y banner de simulación); nodo en el home; entrada "Gobierno" en la barra; bloque "Políticas aplicadas" en cada módulo.
 **DoD:** desde cualquier módulo se llega en un clic a la regla concreta que aplica; el repositorio de agentes cita AGT-* (hecho en F20).
 
-### ⬜ F22 · Designer: flujo y artefactos — `refactor/designer-flujos`
-Patrón de la demo (pantalla protagonista + paneles Backend / Secuencia): 4 pasos visibles, artefactos en pestañas de una única tarjeta, diagrama del modelo en SVG, modelos ISO 20022 nuevos (lista de Jonathan), CSS extraído a `assets/` sin build. Sin emojis.
-**DoD:** el recorrido Describir → Propuesta → Artefactos → Guardar se sigue sin explicación; visualmente coherente con las demos.
+### ✅ F22 · Designer: refinado visual — `refactor/designer-flujos`
+Alcance acordado con Jonathan: **solo refinado visual y de flujo** (sin modelos ISO 20022 nuevos ni cambios en la lógica de los agentes). Capa `designer-refinado.css` + `designer-flujo.js` sobre el Designer existente: barra de 4 pasos Describir → Propuesta y revisión → Artefactos → Siguiente paso, pantallas en claro coherentes con las demos, chips D15 enlazados al Repositorio de agentes y a AGT-HIL-01, bloque "Siguiente paso". Robustez: Mermaid/Swagger sin CDN ya no rompen la página; la cabecera fija ya no tapa la navegación.
+**DoD:** el recorrido Describir → Propuesta → Artefactos → Guardar se sigue sin explicación; visualmente coherente con las demos. ✔
+*Pendiente para otra iteración (fuera de alcance):* modelos ISO 20022 nuevos, diagrama del modelo en SVG propio, extraer el `<style>` del Designer a `assets/`.
 
-### ⬜ F23 · Gestión & Versionado visual — `refactor/versionado-visual`
+### 🔜 F23 · Gestión & Versionado visual — `refactor/versionado-visual`
 Misma tarjeta de artefactos; comparativa As-Is / To-Be en dos columnas con diff resaltado; strip de ciclo de vida con chips D15; conformidad GOV-* como lista puntuada con enlace a la regla.
 
 ### ⬜ F24 · Release v0.4.0 — `chore/release-v0.4.0`

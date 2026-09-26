@@ -20,7 +20,15 @@ versionado según [SemVer](https://semver.org/lang/es/).
 - `assets/agents-data.js`: fuente única del catálogo (24 entradas: 8 servicios de la plataforma, 3 agentes y 3 skills del pipeline Copilot de diseño de APIs, 4 agentes de construcción, pasos de Método MBC) y espejo de los guardrails AGT-* del espacio de Gobierno.
 - `agents/README.md`: índice de las tres familias de agentes (plataforma, pipeline Copilot, construcción) y checklist de alta o cambio. Cierra F10 sin mover `.github/agents` (Copilot los descubre allí).
 
+- **Gobierno transversal** (F21 · D16): nueva `assets/politicas.js` con el catálogo de las 25 reglas (18 GOV-* de API y 7 guardrails AGT-* de agentes) y el mapa de qué reglas aplica cada módulo. `nav.js` la carga en cada módulo y pinta bajo la barra la franja **Gobierno aplicado**, con las reglas del módulo enlazadas a su definición (las que no caben se resumen en "+n más"). Sin tocar el HTML de los módulos.
+- Espacio de Políticas de Gobierno: página **Índice de reglas · dónde se aplica** (cada regla con su página y los módulos donde se aplica), enlazable como `#indice`.
+
 ### Changed
+- **API Designer · refinado visual** (F22, solo presentación: mismos agentes, modelos y artefactos). Nueva capa `designer-refinado.css` sobre los estilos del Designer: portada como hero compacto de la plataforma con guía de 4 pasos, cabeceras de sección y tarjetas del agente en claro, pregunta del agente con estilo *human-in-the-loop*, traza técnica discreta, código, tablas, estadísticas y pestañas con tokens MBC. Nuevo `designer-flujo.js`: barra de progreso **Describir el caso → Propuesta y revisión → Artefactos OpenAPI → Siguiente paso** (sustituye a la cabecera fija oscura), chips D15 enlazados al Repositorio de agentes (Business Analyst, API Builder, revisión GOV-*) y a AGT-HIL-01 / AGT-INV-01, y bloque final "Siguiente paso" (guardar en el caso, Gestión y Versionado, API Lab). Icono SVG en lugar de emoji en la pestaña Swagger.
+- API Designer: el banner de contexto (`designer-context.js`) pasa a claro y se coloca bajo la navegación y la franja de gobierno, en vez de encima de la barra.
+- `governance-policies.html` pasa a "Gobierno de APIs y agentes": pestañas **Políticas de APIs** (18 reglas) y **Políticas de agentes** (7 guardrails) en el lateral, contadores en la cabecera del espacio, y **cada regla enlazable** (`#GOV-ERR-01`, `#AGT-HIL-01`…): abre su página, la centra y la resalta. Los guardrails enlazan al repositorio de agentes.
+- Portal: la banda de Gobierno cuenta reglas y guardrails y lleva a "Dónde se aplica cada regla"; bajo el recorrido, Gobierno aparece como capa transversal.
+- Repositorio de agentes: cada guardrail de la ficha enlaza a su regla en el espacio de Gobierno.
 - `assets/nav.js`: entrada **Agentes** con icono entre Demos y Gobierno; por debajo de 1440 px se oculta la etiqueta de etapa para que los seis pasos y las tres entradas quepan (el paso activo ya la indica).
 - Portal: la banda de Gobierno cuenta los 15 agentes inventariados y "Dónde acelera la IA" enlaza al repositorio de agentes y a los guardrails.
 - Políticas de Gobierno: `governance-policies.html#agentes` abre directamente los guardrails de agentes. La documentación (D16, plan, storytelling) usa los identificadores AGT-* existentes en lugar de los GOV-AG-* previstos.
@@ -29,6 +37,11 @@ versionado según [SemVer](https://semver.org/lang/es/).
 - Discovery (paso 5): "Ver el caso cruzado en el inventario" abre el Inventario con el mismo caso y sus endpoints.
 - API Designer: acepta `?api=` junto a `?estudio=` o `?usecase=` y muestra la API a diseñar primero (llega desde "Diseñar nueva" del Inventario).
 - `docs/contratos-agentes.md`: contrato de `requerimientosProducto` y nota sobre la viabilidad como método determinista.
+
+### Fixed
+- API Designer: la cabecera fija tapaba la barra de navegación y la franja de gobierno al avanzar; el hueco superior de 108 px desaparece.
+- API Designer: si el CDN de Mermaid no carga, el Designer ya no se rompe entero (antes abortaba el script); los diagramas muestran su definición. Colores del tema Mermaid en literal (no resuelve variables CSS). Swagger UI desde jsDelivr con aviso si no carga. Los diagramas UML y de flujo se dibujan también al abrirlos directamente.
+- API Designer: el texto base del bloque de código (dos puntos, guiones) era casi invisible sobre el fondo oscuro; la nota "LLM-agnóstico" se partía en columnas.
 
 ## [0.3.0] - 2026-09-25
 
