@@ -1272,6 +1272,14 @@
       // CTA
       const qs = encodeURIComponent(selectedUCName);
       document.getElementById('cta-design').href = `../../2-api-design/api-designer.html?usecase=${qs}`;
+
+      // F18 · paso 5 (discovery-viabilidad.js): viabilidad, requerimientos y paquete de negocio
+      document.dispatchEvent(new CustomEvent('discovery:resultados', { detail: {
+        caso: selectedUCName, categoria: selectedUCCat,
+        descripcion: activeTab === 'custom' ? (document.getElementById('custom-desc').value || '').trim() : '',
+        segmentos: rows.map(r => ({ id: r.seg, nombre: segNames[r.seg], propension: r.pct, usuarios: r.users, variables: segVars[r.seg] })),
+        apis: { req: apis.req.slice(), comp: apis.comp.slice() }
+      } }));
     }
 
     function recalcTSM() {
@@ -1311,6 +1319,7 @@
     }
   </script>
 <script type="module" src="estudios.js"></script>
+<script type="module" src="discovery-viabilidad.js"></script>
 <script src="../../../assets/nav.js" data-current="discovery"></script>
 </body>
 </html>

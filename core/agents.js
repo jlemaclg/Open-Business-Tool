@@ -22,6 +22,10 @@ export const Agents = {
   /** ⭐ El delta: qué APIs/tecnología/equipo faltan y cuánta inversión implica. */
   gapsYDependencias: (casoUso, entidad) => impl.gapsYDependencias(casoUso, entidad),
 
+  /** ⭐ Requerimientos del producto (Discovery, F18): borrador sobre la plantilla MBC por categoría,
+   *  adaptado al caso y a la audiencia prioritaria. El consultor lo edita antes de exportarlo. */
+  requerimientosProducto: (casoUso, audiencia) => impl.requerimientosProducto(casoUso, audiencia),
+
   /** Diseño conversacional de API → diccionario de datos + paths + ISO 20022. */
   diseñarAPI: (descripcionNL) => impl.diseñarAPI(descripcionNL),
 
